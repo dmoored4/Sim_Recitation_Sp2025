@@ -1,0 +1,727 @@
+---
+title: "R1: Wind Turbine Repair Process"
+subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
+author: Daniel Moore
+date: 2025-01-23
+
+format:
+  revealjs:
+    logo: assets/R_sunj.svg
+    chalkboard: true
+    overflow: scroll
+    toc: true
+    slide-level: 6
+    toc-depth: 4
+    number-sections: false
+
+execute:
+  echo: true
+  warning: false
+  output: false
+  
+params:
+  turbines: 300
+  sim_yrs: 250
+  breakdown_rate: 2000
+  repair_avg: 96
+  repair_std: 24
+---
+
+### Learning Objectives:
+
+-   Develop a motivating example for IE simulation models
+
+-   Demonstrate the type of coding complexity that we will build up to during the course
+
+-   Gauge students' level of expertise in probability models and programming
+
+### R Programming Basics
+
+##### Development Stack
+
+::: incremental
+-   [$\textsf{R}$](https://cran.rstudio.com): R is a language and environment for statistical computing and graphics. Its predecessor, "S", was developed by [Bell Labs](https://www.bell-labs.com/about/history/) in Murray Hill, NJ.
+-   [$\textsf{RStudio}$](https://posit.co/download/rstudio-desktop/): Used by millions of people weekly, the RStudio integrated development environment (IDE) is a set of tools built to help you be more productive with R and Python.
+-   [Quarto](https://quarto.org/docs/get-started/): An open-source scientific and technical publishing system. Analyze. Share. Reproduce. You have a story to tell with data—tell it with Quarto.
+-   [Markdown](https://www.markdownguide.org/cheat-sheet/). Lightweight language to format plain text.
+:::
+
+##### Hello, World!
+
+-   Standard test to make sure a programming environment is properly configured
+
+```{r, hello-world}
+#| output: true
+
+print("Hello, World!")
+```
+
+::: callout-tip
+For $\textsf{R}$ tutorials, go to top-right corner of $\textsf{RStudio}$ and look for the "Tutorial" tab. Follow instructions in the pane.
+:::
+
+##### Package Management {.smaller}
+
+$\textsf{R}$ is a go-to language for many domains because of its mature packages for many kinds of data analysis. These packages are easily accessible via the [Comprehensive R Archive Network (CRAN)](https://cran.r-project.org)
+
+::: panel-tabset
+###### Install Packages
+
+This tells CRAN to find your desired package and download a copy to your working environment.
+
+-   Option 1: Go to Files Pane (lower right) $\rightarrow$ Packages tab $\rightarrow$ Install $\rightarrow$ \<search for your package\> $\rightarrow$ follow prompts in console
+-   Option 2: In the console pane (lower left), type `install.packages("<pkg_name>")` $\rightarrow$ follow prompts
+
+```{r, install-packages}
+#| eval: true
+#| code-fold: true
+# installing packagess
+install.packages("tidyverse")
+install.packages("ggExtra")
+```
+
+###### Load Packages
+
+This tells your current R session to read the \[downloaded\] packages and then you can use them.
+
+-   Option 1: File Pane $\rightarrow$ Packages Tab $\rightarrow$ scroll or search for your package $\rightarrow$ click the checkbox
+-   Option 2: In the console or your working file put: `library(<pkg_name>)`.
+
+```{r, load-packages}
+#| code-fold: true
+# loading packages
+library(tidyverse)
+library(ggExtra)
+```
+:::
+
+### Code Time!
+
+#### Wind Turbine Breakdown {.smaller}
+
+::: panel-tabset
+##### Problem
+
+An offshore wind farm operates `{r} params$turbines` turbines. The breakdown rate follows an exponential distribution with a rate of one per `{r} params$breakdown_rate` hours of operation. How many breakdowns should be anticipated per year?
+
+```{r, plot-exp}
+#| echo: false
+#| output: true
+
+# Set parameters for the Exponential distribution
+lambda <- 1 / params$breakdown_rate
+t_vals <- seq(0, 10000, by = 250)  # Range of x values
+pdf_vals <- dexp(t_vals, lambda)  # Exponential PDF values
+
+# Create a data frame for ggplot
+exp_data <- data.frame(t = t_vals, density = pdf_vals)
+
+# Plot the Exponential PDF
+ggplot(exp_data, aes(x = t, y = density)) +
+  geom_line(color = "blue", size = 1.2) +
+  labs(title = "Exponential Probability Density Function",
+       x = "t",
+       y = "f(t)") +
+  theme_minimal()
+```
+
+##### Analytical Solution
+
+With this information we can simply take the parameter, $\lambda$, and multiply it by the hours in a year and the total number of turbines to get the expected number of failures in the year.
+
+$$
+X \sim Exp \left( \lambda = \frac{1}{2,000\ hrs} \right)
+$$
+
+$$
+f_X(t | \lambda) = \lambda e^{-\lambda t}
+$$
+
+$$
+N = 300\ turbines \frac{365\ days}{year} \frac{24\ hrs}{day} \frac{1\ breakdown/turbine}{2,000\ hrs} = 1,314\ breakdowns/year
+$$
+
+##### Simulation Plan
+
+This is a silly problem to simulate, but we will do it anyway. We have a few options:
+
+1)  Sample $X$ to get breakdown times and see how many we get in one year. Then multiply that by 300
+2)  Sample $X$ to get breakdown times for each turbine and add them all together
+3)  Do (1) or (2) for $N$ years and then divide the result by $N$. ($N$ could be less than 1. What does that mean?)
+4)  Recognize Exponential gives failure times, Poisson gives failures in a given time. Use that instead
+:::
+
+##### Simulation Parameters
+
+```{r, model-parameters}
+# I've defined certain "params" in the header of the document
+lambda <- 1 / params$breakdown_rate # Breakdown rate (failures per hour)
+N <- params$sim_yrs                 # Total simulation time in years
+K <- params$turbines                # Number of turbines
+yr <- 24 * 365                      # number of hours in a year
+
+# define a RV, X, which will sample the exp dist. when we call X()
+X <- function(n=1) {
+  # n gives the number of samples, with the default of 1
+  rexp(n, rate = lambda)
+}
+```
+
+::: callout-tip
+`<-` and `=` are chosen to follow convention. `<-` assigns a "value" to a variable while `=` is used in function signatures.
+:::
+
+##### Sampling Random Variable
+
+Sample it once:
+
+```{r, sample-x-once}
+#| output: true
+X()
+```
+
+Sample it several times:
+
+```{r, sample-x-several}
+#| output: true
+X(5)
+```
+
+Averaging a few samples
+
+```{r, sample-x-average}
+#| output: true
+mean(X(15))
+```
+
+Averaging a lot of samples
+
+```{r, sample-x-lots-average}
+#| output: true
+mean(X(15000))
+```
+
+##### Simulation Code
+
+```{r, simple-breakdown}
+#| code-line-numbers: "|1-2|4-9|11-12|13-18|24-25|"
+
+# Initialize total breakdown count
+breakdowns <- 0
+
+# Iterate over each turbine
+for (k in 1:K) {
+  # simulate for N years
+  for (n in 1:N) {
+    # Reset initial time to 0
+    t <- 0
+    
+    # while t is less than one year
+    while (t <= yr) {
+      # Sample from the exponential distribution (time to next breakdown)
+      t <- t + X()
+      
+      # Increment the breakdown count if within the simulation period
+      if (t <= yr) {
+        breakdowns <- breakdowns + 1
+      }
+    }
+  }
+}
+
+# Calculate the average number of breakdowns per year across all turbines
+breakdowns <- breakdowns / N
+```
+
+We should expect `{r} breakdowns` breakdowns in a year for the `{r} K`-turbine wind farm.
+
+##### Code Flow Chart:
+
+```{mermaid}
+%%| echo: false
+flowchart LR
+  A["X ~ Exp(λ)
+  breakdowns = 0
+  t = 0"]
+  B{"t <= 1 year"}
+  C["t += X()"]
+  D{"t <= 1 year"}
+  E["breakdowns++"]
+  Terminate([Terminate])
+  
+  A --> B
+  B --true--> C
+  C --> D
+  D --true--> E
+  D --false--> B
+  E --> B
+  B --false-----> Terminate
+```
+
+##### Smarter Simulation {.smaller}
+
+-   Exponential gives time between events
+-   Poisson gives number of events in a given time
+
+```{r, poisson-sim}
+# Poisson parameter is # events per time period
+lambda_p <- yr * lambda
+
+# we want to sample K*N times, This gives K*N breakdowns (vector)
+poisson_breakdowns <- rpois(N*K, lambda_p)
+
+# sum the vector and divide by N
+poisson_breakdowns <- sum(poisson_breakdowns) / N
+```
+
+We should expect `{r} poisson_breakdowns` breakdowns in a year for the `{r} K`-turbine wind farm.
+
+::: callout-tip
+Search documentation by going to the lower right pane and clicking the "Help" tab. Then type your term (i.e. `rpois`) into the search bar.
+:::
+
+#### Wind Turbine Repair
+
+Repairs are assumed to take `{r} params$repair_avg` hours (the average). How much turbine-down time should be expected per year? How many breakdowns should be anticipated per year?
+
+##### Analytical Solution {.smaller}
+
+-   With a *fixed* repair time, we can tack `{r} params$repair_avg` hours on to the breakdown rate, 1 break down every`{r} params$breakdown_rate` hours + `{r} params$repair_avg` hours to repair = 1 breakdown every `{r} params$breakdown_rate + params$repair_avg`.
+
+$$
+N = 300\ turbines \frac{365\ days}{year} \frac{24\ hrs}{day} \frac{1\ breakdown/turbine}{2,096\ hrs} = 1,253.8\ breakdowns/year
+$$
+
+-   Accounting for repair time, our number of breakdowns...*decreased*? Is this sensible?
+
+$$
+N = 300\ turbines \frac{365\ days}{year} \frac{24\ hrs}{day} \frac{96\ hrs\ downtime}{2,096\ hrs\ operation} = 120,366.4\ hrs\ downtime
+$$
+
+-   Are we confident that this math checks out? Let's simulate it...
+
+##### Simulation Modification
+
+```{r, sim-fixed-repair}
+#| code-line-numbers: "|1-2|4-6|18-19|22|23-28|30-33|35-39|45-48|"
+
+# repair time, Y
+Y <- params$repair_avg
+
+# Initialize breakdowns and uptime
+breakdowns <- 0
+uptime <- 0
+
+# Iterate over each turbine
+for (k in 1:K) {
+  # simulate for N years
+  for (n in 1:N) {
+    # Reset simulation time to 0
+    t <- 0
+    
+    # while t is less than one year
+    while (t <= yr) {
+      
+      # sample breakdown time
+      time_to_breakdown <- X()
+
+      # check if the breakdown time will exceed a year
+      if (t + time_to_breakdown <= yr) {
+        # if not, then we get another breakdown
+        breakdowns <- breakdowns + 1
+        # the simulation time increases by the time to breakdown
+        t <- t + time_to_breakdown
+        # and the uptime increases by the time to breakdown
+        uptime <- uptime + time_to_breakdown
+        
+        # for now, Y is a constant
+        time_to_repair <- Y
+
+        t <- t + time_to_repair
+        
+      } else {
+        # if the breakdown time exceeds one year, then uptime
+        # extends to the end of the year and we don't get a new breakdown
+        uptime <- uptime + (yr - t)
+        t <- t + time_to_breakdown
+      }
+    }
+  }
+}
+
+# Calculate the average number of breakdowns per year across all turbines
+uptime <- uptime / N
+breakdowns <- breakdowns / N
+downtime <- 300*yr - uptime
+```
+
+##### Results Comparison
+
+| Metric | Analytical | Simulation |
+|------------------------|------------------------|------------------------|
+| $breakdowns/yr$ | 1253.8 | `{r} breakdowns` |
+| $total\ turbine\ downtime/yr$ | 120366.4 | `{r} format(downtime, scientific=FALSE)` |
+
+##### Shortfalls?
+
+::: incremental
+-   Assumes every turbine is working at the start of the simulation
+
+-   What can we say about the probability of downtime exceeding some value?
+
+-   If we want to increase up time, should we focus on expediting repairs or performing preventive maintenance to increase time between failures?
+
+-   Do all repairs take the same amount of time?
+:::
+
+#### LogNormally Distributed Repair Time
+
+-   Most repairs take about the same amount of time, but some take a long time (think specialty overseas parts etc).
+
+$$
+Y \sim LogNormal(\mu, \sigma^2)
+$$ $$
+f_Y(t | \mu, \sigma) = \frac{1}{\sqrt{2\pi \sigma t}} \exp \left( \frac{-(log(t)-\mu)^2}{2\sigma^2} \right)
+$$
+
+##### LogNormal Distribution {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| output: true
+
+
+# Set parameters for the Exponential distribution
+mu <- params$repair_avg
+sigma <- params$repair_std
+mu_log <- log( mu^2 / ( mu^2 + sigma^2)^(1/2) )
+sigma_log <- (log(1 + (sigma^2/mu^2)))^(1/2)
+              
+t_vals <- seq(25, 175, by = 1)  # Range of x values
+pdf_vals <- dlnorm(t_vals, mu_log, sigma_log)  # Exponential PDF values
+
+# Create a data frame for ggplot
+ln_data <- data.frame(t = t_vals, density = pdf_vals)
+
+# Plot the Exponential PDF
+ggplot(ln_data, aes(x = t, y = density)) +
+  geom_line(color = "blue", size = 1.2) +
+  labs(title = "LogNormal Probability Density Function",
+       x = "t",
+       y = "f(t)") +
+  scale_x_log10(labels = scales::label_number(accuracy = 0.01)) +
+  theme_minimal()
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| output: true
+
+# Plot the Exponential PDF
+ggplot(ln_data, aes(x = t, y = density)) +
+  geom_line(color = "blue", size = 1.2) +
+  labs(title = "LogNormal Probability Density Function",
+       x = "t",
+       y = "f(t)") +
+  theme_minimal()
+```
+:::
+:::::
+
+These are the same distribution with the left x-axis on a log scale. The lower end of ranges look basically like a Normal distribution for both plots, but the right plot shows that the higher values of $t$ are more likely than if it were just a Normal distribution. The pdf looks like it is being stretched.
+
+##### Creating LogNormal Distribution
+
+```{r, lnorm-create}
+#| code-fold: false
+
+mu <- params$repair_avg
+sigma <- params$repair_std
+mu_log <- log( mu^2 / ( mu^2 + sigma^2)^(1/2) )
+sigma_log <- (log(1 + (sigma^2/mu^2)))^(1/2)
+
+Y <- function(n=1){
+  rlnorm(n, mu_log, sigma_log)
+}
+```
+
+##### Verifying LogNormal Distribution
+
+```{r, lnorm-verify}
+#| code-fold: false
+#| 
+repair_times <- Y(500)
+
+mu_calc <- mean(repair_times)
+sigma_calc <- sd(repair_times)
+```
+
+-   Sample mean: `{r} mu_calc`
+-   Sample standard deviation: `{r} sigma_calc`
+
+::: callout-tip
+You often can't validate your entire simulation. However, you can and should verify the components as much as possible
+:::
+
+##### Analytical Solution {.smaller}
+
+-   Need to determine how many times $X + Y$ divide into one year
+
+-   Adding two distributions is not straightforward. How do you add a pair of 6-sided die?
+
+-   This is really a convolution, denoted as $X \ast Y$. It can be found as:
+
+$$(f_X * f_Y)(t) = \int_{-\infty}^{\infty} f_X(\tau) f_Y(t - \tau) \, d\tau$$
+
+-   Sometimes, this can be achieved easier through Laplace Transforms
+
+-   Unfortunately, a closed-form analytical solution is not always possible
+
+##### Simulation Adjustment
+
+```{r, sim-ln-repair}
+#| code-fold: false
+#| code-line-numbers: "|28|"
+
+# Initialize breakdowns and uptime
+breakdowns <- 0
+uptime <- 0
+
+# Iterate over each turbine
+for (k in 1:K) {
+  # simulate for N years
+  for (n in 1:N) {
+    # Reset simulation time to 0
+    t <- 0
+    
+    # while t is less than one year
+    while (t <= yr) {
+      
+      # sample breakdown time
+      time_to_breakdown <- X()
+
+      # check if the breakdown time will exceed a year
+      if (t + time_to_breakdown <= yr) {
+        # if not, then we get another breakdown
+        breakdowns <- breakdowns + 1
+        # the simulation time increases by the time to breakdown
+        t <- t + time_to_breakdown
+        # and the uptime increases by the time to breakdown
+        uptime <- uptime + time_to_breakdown
+        
+        # now we will sample Y
+        time_to_repair <- Y()
+
+        t <- t + time_to_repair
+        
+      } else {
+        # if the breakdown time exceeds one year, then uptime
+        # extends to the end of the year and we don't get a new breakdown
+        uptime <- uptime + (yr - t)
+        t <- t + time_to_breakdown
+      }
+    }
+  }
+}
+
+# Calculate the average number of breakdowns per year across all turbines
+uptime <- uptime / N
+breakdowns <- breakdowns / N
+downtime <- 300*yr - uptime
+```
+
+##### Results Comparison, LogNormal Dist.
+
+| Metric | Analytical | Simulation |
+|------------------------|------------------------|------------------------|
+| $breakdowns/yr$ | 1253.8 | `{r} breakdowns` |
+| $total\ turbine\ downtime/yr$ | 120366.4 | `{r} format(downtime, scientific=FALSE)` |
+
+#### Collecting more Simulation Data
+
+We want to ask questions about the distribution of failures and repairs. We need to collect more data from the simulation and store it in an easy format for manipuation.
+
+##### Tidy Data & Tidyverse
+
+```{r, instantiate-tibble}
+# Create an empty table which we will populate during simulation
+results <- tibble(
+  turbine_id = integer(),
+  year = integer(),
+  breakdowns = integer(),
+  uptime = numeric()
+)
+```
+
+::: callout-tip
+[tidyverse](https://www.tidyverse.org) is the one-stop-shop for (nearly) everything needed for working with data and creating great visualizations. It includes several different packages which all adhere to the ["tidy"](https://vita.had.co.nz/papers/tidy-data.pdf) way of doing things. We'll see more of this in the future.
+:::
+
+##### Final Simulation
+
+```{r, collect-more-data}
+#| code-fold: false
+#| code-line-numbers: "|5-7|38-44|49-51|"
+
+# Iterate over each turbine
+for (k in 1:K) {
+  # simulate for N years
+  for (n in 1:N) {
+    # move these to inner loop to record results of each iteration
+    breakdowns <- 0
+    uptime <- 0
+    t <- 0
+    
+    # while t is less than one year
+    while (t <= yr) {
+      
+      # sample breakdown time
+      time_to_breakdown <- X()
+
+      # check if the breakdown time will exceed a year
+      if (t + time_to_breakdown <= yr) {
+        # if not, then we get another breakdown
+        breakdowns <- breakdowns + 1
+        # the simulation time increases by the time to breakdown
+        t <- t + time_to_breakdown
+        # and the uptime increases by the time to breakdown
+        uptime <- uptime + time_to_breakdown
+        
+        # now sampling Y
+        time_to_repair <- Y()
+
+        t <- t + time_to_repair
+        
+      } else {
+        # if the breakdown time exceeds one year, then uptime
+        # extends to the end of the year and we don't get a new breakdown
+        uptime <- uptime + (yr - t)
+        t <- t + time_to_breakdown
+      }
+    }
+    
+    # write the data to the rows of our tibble
+    results <- results |>
+      add_row(
+        turbine_id = k,
+        year = n,
+        breakdowns = breakdowns,
+        uptime = uptime
+      )
+  }
+}
+
+# calculating a column for downtime 
+results <- results |>
+  mutate(downtime = yr - uptime)
+```
+
+```{r, aggregate-results}
+#| echo: false
+agg_results <- results |> group_by(year) |>
+  summarize(
+    total_breakdowns = sum(breakdowns),
+    total_uptime = sum(uptime),
+    total_downtime = sum(downtime),
+    .groups = "drop"
+  )
+```
+
+##### Simulation Visualizations
+
+::: panel-tabset
+###### Breakdowns
+
+```{r, hist-breakdowns}
+#| echo: false
+#| output: true
+ggplot(agg_results, aes(x = total_breakdowns)) +
+  geom_histogram(fill = "skyblue", color = "black") +
+  labs(
+    x = "Number of Breakdowns",
+    y = "Frequency"
+  ) +
+  theme_minimal()
+```
+
+###### Downtime
+
+```{r, hist-downtime}
+#| echo: false
+#| output: true
+ggplot(agg_results, aes(x = total_downtime)) +
+  geom_histogram(fill = "darkblue", color = "black") +
+  labs(
+    x = "Total Hours Down",
+    y = "Frequency"
+  ) +
+  theme_minimal()
+```
+
+###### Downtime vs. Breakdowns
+
+```{r, kde-downtime-vs-breakdowns}
+#| echo: false
+#| output: true
+brk_vs_dwn <- ggplot(
+    agg_results,
+    aes(x = total_breakdowns, y = total_downtime)) +
+  geom_point() +
+  geom_smooth() +
+  labs(
+    x = "Total Breakdowns",
+    y = "Total Hours Down"
+  ) +
+  theme_minimal()
+  
+ggMarginal(brk_vs_dwn, type = "density")
+```
+:::
+
+##### Results Cumulative Distributions
+
+::: panel-tabset
+###### Total Breakdowns
+
+```{r, ecdf-breakdowns}
+#| echo: false
+#| output: true
+
+ggplot(agg_results, aes(x = total_breakdowns)) +
+  stat_ecdf() +
+  theme_minimal() +
+  labs(
+    x = "Annual Breakdowns, n",
+    y = "P(N < n)"
+  )
+```
+
+###### Annual Downtime
+
+```{r, ecdf-downtime}
+#| echo: false
+#| output: true
+
+ggplot(agg_results, aes(x = total_downtime)) +
+  stat_ecdf() +
+  theme_minimal() +
+  labs(
+    x = "Total Hours Down, t",
+    y = "P(T < t)"
+  )
+```
+:::
+
+### Conclusion
+
+1.  We have some familiarity with the development environment in R, literate programming, and Quarto
+
+2.  Provided motivation for why even "simple" questions may be best answered with simulation
+
+3.  Introduced Exponential, Poisson, and LogNormal distributions
+
+4.  Demonstrated how to write a computer program which simulates our problem, check it against an available analytical solution, and then extend it to the more complex case
