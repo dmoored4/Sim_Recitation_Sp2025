@@ -5,14 +5,15 @@ author: Daniel Moore
 date: 2025-01-23
 
 format:
-  revealjs:
-    logo: assets/R_sunj.svg
-    chalkboard: true
+  html:
     overflow: scroll
     toc: true
-    slide-level: 6
-    toc-depth: 4
-    number-sections: false
+    toc-expand: 2
+    toc-depth: 3
+    number-sections: true
+    number-depth: 2
+    self-contained: true
+    output-file: R1_nb
 
 execute:
   echo: true
@@ -27,7 +28,7 @@ params:
   repair_std: 24
 ---
 
-### Learning Objectives:
+# Learning Objectives {.unnumbered}
 
 -   Develop a motivating example for IE simulation models
 
@@ -35,9 +36,9 @@ params:
 
 -   Gauge students' level of expertise in probability models and programming
 
-### R Programming Basics
+# R Programming Basics
 
-##### Development Stack
+## Development Stack
 
 ::: incremental
 -   [$\textsf{R}$](https://cran.rstudio.com): R is a language and environment for statistical computing and graphics. Its predecessor, "S", was developed by [Bell Labs](https://www.bell-labs.com/about/history/) in Murray Hill, NJ.
@@ -46,7 +47,7 @@ params:
 -   [Markdown](https://www.markdownguide.org/cheat-sheet/). Lightweight language to format plain text.
 :::
 
-##### Hello, World!
+## Hello, World!
 
 -   Standard test to make sure a programming environment is properly configured
 
@@ -60,12 +61,14 @@ print("Hello, World!")
 For $\textsf{R}$ tutorials, go to top-right corner of $\textsf{RStudio}$ and look for the "Tutorial" tab. Follow instructions in the pane.
 :::
 
-##### Package Management {.smaller}
+## Package Management {.smaller}
 
 $\textsf{R}$ is a go-to language for many domains because of its mature packages for many kinds of data analysis. These packages are easily accessible via the [Comprehensive R Archive Network (CRAN)](https://cran.r-project.org)
 
+*note: click on the tabs to see additional content*
+
 ::: panel-tabset
-###### Install Packages
+### Install Packages
 
 This tells CRAN to find your desired package and download a copy to your working environment.
 
@@ -80,7 +83,7 @@ install.packages("tidyverse")
 install.packages("ggExtra")
 ```
 
-###### Load Packages
+### Load Packages
 
 This tells your current R session to read the \[downloaded\] packages and then you can use them.
 
@@ -95,12 +98,14 @@ library(ggExtra)
 ```
 :::
 
-### Code Time!
+# Code Time!
 
-#### Wind Turbine Breakdown {.smaller}
+## Wind Turbine Breakdown {.smaller}
+
+*note: click on the tabs to see additional content*
 
 ::: panel-tabset
-##### Problem
+### Problem
 
 An offshore wind farm operates `{r} params$turbines` turbines. The breakdown rate follows an exponential distribution with a rate of one per `{r} params$breakdown_rate` hours of operation. How many breakdowns should be anticipated per year?
 
@@ -125,7 +130,7 @@ ggplot(exp_data, aes(x = t, y = density)) +
   theme_minimal()
 ```
 
-##### Analytical Solution
+### Analytical Solution
 
 With this information we can simply take the parameter, $\lambda$, and multiply it by the hours in a year and the total number of turbines to get the expected number of failures in the year.
 
@@ -141,7 +146,7 @@ $$
 N = 300\ turbines \frac{365\ days}{year} \frac{24\ hrs}{day} \frac{1\ breakdown/turbine}{2,000\ hrs} = 1,314\ breakdowns/year
 $$
 
-##### Simulation Plan
+### Simulation Plan
 
 This is a silly problem to simulate, but we will do it anyway. We have a few options:
 
@@ -151,7 +156,7 @@ This is a silly problem to simulate, but we will do it anyway. We have a few opt
 4)  Recognize Exponential gives failure times, Poisson gives failures in a given time. Use that instead
 :::
 
-##### Simulation Parameters
+### Simulation Parameters
 
 ```{r, model-parameters}
 # I've defined certain "params" in the header of the document
@@ -171,7 +176,7 @@ X <- function(n=1) {
 `<-` and `=` are chosen to follow convention. `<-` assigns a "value" to a variable while `=` is used in function signatures.
 :::
 
-##### Sampling Random Variable
+### Sampling Random Variable
 
 Sample it once:
 
@@ -201,7 +206,36 @@ Averaging a lot of samples
 mean(X(15000))
 ```
 
-##### Simulation Code
+### N-Sample Visualization
+
+```{r}
+#| output: true
+#| code-fold: true
+
+# set the samples and increment
+n_values = seq(10, 5000, by = 10)
+
+# create a tibble with N, mean, and sd for sampling X() n times
+X_sim <- tibble(
+  n = n_values,
+  Mean = map_dbl(n_values, ~ mean(X(.x))),
+  SD = map_dbl(n_values, ~ sd(X(.x)))
+)
+
+#plot results
+X_sim %>%
+  ggplot(aes(x = n, y = Mean)) +
+  geom_line(color = "blue") +
+  geom_ribbon(aes(ymin = Mean - SD, ymax = Mean + SD), fill = "blue", alpha = 0.2) +
+  scale_x_log10() +
+  labs(
+    x = "Sample Size (n)",
+    y = "Mean ± SD"
+  ) +
+  theme_minimal()
+```
+
+### Simulation Code
 
 ```{r, simple-breakdown}
 #| code-line-numbers: "|1-2|4-9|11-12|13-18|24-25|"
@@ -235,11 +269,11 @@ breakdowns <- breakdowns / N
 
 We should expect `{r} breakdowns` breakdowns in a year for the `{r} K`-turbine wind farm.
 
-##### Code Flow Chart:
+### Code Flow Chart:
 
 ```{mermaid}
 %%| echo: false
-flowchart LR
+flowchart
   A["X ~ Exp(λ)
   breakdowns = 0
   t = 0"]
@@ -258,7 +292,7 @@ flowchart LR
   B --false-----> Terminate
 ```
 
-##### Smarter Simulation {.smaller}
+### Smarter Simulation {.smaller}
 
 -   Exponential gives time between events
 -   Poisson gives number of events in a given time
@@ -280,11 +314,11 @@ We should expect `{r} poisson_breakdowns` breakdowns in a year for the `{r} K`-t
 Search documentation by going to the lower right pane and clicking the "Help" tab. Then type your term (i.e. `rpois`) into the search bar.
 :::
 
-#### Wind Turbine Repair
+## Wind Turbine Repair
 
 Repairs are assumed to take `{r} params$repair_avg` hours (the average). How much turbine-down time should be expected per year? How many breakdowns should be anticipated per year?
 
-##### Analytical Solution {.smaller}
+### Analytical Solution {.smaller}
 
 -   With a *fixed* repair time, we can tack `{r} params$repair_avg` hours on to the breakdown rate, 1 break down every`{r} params$breakdown_rate` hours + `{r} params$repair_avg` hours to repair = 1 breakdown every `{r} params$breakdown_rate + params$repair_avg`.
 
@@ -300,7 +334,7 @@ $$
 
 -   Are we confident that this math checks out? Let's simulate it...
 
-##### Simulation Modification
+### Simulation Modification
 
 ```{r, sim-fixed-repair}
 #| code-line-numbers: "|1-2|4-6|18-19|22|23-28|30-33|35-39|45-48|"
@@ -355,7 +389,7 @@ breakdowns <- breakdowns / N
 downtime <- 300*yr - uptime
 ```
 
-##### Results Comparison
+### Results Comparison
 
 | Metric | Analytical | Simulation |
 |------------------------|------------------------|------------------------|
@@ -374,7 +408,7 @@ downtime <- 300*yr - uptime
 -   Do all repairs take the same amount of time?
 :::
 
-#### LogNormally Distributed Repair Time
+## LogNormally Distributed Repair Time
 
 -   Most repairs take about the same amount of time, but some take a long time (think specialty overseas parts etc).
 
@@ -384,7 +418,7 @@ $$ $$
 f_Y(t | \mu, \sigma) = \frac{1}{\sqrt{2\pi \sigma t}} \exp \left( \frac{-(log(t)-\mu)^2}{2\sigma^2} \right)
 $$
 
-##### LogNormal Distribution {.smaller}
+### LogNormal Distribution {.smaller}
 
 ::::: columns
 ::: {.column width="50%"}
@@ -434,7 +468,7 @@ ggplot(ln_data, aes(x = t, y = density)) +
 
 These are the same distribution with the left x-axis on a log scale. The lower end of ranges look basically like a Normal distribution for both plots, but the right plot shows that the higher values of $t$ are more likely than if it were just a Normal distribution. The pdf looks like it is being stretched.
 
-##### Creating LogNormal Distribution
+### Creating LogNormal Distribution
 
 ```{r, lnorm-create}
 #| code-fold: false
@@ -449,7 +483,7 @@ Y <- function(n=1){
 }
 ```
 
-##### Verifying LogNormal Distribution
+### Verifying LogNormal Distribution
 
 ```{r, lnorm-verify}
 #| code-fold: false
@@ -467,7 +501,7 @@ sigma_calc <- sd(repair_times)
 You often can't validate your entire simulation. However, you can and should verify the components as much as possible
 :::
 
-##### Analytical Solution {.smaller}
+### Analytical Solution {.smaller}
 
 -   Need to determine how many times $X + Y$ divide into one year
 
@@ -481,7 +515,7 @@ $$(f_X * f_Y)(t) = \int_{-\infty}^{\infty} f_X(\tau) f_Y(t - \tau) \, d\tau$$
 
 -   Unfortunately, a closed-form analytical solution is not always possible
 
-##### Simulation Adjustment
+### Simulation Adjustment
 
 ```{r, sim-ln-repair}
 #| code-fold: false
@@ -534,18 +568,18 @@ breakdowns <- breakdowns / N
 downtime <- 300*yr - uptime
 ```
 
-##### Results Comparison, LogNormal Dist.
+### Results Comparison, LogNormal Dist.
 
 | Metric | Analytical | Simulation |
 |------------------------|------------------------|------------------------|
 | $breakdowns/yr$ | 1253.8 | `{r} breakdowns` |
 | $total\ turbine\ downtime/yr$ | 120366.4 | `{r} format(downtime, scientific=FALSE)` |
 
-#### Collecting more Simulation Data
+## Collecting more Simulation Data
 
 We want to ask questions about the distribution of failures and repairs. We need to collect more data from the simulation and store it in an easy format for manipuation.
 
-##### Tidy Data & Tidyverse
+### Tidy Data & Tidyverse
 
 ```{r, instantiate-tibble}
 # Create an empty table which we will populate during simulation
@@ -561,7 +595,7 @@ results <- tibble(
 [tidyverse](https://www.tidyverse.org) is the one-stop-shop for (nearly) everything needed for working with data and creating great visualizations. It includes several different packages which all adhere to the ["tidy"](https://vita.had.co.nz/papers/tidy-data.pdf) way of doing things. We'll see more of this in the future.
 :::
 
-##### Final Simulation
+### Final Simulation
 
 ```{r, collect-more-data}
 #| code-fold: false
@@ -631,10 +665,12 @@ agg_results <- results |> group_by(year) |>
   )
 ```
 
-##### Simulation Visualizations
+### Simulation Visualizations
+
+*note: click on the tabs to see additional content*
 
 ::: panel-tabset
-###### Breakdowns
+#### Breakdowns
 
 ```{r, hist-breakdowns}
 #| echo: false
@@ -648,7 +684,7 @@ ggplot(agg_results, aes(x = total_breakdowns)) +
   theme_minimal()
 ```
 
-###### Downtime
+#### Downtime
 
 ```{r, hist-downtime}
 #| echo: false
@@ -662,7 +698,7 @@ ggplot(agg_results, aes(x = total_downtime)) +
   theme_minimal()
 ```
 
-###### Downtime vs. Breakdowns
+#### Downtime vs. Breakdowns
 
 ```{r, kde-downtime-vs-breakdowns}
 #| echo: false
@@ -682,10 +718,12 @@ ggMarginal(brk_vs_dwn, type = "density")
 ```
 :::
 
-##### Results Cumulative Distributions
+### Results Cumulative Distributions
+
+*note: click on the tabs to see additional content*
 
 ::: panel-tabset
-###### Total Breakdowns
+#### Total Breakdowns
 
 ```{r, ecdf-breakdowns}
 #| echo: false
@@ -700,7 +738,7 @@ ggplot(agg_results, aes(x = total_breakdowns)) +
   )
 ```
 
-###### Annual Downtime
+#### Annual Downtime
 
 ```{r, ecdf-downtime}
 #| echo: false
@@ -716,7 +754,7 @@ ggplot(agg_results, aes(x = total_downtime)) +
 ```
 :::
 
-### Conclusion
+# Conclusion
 
 1.  We have some familiarity with the development environment in R, literate programming, and Quarto
 
