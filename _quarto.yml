@@ -14,11 +14,12 @@ website:
         contents:
           - text: "Recitation #1"
             href: recitations/R1_turbine_repair.qmd
-            right:
-    navbar:
+    tools:
       - icon: github
-        href: https://github.com/dmoored4/Sim_Recitation_Sp2025
-            
+        menu:
+          - text: Source Code
+            href:  https://github.com/dmoored4/Sim_Recitation_Sp2025
+          
 format:
   html:
     theme:
