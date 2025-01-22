@@ -8,7 +8,7 @@ website:
     style: "floating"
     search: true
     contents:
-      - text: "Introduction"
+      - text: "Overview"
         href: index.qmd
       - section: "Tutorials"
         contents:
