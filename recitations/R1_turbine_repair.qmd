@@ -20,6 +20,7 @@ format:
   revealjs:
     #overflow: smaller
     logo: "../assets/R_sunj.svg"
+    footer: "[Recitation Website](https://dmoored4.github.io/Sim_Recitation_Sp2025/)"
     toc: true
     toc-expand: 1
     toc-depth: 2
