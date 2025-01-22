@@ -1,0 +1,198 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Simulations in IE Recitations",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nReading Time\n\n\n\n\n\n\n\n\nJan 22, 2025\n\n\nR0: Introductions\n\n\n2 min\n\n\n\n\n\n\n\nJan 23, 2025\n\n\nR1: Wind Turbine Repair Process\n\n\n18 min\n\n\n\n\n\n\n\n\nNo matching items",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "recitations/R1_nb.html",
+    "href": "recitations/R1_nb.html",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "",
+    "text": "Develop a motivating example for IE simulation models\nDemonstrate the type of coding complexity that we will build up to during the course\nGauge students’ level of expertise in probability models and programming",
+    "crumbs": [
+      "Tutorials",
+      "Recitation #1"
+    ]
+  },
+  {
+    "objectID": "recitations/R1_nb.html#development-stack",
+    "href": "recitations/R1_nb.html#development-stack",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "1.1 Development Stack",
+    "text": "1.1 Development Stack\n\n\n\\(\\textsf{R}\\): R is a language and environment for statistical computing and graphics. Its predecessor, “S”, was developed by Bell Labs in Murray Hill, NJ.\n\\(\\textsf{RStudio}\\): Used by millions of people weekly, the RStudio integrated development environment (IDE) is a set of tools built to help you be more productive with R and Python.\nQuarto: An open-source scientific and technical publishing system. Analyze. Share. Reproduce. You have a story to tell with data—tell it with Quarto.\nMarkdown. Lightweight language to format plain text.",
+    "crumbs": [
+      "Tutorials",
+      "Recitation #1"
+    ]
+  },
+  {
+    "objectID": "recitations/R1_nb.html#hello-world",
+    "href": "recitations/R1_nb.html#hello-world",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "1.2 Hello, World!",
+    "text": "1.2 Hello, World!\n\nStandard test to make sure a programming environment is properly configured\n\n\nprint(\"Hello, World!\")\n\n[1] \"Hello, World!\"\n\n\n\n\n\n\n\n\nTip\n\n\n\nFor \\(\\textsf{R}\\) tutorials, go to top-right corner of \\(\\textsf{RStudio}\\) and look for the “Tutorial” tab. Follow instructions in the pane.",
+    "crumbs": [
+      "Tutorials",
+      "Recitation #1"
+    ]
+  },
+  {
+    "objectID": "recitations/R1_nb.html#package-management",
+    "href": "recitations/R1_nb.html#package-management",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "1.3 Package Management",
+    "text": "1.3 Package Management\n\\(\\textsf{R}\\) is a go-to language for many domains because of its mature packages for many kinds of data analysis. These packages are easily accessible via the Comprehensive R Archive Network (CRAN)\nnote: click on the tabs to see additional content\n\nInstall PackagesLoad Packages\n\n\nThis tells CRAN to find your desired package and download a copy to your working environment.\n\nOption 1: Go to Files Pane (lower right) \\(\\rightarrow\\) Packages tab \\(\\rightarrow\\) Install \\(\\rightarrow\\) &lt;search for your package&gt; \\(\\rightarrow\\) follow prompts in console\nOption 2: In the console pane (lower left), type install.packages(\"&lt;pkg_name&gt;\") \\(\\rightarrow\\) follow prompts\n\n\n\nCode\n# installing packages\ninstall.packages(\"tidyverse\")\ninstall.packages(\"ggExtra\")\n\n\n\n\nThis tells your current R session to read the [downloaded] packages and then you can use them.\n\nOption 1: File Pane \\(\\rightarrow\\) Packages Tab \\(\\rightarrow\\) scroll or search for your package \\(\\rightarrow\\) click the checkbox\nOption 2: In the console or your working file put: library(&lt;pkg_name&gt;).\n\n\n\nCode\n# loading packages\nlibrary(tidyverse)\nlibrary(ggExtra)",
+    "crumbs": [
+      "Tutorials",
+      "Recitation #1"
+    ]
+  },
+  {
+    "objectID": "recitations/R1_nb.html#wind-turbine-breakdown",
+    "href": "recitations/R1_nb.html#wind-turbine-breakdown",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "2.1 Wind Turbine Breakdown",
+    "text": "2.1 Wind Turbine Breakdown\n\nProblemAnalytical SolutionSimulation Plan\n\n\n\n\nAn offshore wind farm operates 300 turbines. The breakdown rate follows an exponential distribution with a rate of one per 2000 hours of operation. How many breakdowns should be anticipated per year?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWith this information we can simply take the parameter, \\(\\lambda\\), and multiply it by the hours in a year and the total number of turbines to get the expected number of failures in the year.\n\\[\nX \\sim Exp \\left( \\lambda = \\frac{1}{2,000\\ hrs} \\right)\n\\]\n\\[\nf_X(t | \\lambda) = \\lambda e^{-\\lambda t}\n\\]\n\\[\nN = 300\\ turbines \\frac{365\\ days}{year} \\frac{24\\ hrs}{day} \\frac{1\\ breakdown/turbine}{2,000\\ hrs} = 1,314\\ breakdowns/year\n\\]\n\n\nThis is a silly problem to simulate, but we will do it anyway. We have a few options:\n\nSample \\(X\\) to get breakdown times and see how many we get in one year. Then multiply that by 300\nSample \\(X\\) to get breakdown times for each turbine and add them all together\nDo (1) or (2) for \\(N\\) years and then divide the result by \\(N\\). (\\(N\\) could be less than 1. What does that mean?)\nRecognize Exponential gives failure times, Poisson gives failures in a given time. Use that instead\n\n\n\n\n\nSimulation Parameters\n\n# I've defined certain \"params\" in the header of the document\nlambda &lt;- 1 / params$breakdown_rate # Breakdown rate (failures per hour)\nN &lt;- params$sim_yrs                 # Total simulation time in years\nK &lt;- params$turbines                # Number of turbines\nyr &lt;- 24 * 365                      # number of hours in a year\n\n# define a RV, X, which will sample the exp dist. when we call X()\nX &lt;- function(n=1) {\n  # n gives the number of samples, with the default of 1\n  rexp(n, rate = lambda)\n}\n\n\n\n\n\n\n\nTip\n\n\n\n&lt;- and = are chosen to follow convention. &lt;- assigns a “value” to a variable while = is used in function signatures.\n\n\n\n\nSampling Random Variable\nSample it once:\n\nX()\n\n[1] 1488.135\n\n\nSample it several times:\n\nX(5)\n\n[1]   87.02373  704.41963  402.52460  689.79484 1222.71066\n\n\nAveraging a few samples\n\nmean(X(15))\n\n[1] 2026.289\n\n\nAveraging a lot of samples\n\nmean(X(15000))\n\n[1] 2024.831\n\n\n\n\nN-Sample Visualization\n\n\nCode\n# set the samples and increment\nn_values = seq(10, 5000, by = 10)\n\n# create a tibble with N, mean, and sd for sampling X() n times\nX_sim &lt;- tibble(\n  n = n_values,\n  Mean = map_dbl(n_values, ~ mean(X(.x))),\n  SD = map_dbl(n_values, ~ sd(X(.x)))\n)\n\n#plot results\nX_sim %&gt;%\n  ggplot(aes(x = n, y = Mean)) +\n  geom_line(color = \"blue\") +\n  geom_ribbon(aes(ymin = Mean - SD, ymax = Mean + SD), fill = \"blue\", alpha = 0.2) +\n  scale_x_log10() +\n  labs(\n    x = \"Sample Size (n)\",\n    y = \"Mean ± SD\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\nSimulation Code\n\n# Initialize total breakdown count\nbreakdowns &lt;- 0\n\n# Iterate over each turbine\nfor (k in 1:K) {\n  # simulate for N years\n  for (n in 1:N) {\n    # Reset initial time to 0\n    t &lt;- 0\n    \n    # while t is less than one year\n    while (t &lt;= yr) {\n      # Sample from the exponential distribution (time to next breakdown)\n      t &lt;- t + X()\n      \n      # Increment the breakdown count if within the simulation period\n      if (t &lt;= yr) {\n        breakdowns &lt;- breakdowns + 1\n      }\n    }\n  }\n}\n\n# Calculate the average number of breakdowns per year across all turbines\nbreakdowns &lt;- breakdowns / N\n\nWe should expect 1313.88 breakdowns in a year for the 300-turbine wind farm.\n\n\nCode Flow Chart:\n\n\n\n\n\nflowchart LR\n  A[\"X ~ Exp(λ)\n  breakdowns = 0\n  t = 0\"]\n  B{\"t &lt;= 1 year\"}\n  C[\"t += X()\"]\n  D{\"t &lt;= 1 year\"}\n  E[\"breakdowns++\"]\n  Terminate([Terminate])\n  \n  A --&gt; B\n  B --true--&gt; C\n  C --&gt; D\n  D --true--&gt; E\n  D --false--&gt; B\n  E --&gt; B\n  B --false-----&gt; Terminate\n\n\n\n\n\n\n\n\nSmarter Simulation\n\nExponential gives time between events\nPoisson gives number of events in a given time\n\n\n# Poisson parameter is # events per time period\nlambda_p &lt;- yr * lambda\n\n# we want to sample K*N times, This gives K*N breakdowns (vector)\npoisson_breakdowns &lt;- rpois(N*K, lambda_p)\n\n# sum the vector and divide by N\npoisson_breakdowns &lt;- sum(poisson_breakdowns) / N\n\nWe should expect 1311.8 breakdowns in a year for the 300-turbine wind farm.\n\n\n\n\n\n\nTip\n\n\n\nSearch documentation by going to the lower right pane and clicking the “Help” tab. Then type your term (i.e. rpois) into the search bar.",
+    "crumbs": [
+      "Tutorials",
+      "Recitation #1"
+    ]
+  },
+  {
+    "objectID": "recitations/R1_nb.html#wind-turbine-repair",
+    "href": "recitations/R1_nb.html#wind-turbine-repair",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "2.2 Wind Turbine Repair",
+    "text": "2.2 Wind Turbine Repair\nRepairs are assumed to take 96 hours (the average). How much turbine-down time should be expected per year? How many breakdowns should be anticipated per year?\n\nAnalytical Solution\n\nWith a fixed repair time, we can tack 96 hours on to the breakdown rate, 1 break down every2000 hours + 96 hours to repair = 1 breakdown every 2096.\n\n\\[\nN = 300\\ turbines \\frac{365\\ days}{year} \\frac{24\\ hrs}{day} \\frac{1\\ breakdown/turbine}{2,096\\ hrs} = 1,253.8\\ breakdowns/year\n\\]\n\nAccounting for repair time, our number of breakdowns…decreased? Is this sensible?\n\n\\[\nN = 300\\ turbines \\frac{365\\ days}{year} \\frac{24\\ hrs}{day} \\frac{96\\ hrs\\ downtime}{2,096\\ hrs\\ operation} = 120,366.4\\ hrs\\ downtime\n\\]\n\nAre we confident that this math checks out? Let’s simulate it…\n\n\n\nSimulation Modification\n\n# repair time, Y\nY &lt;- params$repair_avg\n\n# Initialize breakdowns and uptime\nbreakdowns &lt;- 0\nuptime &lt;- 0\n\n# Iterate over each turbine\nfor (k in 1:K) {\n  # simulate for N years\n  for (n in 1:N) {\n    # Reset simulation time to 0\n    t &lt;- 0\n    \n    # while t is less than one year\n    while (t &lt;= yr) {\n      \n      # sample breakdown time\n      time_to_breakdown &lt;- X()\n\n      # check if the breakdown time will exceed a year\n      if (t + time_to_breakdown &lt;= yr) {\n        # if not, then we get another breakdown\n        breakdowns &lt;- breakdowns + 1\n        # the simulation time increases by the time to breakdown\n        t &lt;- t + time_to_breakdown\n        # and the uptime increases by the time to breakdown\n        uptime &lt;- uptime + time_to_breakdown\n        \n        # for now, Y is a constant\n        time_to_repair &lt;- Y\n\n        t &lt;- t + time_to_repair\n        \n      } else {\n        # if the breakdown time exceeds one year, then uptime\n        # extends to the end of the year and we don't get a new breakdown\n        uptime &lt;- uptime + (yr - t)\n        t &lt;- t + time_to_breakdown\n      }\n    }\n  }\n}\n\n# Calculate the average number of breakdowns per year across all turbines\nuptime &lt;- uptime / N\nbreakdowns &lt;- breakdowns / N\ndowntime &lt;- 300*yr - uptime\n\n\n\nResults Comparison\n\n\n\n\n\n\n\n\nMetric\nAnalytical\nSimulation\n\n\n\n\n\\(breakdowns/yr\\)\n1253.8\n1251.8\n\n\n\\(total\\ turbine\\ downtime/yr\\)\n120366.4\n119508\n\n\n\n\nShortfalls?\n\n\nAssumes every turbine is working at the start of the simulation\nWhat can we say about the probability of downtime exceeding some value?\nIf we want to increase up time, should we focus on expediting repairs or performing preventive maintenance to increase time between failures?\nDo all repairs take the same amount of time?",
+    "crumbs": [
+      "Tutorials",
+      "Recitation #1"
+    ]
+  },
+  {
+    "objectID": "recitations/R1_nb.html#lognormally-distributed-repair-time",
+    "href": "recitations/R1_nb.html#lognormally-distributed-repair-time",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "2.3 LogNormally Distributed Repair Time",
+    "text": "2.3 LogNormally Distributed Repair Time\n\nMost repairs take about the same amount of time, but some take a long time (think specialty overseas parts etc).\n\n\\[\nY \\sim LogNormal(\\mu, \\sigma^2)\n\\] \\[\nf_Y(t | \\mu, \\sigma) = \\frac{1}{\\sqrt{2\\pi \\sigma t}} \\exp \\left( \\frac{-(log(t)-\\mu)^2}{2\\sigma^2} \\right)\n\\]\n\nLogNormal Distribution\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThese are the same distribution with the left x-axis on a log scale. The lower end of ranges look basically like a Normal distribution for both plots, but the right plot shows that the higher values of \\(t\\) are more likely than if it were just a Normal distribution. The pdf looks like it is being stretched.\n\n\nCreating LogNormal Distribution\n\nmu &lt;- params$repair_avg\nsigma &lt;- params$repair_std\nmu_log &lt;- log( mu^2 / ( mu^2 + sigma^2)^(1/2) )\nsigma_log &lt;- (log(1 + (sigma^2/mu^2)))^(1/2)\n\nY &lt;- function(n=1){\n  rlnorm(n, mu_log, sigma_log)\n}\n\n\n\nVerifying LogNormal Distribution\n\nrepair_times &lt;- Y(500)\n\nmu_calc &lt;- mean(repair_times)\nsigma_calc &lt;- sd(repair_times)\n\n\nSample mean: 93.4866737\nSample standard deviation: 22.5382863\n\n\n\n\n\n\n\nTip\n\n\n\nYou often can’t validate your entire simulation. However, you can and should verify the components as much as possible\n\n\n\n\nAnalytical Solution\n\nNeed to determine how many times \\(X + Y\\) divide into one year\nAdding two distributions is not straightforward. How do you add a pair of 6-sided die?\nThis is really a convolution, denoted as \\(X \\ast Y\\). It can be found as:\n\n\\[(f_X * f_Y)(t) = \\int_{-\\infty}^{\\infty} f_X(\\tau) f_Y(t - \\tau) \\, d\\tau\\]\n\nSometimes, this can be achieved easier through Laplace Transforms\nUnfortunately, a closed-form analytical solution is not always possible\n\n\n\nSimulation Adjustment\n\n# Initialize breakdowns and uptime\nbreakdowns &lt;- 0\nuptime &lt;- 0\n\n# Iterate over each turbine\nfor (k in 1:K) {\n  # simulate for N years\n  for (n in 1:N) {\n    # Reset simulation time to 0\n    t &lt;- 0\n    \n    # while t is less than one year\n    while (t &lt;= yr) {\n      \n      # sample breakdown time\n      time_to_breakdown &lt;- X()\n\n      # check if the breakdown time will exceed a year\n      if (t + time_to_breakdown &lt;= yr) {\n        # if not, then we get another breakdown\n        breakdowns &lt;- breakdowns + 1\n        # the simulation time increases by the time to breakdown\n        t &lt;- t + time_to_breakdown\n        # and the uptime increases by the time to breakdown\n        uptime &lt;- uptime + time_to_breakdown\n        \n        # now we will sample Y\n        time_to_repair &lt;- Y()\n\n        t &lt;- t + time_to_repair\n        \n      } else {\n        # if the breakdown time exceeds one year, then uptime\n        # extends to the end of the year and we don't get a new breakdown\n        uptime &lt;- uptime + (yr - t)\n        t &lt;- t + time_to_breakdown\n      }\n    }\n  }\n}\n\n# Calculate the average number of breakdowns per year across all turbines\nuptime &lt;- uptime / N\nbreakdowns &lt;- breakdowns / N\ndowntime &lt;- 300*yr - uptime\n\n\n\nResults Comparison, LogNormal Dist.\n\n\n\n\n\n\n\n\nMetric\nAnalytical\nSimulation\n\n\n\n\n\\(breakdowns/yr\\)\n1253.8\n1254.58\n\n\n\\(total\\ turbine\\ downtime/yr\\)\n120366.4\n119666",
+    "crumbs": [
+      "Tutorials",
+      "Recitation #1"
+    ]
+  },
+  {
+    "objectID": "recitations/R1_nb.html#collecting-more-simulation-data",
+    "href": "recitations/R1_nb.html#collecting-more-simulation-data",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "2.4 Collecting more Simulation Data",
+    "text": "2.4 Collecting more Simulation Data\nWe want to ask questions about the distribution of failures and repairs. We need to collect more data from the simulation and store it in an easy format for manipuation.\n\nTidy Data & Tidyverse\n\n# Create an empty table which we will populate during simulation\nresults &lt;- tibble(\n  turbine_id = integer(),\n  year = integer(),\n  breakdowns = integer(),\n  uptime = numeric()\n)\n\n\n\n\n\n\n\nTip\n\n\n\ntidyverse is the one-stop-shop for (nearly) everything needed for working with data and creating great visualizations. It includes several different packages which all adhere to the “tidy” way of doing things. We’ll see more of this in the future.\n\n\n\n\nFinal Simulation\n\n# Iterate over each turbine\nfor (k in 1:K) {\n  # simulate for N years\n  for (n in 1:N) {\n    # move these to inner loop to record results of each iteration\n    breakdowns &lt;- 0\n    uptime &lt;- 0\n    t &lt;- 0\n    \n    # while t is less than one year\n    while (t &lt;= yr) {\n      \n      # sample breakdown time\n      time_to_breakdown &lt;- X()\n\n      # check if the breakdown time will exceed a year\n      if (t + time_to_breakdown &lt;= yr) {\n        # if not, then we get another breakdown\n        breakdowns &lt;- breakdowns + 1\n        # the simulation time increases by the time to breakdown\n        t &lt;- t + time_to_breakdown\n        # and the uptime increases by the time to breakdown\n        uptime &lt;- uptime + time_to_breakdown\n        \n        # now sampling Y\n        time_to_repair &lt;- Y()\n\n        t &lt;- t + time_to_repair\n        \n      } else {\n        # if the breakdown time exceeds one year, then uptime\n        # extends to the end of the year and we don't get a new breakdown\n        uptime &lt;- uptime + (yr - t)\n        t &lt;- t + time_to_breakdown\n      }\n    }\n    \n    # write the data to the rows of our tibble\n    results &lt;- results |&gt;\n      add_row(\n        turbine_id = k,\n        year = n,\n        breakdowns = breakdowns,\n        uptime = uptime\n      )\n  }\n}\n\n# calculating a column for downtime \nresults &lt;- results |&gt;\n  mutate(downtime = yr - uptime)\n\n\n\nSimulation Visualizations\n\nBreakdownsDowntimeDowntime vs. Breakdowns\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nResults Cumulative Distributions\n\nTotal BreakdownsAnnual Downtime",
+    "crumbs": [
+      "Tutorials",
+      "Recitation #1"
+    ]
+  },
+  {
+    "objectID": "recitations/R1_reveal.html#development-stack",
+    "href": "recitations/R1_reveal.html#development-stack",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "1.1 Development Stack",
+    "text": "1.1 Development Stack\n\n\n\\(\\textsf{R}\\): R is a language and environment for statistical computing and graphics. Its predecessor, “S”, was developed by Bell Labs in Murray Hill, NJ.\n\\(\\textsf{RStudio}\\): Used by millions of people weekly, the RStudio integrated development environment (IDE) is a set of tools built to help you be more productive with R and Python.\nQuarto: An open-source scientific and technical publishing system. Analyze. Share. Reproduce. You have a story to tell with data—tell it with Quarto.\nMarkdown. Lightweight language to format plain text."
+  },
+  {
+    "objectID": "recitations/R1_reveal.html#hello-world",
+    "href": "recitations/R1_reveal.html#hello-world",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "1.2 Hello, World!",
+    "text": "1.2 Hello, World!\n\nStandard test to make sure a programming environment is properly configured\n\n\nprint(\"Hello, World!\")\n\n[1] \"Hello, World!\"\n\n\n\n\n\n\n\n\nTip\n\n\nFor \\(\\textsf{R}\\) tutorials, go to top-right corner of \\(\\textsf{RStudio}\\) and look for the “Tutorial” tab. Follow instructions in the pane."
+  },
+  {
+    "objectID": "recitations/R1_reveal.html#package-management",
+    "href": "recitations/R1_reveal.html#package-management",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "1.3 Package Management",
+    "text": "1.3 Package Management\n\\(\\textsf{R}\\) is a go-to language for many domains because of its mature packages for many kinds of data analysis. These packages are easily accessible via the Comprehensive R Archive Network (CRAN)\nnote: click on the tabs to see additional content\n\nInstall PackagesLoad Packages\n\n\nThis tells CRAN to find your desired package and download a copy to your working environment.\n\nOption 1: Go to Files Pane (lower right) \\(\\rightarrow\\) Packages tab \\(\\rightarrow\\) Install \\(\\rightarrow\\) &lt;search for your package&gt; \\(\\rightarrow\\) follow prompts in console\nOption 2: In the console pane (lower left), type install.packages(\"&lt;pkg_name&gt;\") \\(\\rightarrow\\) follow prompts\n\n\n\nCode\n# installing packages\ninstall.packages(\"tidyverse\")\ninstall.packages(\"ggExtra\")\n\n\n\n\nThis tells your current R session to read the [downloaded] packages and then you can use them.\n\nOption 1: File Pane \\(\\rightarrow\\) Packages Tab \\(\\rightarrow\\) scroll or search for your package \\(\\rightarrow\\) click the checkbox\nOption 2: In the console or your working file put: library(&lt;pkg_name&gt;).\n\n\n\nCode\n# loading packages\nlibrary(tidyverse)\nlibrary(ggExtra)"
+  },
+  {
+    "objectID": "recitations/R1_reveal.html#wind-turbine-breakdown",
+    "href": "recitations/R1_reveal.html#wind-turbine-breakdown",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "2.1 Wind Turbine Breakdown",
+    "text": "2.1 Wind Turbine Breakdown\n\nProblemAnalytical SolutionSimulation Plan\n\n\n\n\nAn offshore wind farm operates 300 turbines. The breakdown rate follows an exponential distribution with a rate of one per 2000 hours of operation. How many breakdowns should be anticipated per year?\n\n\n\n\n\n\n\n\n\n\n\n\n\nWith this information we can simply take the parameter, \\(\\lambda\\), and multiply it by the hours in a year and the total number of turbines to get the expected number of failures in the year.\n\\[\nX \\sim Exp \\left( \\lambda = \\frac{1}{2,000\\ hrs} \\right)\n\\]\n\\[\nf_X(t | \\lambda) = \\lambda e^{-\\lambda t}\n\\]\n\\[\nN = 300\\ turbines \\frac{365\\ days}{year} \\frac{24\\ hrs}{day} \\frac{1\\ breakdown/turbine}{2,000\\ hrs} = 1,314\\ breakdowns/year\n\\]\n\n\nThis is a silly problem to simulate, but we will do it anyway. We have a few options:\n\nSample \\(X\\) to get breakdown times and see how many we get in one year. Then multiply that by 300\nSample \\(X\\) to get breakdown times for each turbine and add them all together\nDo (1) or (2) for \\(N\\) years and then divide the result by \\(N\\). (\\(N\\) could be less than 1. What does that mean?)\nRecognize Exponential gives failure times, Poisson gives failures in a given time. Use that instead"
+  },
+  {
+    "objectID": "recitations/R1_reveal.html#wind-turbine-repair",
+    "href": "recitations/R1_reveal.html#wind-turbine-repair",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "2.2 Wind Turbine Repair",
+    "text": "2.2 Wind Turbine Repair\nRepairs are assumed to take 96 hours (the average). How much turbine-down time should be expected per year? How many breakdowns should be anticipated per year?"
+  },
+  {
+    "objectID": "recitations/R1_reveal.html#lognormally-distributed-repair-time",
+    "href": "recitations/R1_reveal.html#lognormally-distributed-repair-time",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "2.3 LogNormally Distributed Repair Time",
+    "text": "2.3 LogNormally Distributed Repair Time\n\nMost repairs take about the same amount of time, but some take a long time (think specialty overseas parts etc).\n\n\\[\nY \\sim LogNormal(\\mu, \\sigma^2)\n\\] \\[\nf_Y(t | \\mu, \\sigma) = \\frac{1}{\\sqrt{2\\pi \\sigma t}} \\exp \\left( \\frac{-(log(t)-\\mu)^2}{2\\sigma^2} \\right)\n\\]"
+  },
+  {
+    "objectID": "recitations/R1_reveal.html#collecting-more-simulation-data",
+    "href": "recitations/R1_reveal.html#collecting-more-simulation-data",
+    "title": "R1: Wind Turbine Repair Process",
+    "section": "2.4 Collecting more Simulation Data",
+    "text": "2.4 Collecting more Simulation Data\nWe want to ask questions about the distribution of failures and repairs. We need to collect more data from the simulation and store it in an easy format for manipuation."
+  },
+  {
+    "objectID": "recitations/R0_nb.html#me",
+    "href": "recitations/R0_nb.html#me",
+    "title": "R0: Introductions",
+    "section": "Me",
+    "text": "Me\n\nDaniel Moore\n2nd Year PhD Student in ISE\nStudy with Dr. Mieth and part of the ROPeS Lab\n\n\n\n\n\n\ngantt\n    title Career Progression Timeline\n    dateFormat YYYY-MM-DD\n    section Professional\n    Engineer Officer (US Army) : p1, 2010-05-22, 2018-09-30\n    Protective Design Consultant (Arup) : p2, 2020-12-30, 2023-08-03\n\n    section Academic\n    BS in Civil Eng. (USMA) : a1, 2006-06-06, 2010-05-22\n    MS Eng. Mngt. (MS&T): a2, 2015-01-01, 2015-09-01\n    MITA (RBS-Newark) : a3, 2018-09-01, 2019-12-31\n    Ph.D in ISE (Rutgers) : a4, 2023-09-01, 2025-01-22\n\n    section Technical Skills\n    Excel: milestone, t0, 2009-09-01, 0d\n    MathCAD: milestone, t1, 2010-05-22, 0d\n    AMPL : milestone, t1, 2015-06-01, 0d\n    Git, Python, JavaScript : milestone, t1, 2019-01-01, 0d\n    LS-DYNA, Julia, Flux : milestone, t3, 2020-01-01, 0d\n    PowerBI : milestone, t4, 2021-01-01, 0d\n    ArcGIS : milestone, t5, 2022-01-01, 0d\n    R: milestone, t6, 2024-01-30, 0d"
+  },
+  {
+    "objectID": "recitations/R0_nb.html#my-simulations-experience",
+    "href": "recitations/R0_nb.html#my-simulations-experience",
+    "title": "R0: Introductions",
+    "section": "My Simulations Experience",
+    "text": "My Simulations Experience\n\nArmy: Tabletop Excercises. Higher echelons use advanced wargaming ( MORS)\nBlast Engineer: Structural Blast Resistance\nEngineer Consultant: Pedestrian Movement\nPhD Research: Distributed Energy Resource Power Flexibility"
+  },
+  {
+    "objectID": "recitations/R0_nb.html#you",
+    "href": "recitations/R0_nb.html#you",
+    "title": "R0: Introductions",
+    "section": "You",
+    "text": "You\n\nYour name\nWhat drew you to ISE (or this course if you’re not ISE)\nAnything in particular you want to see in the recitation (applications, content, etc.)"
+  },
+  {
+    "objectID": "recitations/R0_nb.html#typical-recitation-plan",
+    "href": "recitations/R0_nb.html#typical-recitation-plan",
+    "title": "R0: Introductions",
+    "section": "Typical Recitation Plan",
+    "text": "Typical Recitation Plan\nWe get 1:20 together each week\n\n5 min Recap & Questions\n15 min demo\n45 min collaborative lab\n15 min open time to work"
+  },
+  {
+    "objectID": "recitations/R0_nb.html#additional-assistanceoffice-hourshelp",
+    "href": "recitations/R0_nb.html#additional-assistanceoffice-hourshelp",
+    "title": "R0: Introductions",
+    "section": "Additional Assistance/Office Hours/Help",
+    "text": "Additional Assistance/Office Hours/Help\n\nSend me a message on Canvas anytime, I will respond within 1 business day\nOffice hours (just stop by, no appointment needed):\n\nWednesdays: 4:00 PM - 5:30 PM\nWeeks Hall 222 (Zoom if necessary, send me a message on Canvas)\n\nOr by appointment (send me a message on Canvas)"
+  },
+  {
+    "objectID": "recitations/R0_nb.html#recitation-objectives",
+    "href": "recitations/R0_nb.html#recitation-objectives",
+    "title": "R0: Introductions",
+    "section": "Recitation Objectives",
+    "text": "Recitation Objectives\n\nYou can simulate complex systems and communicate findings effectively\nYou are competent in an open-source, general-purpose programming language\nYou can produce high-quality technical reports"
+  },
+  {
+    "objectID": "recitations/R0_nb.html#this-is-your-recitation",
+    "href": "recitations/R0_nb.html#this-is-your-recitation",
+    "title": "R0: Introductions",
+    "section": "This is YOUR Recitation",
+    "text": "This is YOUR Recitation\n\nGive me feedback if you all need/want something else\nCome prepared ready to engage with the material\nDo not be distracting or take away from your peers’ experience"
+  }
+]
