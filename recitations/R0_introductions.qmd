@@ -1,0 +1,83 @@
+---
+title: "R0: Introductions"
+subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
+author: Daniel Moore
+date: 2025-01-22
+image: "../assets/introduce-yourself-no.png"
+
+format:
+  revealjs:
+    logo: "../assets/R_sunj.svg"
+    self-contained: true
+    output-file: R0_nb
+---
+
+## Me {.smaller}
+- Daniel Moore
+- 2nd Year PhD Student in ISE
+- Study with [Dr. Mieth](https://ise.rutgers.edu/people/robert-mieth) and part of the [ROPeS Lab](https://sites.rutgers.edu/ropes-lab/)
+
+
+```{mermaid}
+gantt
+    title Career Progression Timeline
+    dateFormat YYYY-MM-DD
+    section Professional
+    Engineer Officer (US Army) : p1, 2010-05-22, 2018-09-30
+    Protective Design Consultant (Arup) : p2, 2020-12-30, 2023-08-03
+
+    section Academic
+    BS in Civil Eng. (USMA) : a1, 2006-06-06, 2010-05-22
+    MS Eng. Mngt. (MS&T): a2, 2015-01-01, 2015-09-01
+    MITA (RBS-Newark) : a3, 2018-09-01, 2019-12-31
+    Ph.D in ISE (Rutgers) : a4, 2023-09-01, 2025-01-22
+
+    section Technical Skills
+    Excel: milestone, t0, 2009-09-01, 0d
+    MathCAD: milestone, t1, 2010-05-22, 0d
+    AMPL : milestone, t1, 2015-06-01, 0d
+    Git, Python, JavaScript : milestone, t1, 2019-01-01, 0d
+    LS-DYNA, Julia, Flux : milestone, t3, 2020-01-01, 0d
+    PowerBI : milestone, t4, 2021-01-01, 0d
+    ArcGIS : milestone, t5, 2022-01-01, 0d
+    R: milestone, t6, 2024-01-30, 0d 
+
+```
+
+## My Simulations Experience  {.smaller}
+- Army: Tabletop Excercises. Higher echelons use advanced wargaming ( [MORS](https://www.mors.org/Communities/Communities-of-Practice/Modeling-Simulation))
+- Blast Engineer: [Structural Blast Resistance](https://www.youtube.com/watch?v=XNXLEqXloew)
+- Engineer Consultant: [Pedestrian Movement](https://www.youtube.com/watch?v=xJJ3YXAtryk)
+- PhD Research: Distributed Energy Resource Power Flexibility
+
+## You
+- Your name
+- What drew you to ISE (or this course if you're not ISE)
+- Anything in particular you want to see in the recitation (applications, content, etc.)
+
+## Typical Recitation Plan
+
+We get 1:20 together each week
+
+- 5 min Recap & Questions
+- 15 min demo
+- 45 min collaborative lab
+- 15 min open time to work
+
+## Additional Assistance/Office Hours/Help
+- Send me a message on *Canvas* anytime, I will respond within 1 business day
+- Office hours (just stop by, no appointment needed):
+  - Wednesdays: 4:00 PM - 5:30 PM
+  - Weeks Hall 222 (Zoom if necessary, send me a message on Canvas)
+- Or by appointment (send me a message on Canvas)
+
+## Recitation Objectives
+1. You can simulate complex systems and communicate findings effectively
+2. You are competent in an open-source, general-purpose programming language
+3. You can produce high-quality technical reports
+
+## This is YOUR Recitation
+1. Give me feedback if you all need/want something else
+2. Come prepared ready to engage with the material
+3. Do not be distracting or take away from your peers' experience
+

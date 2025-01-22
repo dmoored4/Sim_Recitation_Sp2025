@@ -1,6 +1,31 @@
 project:
-  title: "Sim_Recitation_Sp2025"
-  output-dir: docs
+  type: website
 
-editor: visual
+website:
+  title: "Simulation Models in Industrial Engineering"
+      
+  sidebar:
+    style: "floating"
+    search: true
+    contents:
+      - text: "Introduction"
+        href: index.qmd
+      - section: "Tutorials"
+        contents:
+          - text: "Recitation #1"
+            href: recitations/R1_turbine_repair.qmd
+            right:
+    navbar:
+      - icon: github
+        href: https://github.com/dmoored4/Sim_Recitation_Sp2025
+            
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+
+
 

@@ -1,0 +1,9 @@
+---
+title: "Simulations in IE Recitations"
+listing: 
+  type: table
+  contents: recitations
+  sort: "date"
+  #categories: true
+  fields: [date, title, reading-time, image]
+---
