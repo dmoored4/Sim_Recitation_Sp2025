@@ -1,0 +1,162 @@
+---
+title: "R2: Airport Baggage Handling System"
+subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
+author: Daniel Moore
+date: 2025-01-29
+image: "../assets/baggage.png"
+
+format:
+  html:
+    overflow: smaller
+    toc: true
+    toc-expand: 1
+    toc-depth: 2
+    slide-level: 6
+    number-sections: true
+    number-depth: 2
+    code-fold: true
+    output-file: R2_nb
+    
+  revealjs:
+    #overflow: smaller
+    logo: "../assets/R_sunj.svg"
+    footer: "[Recitation Website](https://dmoored4.github.io/Sim_Recitation_Sp2025/)"
+    toc: true
+    toc-expand: 1
+    toc-depth: 2
+    slide-level: 6
+    number-sections: true
+    number-depth: 2
+    self-contained: true
+    output-file: R2_reveal
+
+execute:
+  echo: true
+  warning: false
+  output: true
+  
+params:
+  bags_per_plane: 100
+  avg_bag_time: 30
+  sd_bag_time: 5
+---
+
+# Questions {.unnumbered}
+
+# Learning Objectives {.unnumbered}
+
+-   Create a Quarto Project
+-   Install and load packages
+-   Read data to tibble
+-   Fit a distribution to the data
+-   Plot results
+
+# Problem
+
+*fictional*
+
+[Newark Liberty International Airport](https://www.newarkairport.com) is replacing Terminal B as part of their redevelopment plan. [Daifuku](https://daifukuatec.com) has been selected to design the baggage handling system around which the terminal will be built. They have used their proprietary software, [Sym3](https://daifukuatec.com/blog/sym3) to demonstrate that they meet the [Port Authority's](https://www.panynj.gov/port-authority/en/index.html) specification documents for 60% Schematic Design.
+
+![EWR Redevelopment Concept](../assets/ewr_redevelopment.png)
+
+```{r, load-arrival-data}
+#| echo: false
+#| output: false
+
+# loading packages
+library(tidyverse)
+library(fitdistrplus)
+
+# setting seed for reproducibility
+set.seed(123)
+
+# read data from BTS
+data <- read_csv("../data/Detailed_Statistics_Arrivals.csv", 
+    # skipping the carrier code
+    col_types = cols(`Carrier Code` = col_skip(),
+        # specifying how to read the date and time columns
+        `Date (MM/DD/YYYY)` = col_date(format = "%m/%d/%Y"), 
+        `Actual Arrival Time` = col_time(format = "%H:%M")),
+        # have added comments to eliminate metadata, then piping to
+        comment = "#") |>
+  # combine date and time columns to single arrival with America timezone
+  mutate(Arrival = ymd_hms(paste(`Date (MM/DD/YYYY)`, `Actual Arrival Time`), tz = "America/New_York")) |>
+  subset(select = -c(`Date (MM/DD/YYYY)`, `Actual Arrival Time`))
+
+# specifying the parameters for the simulation
+bags_per_plane <- 100
+avg_bag_time <- 30
+sd_bag_time <- 5
+
+mean <- avg_bag_time
+sd <- sd_bag_time
+
+# calculating gamma distribution parameters
+beta <- mean / (sd^2)  # Rate parameter
+alpha <- mean * beta   # Shape parameter
+
+# defining the gamma and poisson distributions
+X <- function(n=1){
+  rgamma(n=n, shape = alpha, rate = beta)
+}
+
+# defining the number of bags per plane
+N <- function(n=1){
+  rpois(n=n, lambda = bags_per_plane)
+}
+
+# creating the data frame
+data <- data |>
+  mutate(num_bags = 0) |>
+  rowwise() |>
+  mutate(num_bags = N()) |>
+  uncount(num_bags) |>
+  mutate(bag_time = X(n = n()))
+
+# rounding the bag time to the nearest second
+data <- data |>
+  mutate(bag_time_seconds = round(bag_time * 60)) |> 
+  mutate(bag_time = sprintf("%02d:%02d:%02d", 
+                            bag_time_seconds %/% 3600,  # Hours
+                            (bag_time_seconds %/% 60) %% 60,  # Minutes
+                            bag_time_seconds %% 60)) |>  # Seconds
+
+  # add bag_time to Arrival dt in new column bag arrival time
+  mutate(bag_comletion_time = Arrival + lubridate::hms(bag_time)) |>
+
+# now keep on flight number, tail number, origin, Arrival dt, and bag_arrival_time
+  subset(select=-c(`bag_time`, `bag_time_seconds`))
+
+write_csv(data, "data/bag_data.csv")
+```
+
+## Start R Studio
+
+## Load Necessary Packages
+
+```{r, load-packags}
+#| eval: false
+install.packages("tidyverse")
+install.packages("fitdistrplus")
+
+library(tidyverse)
+library(fitdistrplus)
+```
+
+## Download Data
+
+Baggage data [Bureau of Transportation Statistics](https://www.transtats.bts.gov/ontime/arrivals.aspx)
+
+## Read Data to Tibble
+
+# Solution
+
+## Visualize Data
+
+## Fit Distributions to Data
+
+## Compare 
+
+## Conclusion
+
+## 
