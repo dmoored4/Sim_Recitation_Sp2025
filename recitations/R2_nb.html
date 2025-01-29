@@ -197,24 +197,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#load-necessary-packages" id="toc-load-necessary-packages" class="nav-link" data-scroll-target="#load-necessary-packages"><span class="header-section-number">1.2</span> Load Necessary Packages</a></li>
   <li><a href="#download-data" id="toc-download-data" class="nav-link" data-scroll-target="#download-data"><span class="header-section-number">1.3</span> Download Data</a></li>
   </ul></li>
-  <li><a href="#inspecting-data" id="toc-inspecting-data" class="nav-link" data-scroll-target="#inspecting-data"><span class="header-section-number">2</span> Inspecting Data</a>
-  <ul class="collapse">
-  <li><a href="#initial-observations" id="toc-initial-observations" class="nav-link" data-scroll-target="#initial-observations"><span class="header-section-number">2.1</span> Initial Observations</a></li>
-  <li><a href="#timezones" id="toc-timezones" class="nav-link" data-scroll-target="#timezones"><span class="header-section-number">2.2</span> Timezones</a></li>
-  <li><a href="#fixed-histogram" id="toc-fixed-histogram" class="nav-link" data-scroll-target="#fixed-histogram"><span class="header-section-number">2.3</span> Fixed Histogram</a></li>
-  </ul></li>
+  <li><a href="#inspecting-data" id="toc-inspecting-data" class="nav-link" data-scroll-target="#inspecting-data"><span class="header-section-number">2</span> Inspecting Data</a></li>
   <li><a href="#solution" id="toc-solution" class="nav-link" data-scroll-target="#solution"><span class="header-section-number">3</span> Solution</a>
   <ul class="collapse">
-  <li><a href="#bag-delivery-time-histogram" id="toc-bag-delivery-time-histogram" class="nav-link" data-scroll-target="#bag-delivery-time-histogram"><span class="header-section-number">3.1</span> Bag Delivery Time Histogram</a></li>
-  <li><a href="#bag-delivery-time-statistics" id="toc-bag-delivery-time-statistics" class="nav-link" data-scroll-target="#bag-delivery-time-statistics"><span class="header-section-number">3.2</span> Bag Delivery Time Statistics</a></li>
-  <li><a href="#visualize-data" id="toc-visualize-data" class="nav-link" data-scroll-target="#visualize-data"><span class="header-section-number">3.3</span> Visualize Data</a></li>
-  <li><a href="#fit-distributions-to-data" id="toc-fit-distributions-to-data" class="nav-link" data-scroll-target="#fit-distributions-to-data"><span class="header-section-number">3.4</span> Fit Distributions to Data</a></li>
-  <li><a href="#compare" id="toc-compare" class="nav-link" data-scroll-target="#compare"><span class="header-section-number">3.5</span> Compare</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">3.6</span> Conclusion</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">3.7</span> </a></li>
+  <li><a href="#visualize-data" id="toc-visualize-data" class="nav-link" data-scroll-target="#visualize-data"><span class="header-section-number">3.1</span> Visualize Data</a></li>
+  <li><a href="#fit-distributions-to-data" id="toc-fit-distributions-to-data" class="nav-link" data-scroll-target="#fit-distributions-to-data"><span class="header-section-number">3.2</span> Fit Distributions to Data</a></li>
+  <li><a href="#compare-to-manual-apporach" id="toc-compare-to-manual-apporach" class="nav-link" data-scroll-target="#compare-to-manual-apporach"><span class="header-section-number">3.3</span> Compare to Manual Apporach</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">3.4</span> Conclusion</a></li>
   </ul></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="R2_reveal.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -269,6 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 data-number="1"><span class="header-section-number">1</span> Problem</h1>
 <p><em>fictional</em></p>
 <p><a href="https://www.newarkairport.com">Newark Liberty International Airport</a> is replacing Terminal B as part of their redevelopment plan. <a href="https://daifukuatec.com">Daifuku</a> has been selected to design the baggage handling system around which the terminal will be built. They have used their proprietary software, <a href="https://daifukuatec.com/blog/sym3">Sym3</a> to demonstrate that they meet the <a href="https://www.panynj.gov/port-authority/en/index.html">Port Authority’s</a> specification documents for 60% Schematic Design.</p>
+<p><em>Does the data indicate that bags will be delivered within 30 min +/- 5 min?</em></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/ewr_redevelopment.png" class="img-fluid figure-img"></p>
@@ -288,13 +281,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"fitdistrplus"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fitdistrplus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fitdistrplus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 <section id="download-data" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="download-data"><span class="header-section-number">1.3</span> Download Data</h2>
-<p>Baggage data <a href="https://www.transtats.bts.gov/ontime/arrivals.aspx">Bureau of Transportation Statistics</a></p>
+<ul>
+<li><p>Airline Arrival data <a href="https://www.transtats.bts.gov/ontime/arrivals.aspx">Bureau of Transportation Statistics</a></p></li>
+<li><p>Simulated Baggage data: https://tinyurl.com/sim-bag-data</p></li>
+</ul>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -322,17 +319,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="inspecting-data" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Inspecting Data</h1>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Arrival)) <span class="sc">+</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="dv">60</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">3</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Histogram of Plane Arrival Times"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Arrival Time"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count of Planes? Bags? What?"</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -341,15 +327,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="initial-observations" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="initial-observations"><span class="header-section-number">2.1</span> Initial Observations</h2>
+<section id="initial-observations" class="level3">
+<h3 class="anchored" data-anchor-id="initial-observations">Initial Observations</h3>
 <ul>
 <li>Arrivals don’t seem to pick up until noon and go constant until 3 AM…hmmm</li>
 <li>Could EWR have 20k flights / day? (14 flights/minute)…hmmm</li>
 </ul>
 </section>
-<section id="timezones" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="timezones"><span class="header-section-number">2.2</span> Timezones</h2>
+<section id="timezones" class="level3">
+<h3 class="anchored" data-anchor-id="timezones">Timezones</h3>
 <ul>
 <li>Everything is done in <a href="https://en.wikipedia.org/wiki/Unix_time">POSIX (Unix) time</a></li>
 <li>“It measures time by the number of non-leap seconds that have elapsed since 00:00:00 UTC on 1 January 1970, the Unix epoch.”</li>
@@ -357,17 +343,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>UTC is based on International Atomic Time (TAI) which is a weighted average of the time kept by over 450 atomic clocks in over 80 national laboratories worldwide.</li>
 </ul>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set timezones so the datetime will DISPLAY correctly</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">Arrival =</span> <span class="fu">as.POSIXct</span>(Arrival, <span class="at">tz =</span> <span class="st">"EST"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">bag_completion_time =</span> <span class="fu">as.POSIXct</span>(bag_completion_time,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">tz =</span> <span class="st">"EST"</span>))</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -434,23 +409,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="fixed-histogram" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="fixed-histogram"><span class="header-section-number">2.3</span> Fixed Histogram</h2>
+<section id="fixed-histogram" class="level3">
+<h3 class="anchored" data-anchor-id="fixed-histogram">Fixed Histogram</h3>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>flight_arrivals <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(<span class="st">`</span><span class="at">Flight Number</span><span class="st">`</span>, Arrival)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(flight_arrivals, <span class="fu">aes</span>(<span class="at">x =</span> Arrival)) <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="dv">60</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">3</span>, <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span> <span class="co"># Binwidth = 1 hour (3600 seconds)</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Histogram of Plane Arrival Times"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Arrival Time"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count of Planes"</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dark</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -463,42 +424,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="solution" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Solution</h1>
-<section id="bag-delivery-time-histogram" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="bag-delivery-time-histogram"><span class="header-section-number">3.1</span> Bag Delivery Time Histogram</h2>
-<div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">bag_delivery_time =</span> <span class="fu">as.numeric</span>(bag_completion_time <span class="sc">-</span> Arrival))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bag_delivery_time)) <span class="sc">+</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="R2_baggage_handling_system_files/figure-html/get-bag-time-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="bag-delivery-time-statistics" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="bag-delivery-time-statistics"><span class="header-section-number">3.2</span> Bag Delivery Time Statistics</h2>
+<section id="bag-delivery-time-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="bag-delivery-time-statistics">Bag Delivery Time Statistics</h3>
 <ul>
 <li>What is a statistic?</li>
 </ul>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x_bar <span class="ot">&lt;-</span> <span class="fu">mean</span>(data<span class="sc">$</span>bag_delivery_time)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sd</span>(data<span class="sc">$</span>bag_delivery_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x_bar <span class="ot">&lt;-</span> <span class="fu">mean</span>(data<span class="sc">$</span>bag_delivery_time)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sd</span>(data<span class="sc">$</span>bag_delivery_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>Does this meet specifications</p>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code> Flight Number      Tail Number        Origin Airport    
  Length:19495       Length:19495       Length:19495      
@@ -513,41 +452,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Median :2024-01-23 12:14:00.00   Median :2024-01-23 12:52:01.00  
  Mean   :2024-01-23 11:39:42.83   Mean   :2024-01-23 12:09:40.24  
  3rd Qu.:2024-01-23 18:22:00.00   3rd Qu.:2024-01-23 18:51:19.50  
- Max.   :2024-01-23 23:47:00.00   Max.   :2024-01-24 00:31:43.00  
- bag_delivery_time
- Min.   :13.63    
- 1st Qu.:26.48    
- Median :29.67    
- Mean   :29.96    
- 3rd Qu.:33.10    
- Max.   :54.93    </code></pre>
+ Max.   :2024-01-23 23:47:00.00   Max.   :2024-01-24 00:31:43.00  </code></pre>
 </div>
 </div>
 </section>
-<section id="visualize-data" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="visualize-data"><span class="header-section-number">3.3</span> Visualize Data</h2>
-</section>
-<section id="fit-distributions-to-data" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="fit-distributions-to-data"><span class="header-section-number">3.4</span> Fit Distributions to Data</h2>
+<section id="visualize-data" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="visualize-data"><span class="header-section-number">3.1</span> Visualize Data</h2>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>f_norm <span class="ot">&lt;-</span> <span class="fu">fitdist</span>(data<span class="sc">$</span>bag_delivery_time, <span class="st">"norm"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>f_ln <span class="ot">&lt;-</span> <span class="fu">fitdist</span>(data<span class="sc">$</span>bag_delivery_time, <span class="st">"lnorm"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>f_weibull <span class="ot">&lt;-</span> <span class="fu">fitdist</span>(data<span class="sc">$</span>bag_delivery_time, <span class="st">"weibull"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>f_gamma <span class="ot">&lt;-</span> <span class="fu">fitdist</span>(data<span class="sc">$</span>bag_delivery_time, <span class="st">"gamma"</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>plot.legend <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Normal"</span>, <span class="st">"LogNormal"</span>, <span class="st">"Weibull"</span>, <span class="st">"Gamma"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="R2_baggage_handling_system_files/figure-html/get-bag-time-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
+</div>
+</div>
+</section>
+<section id="fit-distributions-to-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="fit-distributions-to-data"><span class="header-section-number">3.2</span> Fit Distributions to Data</h2>
+<ul>
+<li>use <code>fitdistrplus</code> to fit various distributions</li>
+</ul>
+<ul>
+<li>use plotting functionality to plot a comparison of the data.</li>
+</ul>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">denscomp</span>(</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(f_norm, f_ln, f_weibull, f_gamma),</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Bag Delivery Time (min)"</span>,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">legendtext =</span> plot.legend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -557,40 +486,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="compare" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="compare"><span class="header-section-number">3.5</span> Compare</h2>
+<section id="compare-to-manual-apporach" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="compare-to-manual-apporach"><span class="header-section-number">3.3</span> Compare to Manual Apporach</h2>
+<ul>
+<li>Alternatively, can generate probabilities for each bag arrival time by applying the fitted distributions to the data</li>
+</ul>
+<ul>
+<li>Then can plot these direclty one at a time</li>
+</ul>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Weibull =</span> <span class="fu">dweibull</span>(bag_delivery_time,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> f_weibull<span class="sc">$</span>estimate[<span class="st">"shape"</span>],</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">scale =</span> f_weibull<span class="sc">$</span>estimate[<span class="st">"scale"</span>]),</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Normal =</span> <span class="fu">dnorm</span>(bag_delivery_time,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">mean =</span> f_norm<span class="sc">$</span>estimate[<span class="st">"mean"</span>],</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">sd =</span> f_norm<span class="sc">$</span>estimate[<span class="st">"sd"</span>]),</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Gamma =</span> <span class="fu">dgamma</span>(bag_delivery_time,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> f_gamma<span class="sc">$</span>estimate[<span class="st">"shape"</span>],</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                      <span class="at">rate =</span> f_gamma<span class="sc">$</span>estimate[<span class="st">"rate"</span>]),</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">LogNormal =</span> <span class="fu">dlnorm</span>(bag_delivery_time,</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>                      <span class="at">meanlog =</span> f_ln<span class="sc">$</span>estimate[<span class="st">"meanlog"</span>],</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">sdlog =</span> f_ln<span class="sc">$</span>estimate[<span class="st">"sdlog"</span>]),</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bag_delivery_time)) <span class="sc">+</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Gamma, <span class="at">color=</span><span class="st">"Gamma"</span>, <span class="at">line=</span><span class="st">"grey"</span>)) <span class="sc">+</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Normal, <span class="at">color=</span><span class="st">"Normal"</span>)) <span class="sc">+</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> LogNormal, <span class="at">color=</span><span class="st">"LogNormal"</span>)) <span class="sc">+</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Distribution"</span>,</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Bag Delivery Time (min)"</span>,</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Probability Density"</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -599,20 +503,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<ul>
+<li>Alternatively, we could transform our <code>tidy</code> data from “wide” to “long” form</li>
+</ul>
+<ul>
+<li>Using <code>kable</code> to output a formatted table.</li>
+</ul>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">pivot_longer</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">cols =</span> <span class="fu">c</span>(Gamma, LogNormal, Normal, Weibull),</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">names_to =</span> <span class="st">"Distribution"</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">values_to =</span> <span class="st">"Probability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(long_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -702,16 +599,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
+<ul>
+<li>and we can actually plot this much easier</li>
+</ul>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Histogram or density plot of `bag_delivery_time`</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">data =</span> data, <span class="fu">aes</span>(<span class="at">x =</span> bag_delivery_time, <span class="at">y =</span> ..density..), </span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Overlay probability density lines from `long_data`</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> long_data, <span class="fu">aes</span>(<span class="at">x =</span> bag_delivery_time, <span class="at">y =</span> Probability, <span class="at">color =</span> Distribution), <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -720,37 +611,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<ul>
+<li>For relativley simple scenarios, it may be easier to manually plot the data yourself</li>
+<li>As data and plots become more sophisticated this can be difficult</li>
+<li>I recommend getting familiar with “long” and “wide” data and how to go between the two.</li>
+</ul>
 </section>
-<section id="conclusion" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">3.6</span> Conclusion</h2>
+<section id="conclusion" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">3.4</span> Conclusion</h2>
+<ul>
+<li><p>Which distribution is the best fit?</p></li>
+<li><p>How do you know?</p></li>
+<li><p>Does the schematic design meet specifications?</p></li>
+</ul>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fitted_distributins <span class="ot">&lt;-</span> <span class="fu">list</span>(f_gamma, f_ln, f_norm, f_weibull)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract summary metrics from the fitted distributions</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> <span class="fu">sapply</span>(fitted_distributins, <span class="cf">function</span>(fit) {</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Number of Parameters"</span> <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">length</span>(fit<span class="sc">$</span>estimate)),  <span class="co"># Number of parameters</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Log-Likelihood"</span> <span class="ot">=</span> fit<span class="sc">$</span>loglik,                <span class="co"># Log-likelihood</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"AIC"</span> <span class="ot">=</span> fit<span class="sc">$</span>aic,                              <span class="co"># Akaike Information Criterion</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BIC"</span> <span class="ot">=</span> fit<span class="sc">$</span>bic                               <span class="co"># Bayesian Information Criterion</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a data frame for readability</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co"># summary_table &lt;- as.data.frame(summary_table)</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign column names based on your distributions</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(summary_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Gamma"</span>, <span class="st">"Log-Normal"</span>, <span class="st">"Normal"</span>, <span class="st">"Weibull"</span>)  <span class="co"># Adjust based on distribution names</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co"># View the table</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co">#kable(summary_table)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Gamma</th>
+<th style="text-align: right;">Log-Normal</th>
+<th style="text-align: right;">Normal</th>
+<th style="text-align: right;">Weibull</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Number of Parameters</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">2.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Log-Likelihood</td>
+<td style="text-align: right;">-58690.38</td>
+<td style="text-align: right;">-58732.54</td>
+<td style="text-align: right;">-58877.11</td>
+<td style="text-align: right;">-59819.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AIC</td>
+<td style="text-align: right;">117384.75</td>
+<td style="text-align: right;">117469.09</td>
+<td style="text-align: right;">117758.23</td>
+<td style="text-align: right;">119643.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIC</td>
+<td style="text-align: right;">117400.51</td>
+<td style="text-align: right;">117484.84</td>
+<td style="text-align: right;">117773.98</td>
+<td style="text-align: right;">119659.3</td>
+</tr>
+</tbody>
+</table>
 </div>
-</section>
-<section id="section" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="section"><span class="header-section-number">3.7</span> </h2>
+</div>
 
 
 </section>
