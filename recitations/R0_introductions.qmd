@@ -8,6 +8,7 @@ image: "../assets/introduce-yourself-no.png"
 format:
   revealjs:
     logo: "../assets/R_sunj.svg"
+    footer: "[Recitation Website](https://dmoored4.github.io/Sim_Recitation_Sp2025/)"
     self-contained: true
     output-file: R0_nb
 ---
