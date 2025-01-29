@@ -14,6 +14,8 @@ website:
         contents:
           - text: "Recitation #1"
             href: recitations/R1_turbine_repair.qmd
+          - text: "Recitation #2"
+            href: recitations/R2_baggage_handling_system.qmd
     tools:
       - icon: github
         menu:

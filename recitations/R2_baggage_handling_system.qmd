@@ -8,30 +8,30 @@ image: "../assets/baggage.png"
 format:
   html:
     overflow: smaller
+    smooth-scroll: true
     toc: true
     toc-expand: 1
     toc-depth: 2
-    slide-level: 6
     number-sections: true
     number-depth: 2
-    code-fold: true
+    code-fold: show
     output-file: R2_nb
     
-  revealjs:
-    #overflow: smaller
-    logo: "../assets/R_sunj.svg"
-    footer: "[Recitation Website](https://dmoored4.github.io/Sim_Recitation_Sp2025/)"
-    toc: true
-    toc-expand: 1
-    toc-depth: 2
-    slide-level: 6
-    number-sections: true
-    number-depth: 2
-    self-contained: true
-    output-file: R2_reveal
+#  revealjs:
+#    overflow: smaller
+#    logo: "../assets/R_sunj.svg"
+#    footer: "[Recitation Website](https://dmoored4.github.io/Sim_Recitation_Sp2025/)"
+#    toc: true
+#    toc-expand: 1
+#    toc-depth: 2
+#    slide-level: 6
+#    number-sections: true
+#    number-depth: 2
+#    self-contained: true
+#    output-file: R2_reveal
 
 execute:
-  echo: true
+  echo: false
   warning: false
   output: true
   
@@ -48,6 +48,7 @@ params:
 -   Create a Quarto Project
 -   Install and load packages
 -   Read data to tibble
+-   Do basic plotting of the data
 -   Fit a distribution to the data
 -   Plot results
 
@@ -57,7 +58,10 @@ params:
 
 [Newark Liberty International Airport](https://www.newarkairport.com) is replacing Terminal B as part of their redevelopment plan. [Daifuku](https://daifukuatec.com) has been selected to design the baggage handling system around which the terminal will be built. They have used their proprietary software, [Sym3](https://daifukuatec.com/blog/sym3) to demonstrate that they meet the [Port Authority's](https://www.panynj.gov/port-authority/en/index.html) specification documents for 60% Schematic Design.
 
+*Does the data indicate that bags will be delivered within 30 min +/- 5 min?*
+
 ![EWR Redevelopment Concept](../assets/ewr_redevelopment.png)
+
 
 ```{r, load-arrival-data}
 #| echo: false
@@ -65,6 +69,7 @@ params:
 
 # loading packages
 library(tidyverse)
+library(knitr)
 library(fitdistrplus)
 
 # setting seed for reproducibility
@@ -127,7 +132,7 @@ data <- data |>
 # now keep on flight number, tail number, origin, Arrival dt, and bag_arrival_time
   subset(select=-c(`bag_time`, `bag_time_seconds`))
 
-write_csv(data, "data/bag_data.csv")
+write_csv(data, "../data/bag_data.csv")
 ```
 
 ## Start R Studio
@@ -136,36 +141,226 @@ write_csv(data, "data/bag_data.csv")
 
 ```{r, load-packags}
 #| eval: false
+#| echo: true
 install.packages("tidyverse")
+install.packages("knitr")
 install.packages("fitdistrplus")
 
 library(tidyverse)
+library(knitr)
 library(fitdistrplus)
 ```
 
 ## Download Data
 
-Baggage data [Bureau of Transportation Statistics](https://www.transtats.bts.gov/ontime/arrivals.aspx)
+- Airline Arrival data [Bureau of Transportation Statistics](https://www.transtats.bts.gov/ontime/arrivals.aspx)
 
-```{r}
-newdata <- read_csv("https://tinyurl.com/sim-bag-data") |>
-  # change Arrival column to display as New York timezone
-  mutate(Arrival = as.POSIXct(Arrival, tz = "America/New_York")) #|>
-  mutate(bag_completion_time = as.POSIXct(bag_completion_time, tz = "America/New_York")) |>
+- Simulated Baggage data: https://tinyurl.com/sim-bag-data
 
-glimpse(newdata)
+```{r, loading-data}
+#| echo: true
+
+# Options: 
+# data <- read_csv("path/to/where/you/downloaded/it")
+# navigate to the file in your file explorer pane. Click on the file and "import dataset"
+data <- read_csv("https://tinyurl.com/sim-bag-data")
+head(data)
 ```
 
-## Read Data to Tibble
+# Inspecting Data
+
+```{r, all-data-histogram}
+data |> ggplot(aes(x = Arrival)) +
+  geom_histogram(binwidth=60*60*3, color = "black") +
+  labs(
+    title = "Histogram of Plane Arrival Times",
+    x = "Arrival Time",
+    y = "Count of Planes? Bags? What?"
+  ) +
+  theme_minimal()
+```
+
+### Initial Observations
+
+-   Arrivals don't seem to pick up until noon and go constant until 3 AM...hmmm
+-   Could EWR have 20k flights / day? (14 flights/minute)...hmmm
+
+### Timezones
+
+-   Everything is done in [POSIX (Unix) time](https://en.wikipedia.org/wiki/Unix_time)
+-   "It measures time by the number of non-leap seconds that have elapsed since 00:00:00 UTC on 1 January 1970, the Unix epoch."
+-   UTC is Coordinated Universal Time, not to be confused with Greenwich Mean Time (GMT)
+-   UTC is based on International Atomic Time (TAI) which is a weighted average of the time kept by over 450 atomic clocks in over 80 national laboratories worldwide.
+
+```{r, set-timezones}
+
+# set timezones so the datetime will DISPLAY correctly
+data <- data |> mutate(
+          Arrival = as.POSIXct(Arrival, tz = "EST")) |>
+        mutate(
+          bag_completion_time = as.POSIXct(bag_completion_time,
+          tz = "EST"))
+
+kable(head(data))
+```
+
+### Fixed Histogram
+
+```{r, fixed-timezone-flight-histogram}
+flight_arrivals <- data |>
+  distinct(`Flight Number`, Arrival)
+
+ggplot(flight_arrivals, aes(x = Arrival)) +
+  geom_histogram(binwidth=60*60*3, fill = "lightblue", color = "black") + # Binwidth = 1 hour (3600 seconds)
+  labs(
+    title = "Histogram of Plane Arrival Times",
+    x = "Arrival Time",
+    y = "Count of Planes"
+  ) +
+  theme_dark()
+```
 
 # Solution
 
+### Bag Delivery Time Statistics
+
+-   What is a statistic?
+
+```{r, sample-stats}
+#| echo: true
+x_bar <- mean(data$bag_delivery_time)
+s <- sd(data$bag_delivery_time)
+```
+
+Does this meet specifications
+
+```{r, summary-stats}
+summary(data)
+```
+
 ## Visualize Data
+
+```{r, get-bag-time}
+data <- data |> mutate(bag_delivery_time = as.numeric(bag_completion_time - Arrival))
+
+data |> ggplot(aes(x = bag_delivery_time)) + 
+  geom_histogram()
+```
 
 ## Fit Distributions to Data
 
-## Compare 
+- use `fitdistrplus` to fit various distributions
+
+```{r}
+f_norm <- fitdist(data$bag_delivery_time, "norm")
+f_ln <- fitdist(data$bag_delivery_time, "lnorm")
+f_weibull <- fitdist(data$bag_delivery_time, "weibull")
+f_gamma <- fitdist(data$bag_delivery_time, "gamma")
+
+plot.legend <- c("Normal", "LogNormal", "Weibull", "Gamma")
+```
+
+- use plotting functionality to plot a comparison of the data.
+
+```{r}
+denscomp(
+  list(f_norm, f_ln, f_weibull, f_gamma),
+  xlab = "Bag Delivery Time (min)",
+  legendtext = plot.legend)
+```
+
+## Compare to Manual Apporach
+
+- Alternatively, can generate probabilities for each bag arrival time by applying the fitted distributions to the data
+
+```{r}
+data <- data |> mutate(
+  Weibull = dweibull(bag_delivery_time,
+                      shape = f_weibull$estimate["shape"],
+                      scale = f_weibull$estimate["scale"]),
+  Normal = dnorm(bag_delivery_time,
+                      mean = f_norm$estimate["mean"],
+                      sd = f_norm$estimate["sd"]),
+  Gamma = dgamma(bag_delivery_time,
+                      shape = f_gamma$estimate["shape"],
+                      rate = f_gamma$estimate["rate"]),
+  LogNormal = dlnorm(bag_delivery_time,
+                      meanlog = f_ln$estimate["meanlog"],
+                      sdlog = f_ln$estimate["sdlog"]),
+)
+```
+
+- Then can plot these direclty one at a time
+
+```{r}
+data |> ggplot(aes(x = bag_delivery_time)) +
+  geom_line(aes(y = Gamma, color="Gamma", line="grey")) +
+  geom_line(aes(y = Normal, color="Normal")) +
+  geom_line(aes(y = LogNormal, color="LogNormal")) +
+  labs(
+    color = "Distribution",
+    x = "Bag Delivery Time (min)",
+    y = "Probability Density"
+  )
+```
+
+- Alternatively, we could transform our `tidy` data from "wide" to "long" form
+
+```{r}
+long_data <- data |> pivot_longer(
+  cols = c(Gamma, LogNormal, Normal, Weibull),
+  names_to = "Distribution",
+  values_to = "Probability")
+```
+
+- Using `kable` to output a formatted table.
+
+```{r}
+kable(head(long_data))
+```
+
+- and we can actually plot this much easier
+
+```{r}
+ggplot() +
+  # Histogram or density plot of `bag_delivery_time`
+  geom_histogram(data = data, aes(x = bag_delivery_time, y = ..density..), 
+                 bins = 30, color="black", fill = "skyblue", alpha = 0.5) +
+  # Overlay probability density lines from `long_data`
+  geom_line(data = long_data, aes(x = bag_delivery_time, y = Probability, color = Distribution), size=1)
+```
+
+- For relativley simple scenarios, it may be easier to manually plot the data yourself
+- As data and plots become more sophisticated this can be difficult
+- I recommend getting familiar with "long" and "wide" data and how to go between the two.
 
 ## Conclusion
 
-## 
+- Which distribution is the best fit?
+
+- How do you know?
+
+- Does the schematic design meet specifications?
+
+```{r}
+fitted_distributins <- list(f_gamma, f_ln, f_norm, f_weibull)
+
+# Extract summary metrics from the fitted distributions
+summary_table <- sapply(fitted_distributins, function(fit) {
+  c(
+    "Number of Parameters" = as.integer(length(fit$estimate)),  # Number of parameters
+    "Log-Likelihood" = fit$loglik,                # Log-likelihood
+    "AIC" = fit$aic,                              # Akaike Information Criterion
+    "BIC" = fit$bic                               # Bayesian Information Criterion
+  )
+})
+
+# Convert to a data frame for readability
+# summary_table <- as.data.frame(summary_table)
+
+# Assign column names based on your distributions
+colnames(summary_table) <- c("Gamma", "Log-Normal", "Normal", "Weibull")  # Adjust based on distribution names
+
+# View the table
+kable(summary_table)
+```
