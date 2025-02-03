@@ -14,7 +14,7 @@ format:
     toc-depth: 2
     number-sections: true
     number-depth: 2
-    code-fold: show
+    code-fold: true
     output-file: R2_nb
     
 #  revealjs:
@@ -31,7 +31,7 @@ format:
 #    output-file: R2_reveal
 
 execute:
-  echo: false
+  echo: true
   warning: false
   output: true
   
@@ -61,7 +61,6 @@ params:
 *Does the data indicate that bags will be delivered within 30 min +/- 5 min?*
 
 ![EWR Redevelopment Concept](../assets/ewr_redevelopment.png)
-
 
 ```{r, load-arrival-data}
 #| echo: false
@@ -153,9 +152,9 @@ library(fitdistrplus)
 
 ## Download Data
 
-- Airline Arrival data [Bureau of Transportation Statistics](https://www.transtats.bts.gov/ontime/arrivals.aspx)
+-   Airline Arrival data [Bureau of Transportation Statistics](https://www.transtats.bts.gov/ontime/arrivals.aspx)
 
-- Simulated Baggage data: https://tinyurl.com/sim-bag-data
+-   Simulated Baggage data: https://tinyurl.com/sim-bag-data
 
 ```{r, loading-data}
 #| echo: true
@@ -170,6 +169,8 @@ head(data)
 # Inspecting Data
 
 ```{r, all-data-histogram}
+#| echo: true
+
 data |> ggplot(aes(x = Arrival)) +
   geom_histogram(binwidth=60*60*3, color = "black") +
   labs(
@@ -193,6 +194,7 @@ data |> ggplot(aes(x = Arrival)) +
 -   UTC is based on International Atomic Time (TAI) which is a weighted average of the time kept by over 450 atomic clocks in over 80 national laboratories worldwide.
 
 ```{r, set-timezones}
+#| echo: true
 
 # set timezones so the datetime will DISPLAY correctly
 data <- data |> mutate(
@@ -207,6 +209,8 @@ kable(head(data))
 ### Fixed Histogram
 
 ```{r, fixed-timezone-flight-histogram}
+#| echo: true
+#| 
 flight_arrivals <- data |>
   distinct(`Flight Number`, Arrival)
 
@@ -228,6 +232,7 @@ ggplot(flight_arrivals, aes(x = Arrival)) +
 
 ```{r, sample-stats}
 #| echo: true
+#| 
 x_bar <- mean(data$bag_delivery_time)
 s <- sd(data$bag_delivery_time)
 ```
@@ -235,12 +240,16 @@ s <- sd(data$bag_delivery_time)
 Does this meet specifications
 
 ```{r, summary-stats}
+#| echo: true
+#| 
 summary(data)
 ```
 
 ## Visualize Data
 
 ```{r, get-bag-time}
+#| echo: true
+#| 
 data <- data |> mutate(bag_delivery_time = as.numeric(bag_completion_time - Arrival))
 
 data |> ggplot(aes(x = bag_delivery_time)) + 
@@ -249,9 +258,11 @@ data |> ggplot(aes(x = bag_delivery_time)) +
 
 ## Fit Distributions to Data
 
-- use `fitdistrplus` to fit various distributions
+-   use `fitdistrplus` to fit various distributions
 
 ```{r}
+#| echo: true
+#| 
 f_norm <- fitdist(data$bag_delivery_time, "norm")
 f_ln <- fitdist(data$bag_delivery_time, "lnorm")
 f_weibull <- fitdist(data$bag_delivery_time, "weibull")
@@ -260,9 +271,11 @@ f_gamma <- fitdist(data$bag_delivery_time, "gamma")
 plot.legend <- c("Normal", "LogNormal", "Weibull", "Gamma")
 ```
 
-- use plotting functionality to plot a comparison of the data.
+-   use plotting functionality to plot a comparison of the data.
 
 ```{r}
+#| echo: true
+#| 
 denscomp(
   list(f_norm, f_ln, f_weibull, f_gamma),
   xlab = "Bag Delivery Time (min)",
@@ -271,9 +284,10 @@ denscomp(
 
 ## Compare to Manual Apporach
 
-- Alternatively, can generate probabilities for each bag arrival time by applying the fitted distributions to the data
+-   Alternatively, can generate probabilities for each bag arrival time by applying the fitted distributions to the data
 
 ```{r}
+#| echo: true
 data <- data |> mutate(
   Weibull = dweibull(bag_delivery_time,
                       shape = f_weibull$estimate["shape"],
@@ -290,9 +304,10 @@ data <- data |> mutate(
 )
 ```
 
-- Then can plot these direclty one at a time
+-   Then can plot these direclty one at a time
 
 ```{r}
+#| echo: true
 data |> ggplot(aes(x = bag_delivery_time)) +
   geom_line(aes(y = Gamma, color="Gamma", line="grey")) +
   geom_line(aes(y = Normal, color="Normal")) +
@@ -304,24 +319,28 @@ data |> ggplot(aes(x = bag_delivery_time)) +
   )
 ```
 
-- Alternatively, we could transform our `tidy` data from "wide" to "long" form
+-   Alternatively, we could transform our `tidy` data from "wide" to "long" form
 
 ```{r}
+#| echo: true
 long_data <- data |> pivot_longer(
   cols = c(Gamma, LogNormal, Normal, Weibull),
   names_to = "Distribution",
   values_to = "Probability")
 ```
 
-- Using `kable` to output a formatted table.
+-   Using `kable` to output a formatted table.
 
 ```{r}
+#| echo: true
 kable(head(long_data))
 ```
 
-- and we can actually plot this much easier
+-   and we can actually plot this much easier
 
 ```{r}
+#| echo: true
+
 ggplot() +
   # Histogram or density plot of `bag_delivery_time`
   geom_histogram(data = data, aes(x = bag_delivery_time, y = ..density..), 
@@ -330,19 +349,22 @@ ggplot() +
   geom_line(data = long_data, aes(x = bag_delivery_time, y = Probability, color = Distribution), size=1)
 ```
 
-- For relativley simple scenarios, it may be easier to manually plot the data yourself
-- As data and plots become more sophisticated this can be difficult
-- I recommend getting familiar with "long" and "wide" data and how to go between the two.
+-   For relativley simple scenarios, it may be easier to manually plot the data yourself
+-   As data and plots become more sophisticated this can be difficult
+-   I recommend getting familiar with "long" and "wide" data and how to go between the two.
 
 ## Conclusion
 
-- Which distribution is the best fit?
+-   Which distribution is the best fit?
 
-- How do you know?
+-   How do you know?
 
-- Does the schematic design meet specifications?
+-   Does the schematic design meet specifications?
 
 ```{r}
+
+#| echo: true
+
 fitted_distributins <- list(f_gamma, f_ln, f_norm, f_weibull)
 
 # Extract summary metrics from the fitted distributions
