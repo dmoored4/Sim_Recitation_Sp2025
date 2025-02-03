@@ -1,0 +1,471 @@
+---
+title: "R3 Waiting in Line"
+subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
+author:
+  - name: Daniel Moore
+    email: daniel.l.moore@rutgers.edu
+    affiliation: 
+      - name: Rutgers University
+        city: Piscataway
+        state: NJ
+        url: https://sites.rutgers.edu/ropes-lab/
+   
+date: 2025-02-04
+image: "../assets/queue_plot.jpeg"
+date-format: iso
+
+format:
+  html:
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    number-depth: 3
+    df-print: kable
+  pdf: 
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    number-depth: 3
+    df-print: kable
+  revealjs:
+      number-sections: true
+    toc: true
+    toc-depth: 3
+    number-depth: 3
+    code-fold: true
+    df-print: kable
+abstract: This document shows some basics about how to leverage Quarto to make your life easier and how to create some neat animations.
+---
+
+# Questions {.unnumbered .unlisted}
+
+Notice this was excluded from the Table of Contents and is not numbered.
+
+# Recap {.unnumbered}
+
+- Observed how simple problems can require simulation
+- Set up a Quarto document for R, downloaded data, and generated some visualizations
+- Fit various distributions to data and evaluated the best fit
+
+# Learning Objectives {.unnumbered}
+
+-   Control output and content of Quarto cells
+-   Create and run a basic queueing simulation
+-   Plot results
+-   Create 
+
+# Quarto Controls
+
+## Front Matter
+
+```yaml
+---
+title: "Homework #1"
+subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
+author: Daniel Moore
+date: 2025-02-11
+
+format:
+  pdf:
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    number-depth: 3
+    df-print: kable
+---
+```
+
+
+## Cell Options
+
+```yaml
+#| eval: true       # whether to execute code when you render the doc
+#| echo: false      # decide if code is shown in the document or hidden
+#| output: false    # should the output of the chunk be displayed
+#| warning: false   # do you want warnings to be shown in the document
+#| error: false     # do you want error messages to apepar in the doc?
+#| include: false   # Catch all for preventing any output
+```
+
+## Formulas and references
+- create a cross referencable item with `#fig-your-reference-name`. Use the appropriate *reserved* prefix such as: `fig`, `tbl`, `lst`, `tip`, `nte`, `wrn`, `imp`, `cau`, `thm`, `lem`, `cor`, `prp`, `cnj`, `def`, `exm`, `exr`, `sol`, `rem`, `eq`, `sec`.
+- link words in your reference with `-`. Do not using blank space, ` `, or underscores `_`.
+- Reference your item where you want with `@fig-your-reference-name`.
+- See the [Quarto References Guide](https://quarto.org/docs/authoring/cross-references.html#references) for how to get different formats of your reference such as: "Figure 1", "Fig 1", "1" etc.
+
+```qmd
+The probability density function (pdf) of the exponential distribution is
+given below in @eq-exponential-distribution.
+
+$$
+p(t) = \lambda e^{-\lambda t}
+$$ {#eq-exponential-distribution}
+```
+
+The probability density function (pdf) of the exponential distribution is given below in @eq-exponential-distribution.
+
+$$
+p(t) = \lambda e^{-\lambda t}
+$$ {#eq-exponential-distribution}
+
+# Bank Queuing Simulation
+
+## Problem Definition
+
+From 4:00 PM to 6:00 PM, customers arrive at Whole Foods to make Amazon returns following a Poisson process with a rate of $\lambda = \frac{1\ customer}{3\ min}$. A single clerk services the returns at a rate of $\mu = \frac{1\ customer}{2\ min}$.
+
+What can we say about the:
+
+- Expected wait time?
+- Expected total time in the system?
+- What is the probability of seeing more than 5 people in line?
+- Server Utilization Rate?
+
+## Coding the simulation
+
+- For previous examples, we stepped through time and sampled the random variables, keeping track of the results
+- For this example, we will sample all the random variables and perform some logic to determine the results
+- This method is more computationally efficient because loops can slow down R and Python
+- On the one hand, sampling the random variables this way is more convincing because the memoryless property of the exponential distribution can be a hard concept to grasp
+- On the other hand, this method requires a little more reasoning about what is happening in the system after the random variables are sampled
+
+### Packages
+
+```{r, loading-packages}
+#| echo: true
+#| warning: false
+
+library(tidyverse)
+```
+
+### Parameters
+
+```{r, problem-parameters}
+#| echo: true
+lambda <- 1/3
+arrive <- function(n=1) {
+  rexp(n, rate = lambda )
+}
+
+mu <- 1/2
+service <- function(n=1) {
+  rexp(n, rate = mu)
+}
+
+t_f <- 3 * 60
+
+# double the number of samples to make sure we will have enough to exceed t_f
+samples <- round(2 * t_f * lambda)
+```
+
+### Generating Arrival and Service Times
+
+```{r, generating-arrival-and-service-times}
+data <- tibble(
+  interarrival_time = arrive(samples),
+  service_time = service(samples)
+)
+
+data <- data |> mutate(
+  arrival_time = cumsum(interarrival_time)
+)
+
+data <- data |> filter(arrival_time <= t_f)
+
+data <- data |> mutate(
+  service_start_time = 0,
+  departure_time = 0)
+```
+
+### Running the Simulation
+
+```{r, running-simulation}
+
+t_0 <- 0
+next_available_time <- t_0
+
+for (i in 1:nrow(data)) {
+  # Service starts when the server is available
+  data$service_start_time[i] <- max(data$arrival_time[i], next_available_time)
+  
+  # Compute departure time
+  data$departure_time[i] <- data$service_start_time[i] + data$service_time[i]
+  
+  # Update when the server wœill next be available
+  next_available_time <- data$departure_time[i]
+}
+```
+
+### Calculating Performance Measures
+
+```{r, calculating-performance-measures}
+#| output: true
+data <- data |> mutate(
+  wait_time = service_start_time - arrival_time,
+  total_time = departure_time - arrival_time
+)
+
+data <- data |> mutate(
+  number_serviced_by_arrival = 0,
+  L = 0, # number in system, waiting + being serviced. Starting at 0
+  L_q = 0 # number in queue
+)
+
+for (i in 2:nrow(data)) {
+  this_arrival <- data$arrival_time[i]
+  data$number_serviced_by_arrival[i] <- sum(data$departure_time[1:i-1] < this_arrival)
+}
+
+for (i in 1:nrow(data)) {
+  data$L[i] <- i - data$number_serviced_by_arrival[i]
+  data$L_q[i] <- max(0, data$L[i] - 1)
+}
+
+head(data)
+```
+
+## Visualizing the Results
+
+### Queue Length Histogram
+
+@fig-queue-histogram shows the distribution of queue lengths.
+
+```{r, fig-queue-histogram}
+#| fig-cap: "Histogram of Queue Lengths"
+#| output: true
+
+data |> ggplot(aes(x=L)) +
+  geom_histogram(fill="cornflowerblue", color="black") +
+  labs(
+    title = "Queue Length Histogram",
+    x = "Number of Customers in Queue",
+    y = "Count"
+  )
+
+```
+
+### Waiting Time Histogram
+
+@fig-waiting-time-histogram shows the distribution of waiting times.
+
+```{r, fig-waiting-time-histogram}
+#| fig-cap: "Histogram of Waiting Times"
+#| output: true
+
+data |> ggplot(aes(x=wait_time)) +
+  geom_histogram(fill="cornflowerblue", color="black") +
+  labs(
+    title = "Waiting Time Histogram",
+    x = "Waiting Time (min)",
+    y = "Count"
+  )
+```
+
+### Waiting Time Density
+
+If we want to view any of these as a probability density we could use `stat_density` or `geom_density`. There are a whole h[ost of different plots that you should browse](https://r-graph-gallery.com) to see what could be good at telling the story you are trying to convey.
+
+```{r, fig-waiting-time-density}
+#| output: true
+#| fig-cap: "System Waiting Time Density Plot"
+
+data |> ggplot(aes(x = wait_time)) +
+  geom_density() +
+  labs(
+    x = "Time in the System (min)",
+    y = "Probability Density"
+  )
+```
+
+### Queue Length Over Time
+
+@fig-queue-time-history shows the queue length over time. However, this isn't really the full story. What we want to see is how the system changes at each arrival and departure. To do this, we will need to create a new data frame that has an entry for each arrival and departure. Additionally, we'll want the numbers indicated to be horizontal lines with discontinuities showing when the number changes. Also, this is not exactly the bounds of our simulation because we cutoff our arrivals at $t_f$, but we have departures after that time. So we should only be plotting up to $t_f$.
+
+```{r, fig-queue-time-history-line}
+#| fig-cap: "Queue Length Over Time"
+#| output: true
+
+data |> ggplot(aes(x=arrival_time, y=L_q)) +
+  geom_line(color="cornflowerblue") +
+  labs(
+    title = "Queue Length Over Time",
+    x = "Time (min)",
+    y = "Number of Customers in Queue"
+  )
+```
+
+The way these lines are connected give an indication that the queue length is in between two integers at most times. Line plots can be misleading in this way. We need a step plot. Also, we are essentially only sampling the system at a time that somebody arrives. This is why we are seeing big jumps. We should only be seeing the line move up or down one at a time.
+
+#### Event Log
+
+Basically, we need to unpack the simulation data so that it is event-centric rather than customer-centric. 
+
+```{r, event-log}
+#| echo: true
+
+# all events are either arrivals or departures
+# create a dataframe which tracks all events
+# combines arrival and departure times into single vector, event time
+# for arrivals, event is +1
+# for departures, event is -1
+
+events <- data |>
+  # bringing the data I want to work with
+  select(arrival_time, departure_time) |> 
+  
+  # turning the data from wide to long
+  pivot_longer(
+    cols = everything(),
+    names_to = "event_type",
+    values_to = "event_time") |> 
+  
+  # assigning -1 if departure and 1 if arrival
+  mutate(
+    event = ifelse(event_type == "arrival_time", 1, -1)) |>
+  
+  # adding an initial condition of time=0 and 0 customers
+  bind_rows(tibble(event_time = 0, event = 0)) |>
+  
+  # removing the event type column
+  select(-event_type) |>
+  
+  # sorting the data by event time
+  arrange(event_time)
+
+# cumulative sum of events
+events <- events |> mutate(
+  L = cumsum(event),
+  # pmax is vectorized function that looks at each element rather than the entire thing
+  L_q = pmax(0, L - 1)  
+)
+
+head(events)
+```
+
+We could plot this by adding each column to the plot one at a time, but this can get messy. Instead we'll do a `pivot_longer` so that the data is in a better format for plotting multiple series together.
+
+Here I'm pivoting from a wide format (have both an `L` and an `L_q` column) to a long format which just has the x-value of `time` and the y-value of `L` or `L_q`. This makes plotting much easier.
+
+```{r, events-long}
+#| echo: true
+events_long <- events |> 
+  pivot_longer(
+    cols = c(L, L_q), 
+    names_to = "metric", 
+    values_to = "value"
+  )
+
+head(events_long)
+```
+
+At last, @fig-queue-time-history shows a complete plot of the number of customers in line and the number in the system at each moment.
+
+```{r, fig-queue-time-history}
+#| fig-cap: "Customer Count Over Time"
+events_long |> ggplot(aes(x = event_time, y = value, color=metric)) +
+  xlim(0, t_f) +
+  geom_step(direction = "hv") +
+  labs(
+    title = "Customer Count Over Time",
+    x = "Time (min)",
+    y = "Customers"
+  ) +
+  theme_minimal()
+```
+
+# Animation
+
+## Concepts
+
+- Data in long format: Structure data with one row per observation and a time variable for animations (use pivot_longer() for multiple metrics).
+- Time variable for transitions: Use a continuous variable (e.g., event_time) to animate data over time with transition_reveal() or transition_states().
+- Compatible geom layers: Use geom_step(), geom_line(), or geom_point() to animate time-series data, ensuring smooth transitions.
+
+## Code
+
+```{r, animation-packages}
+library(gganimate)
+library(gifski)
+```
+
+```{r, fig-event-time-history-gif}
+#| eval: false
+#| output: true
+#| fig-cap: "Animated Queuing System Plot"
+p <- events_long |> 
+  ggplot(aes(x = event_time, y = value, color = metric)) +
+  geom_step(size = 1.2) + 
+  labs(x = "Time", y = "Customers", color = "Metric") +
+  theme_minimal() +
+  transition_reveal(event_time)
+
+# Animate and save as GIF
+anim <- animate(p, renderer = gifski_renderer(), width = 800, height = 600, duration = 5)
+anim_save("returns_animation.gif", animation = anim)
+
+anim
+```
+
+![Queueing Animation](returns_animation.gif)
+
+# Analytical Solution
+
+These metrics are the typical things we want to know about queues. How long will I wait? What's the probability of the line having more than 4 people? How long will I be in this line before it's my turn? etc.
+
+They are derived from algebraic manipulations of the probability density functions. They are specific for an $M/M/1$ queue which is ["Kendall's Notation"](https://en.wikipedia.org/wiki/Kendall%27s_notation) for a queue with:
+
+- M: Exponential distributed Arrival Time (typically $\lambda$)
+- M: Exponentially distributed Service Time (typically $\mu)
+- 1: A single line, single server
+- Implied is a first-in/first-out (FIFO) "service discipline"
+
+What other service disciplines can you imagine? What settings?
+
+$$
+Server\ Utilization, \rho = \frac{\lambda}{\mu} = \frac{1/3}{1/2} = \frac{2}{3} = 66.67\%
+$$ {#eq-utilization-rate}
+
+$$
+Expected\ Number\ in\ the\ System,\ L = \frac{\lambda}{\mu - \lambda} = \frac{1/3}{1/2 - 1/3} = 2
+$$ {#eq-average-number-in-system}
+
+$$
+Expected\ Number\ in\ the\ Queue,\ L_q = \frac{\lambda^2}{\mu(\mu - \lambda)} = \frac{(1/3)^2}{(1/2)(1/2)} = \frac{2}{9} = 0.2222
+$$ {#eq-average-number-in-queue}
+
+$$
+Expected\ time\ in\ the\ System,\ W = \frac{1}{\mu - \lambda} = \frac{1}{1/2 - 1/3} = 6
+$$ {#eq-average-time-in-system}
+
+$$
+Expected\ time\ in\ the\ Queue,\ W_q = \frac{\lambda}{\mu(\mu - \lambda)} = \frac{1/3}{(1/2)(1/2)} = 4
+$$ {#eq-average-time-in-queue}
+
+$$
+Probability\ of\ empty\ system, P_0 = 1 - \rho = 1 - \frac{2}{3} = \frac{1}{3} = 33.33\%
+$$ {#eq-probability-of-zero-customers}
+
+$$
+Probability\ of\ n\ customers\ in\ the\ System,\ P(n) = (1 - \rho)\rho^n = \frac{1}{3}\left(\frac{2}{3}\right)^n
+$$ {#eq-probability-of-n-customers}
+
+# Simulation and Analytical Comparison
+
+To be Completed
+
+# Conclusion
+
+## Potential Complications?
+
+- What if there is a limited amount of space and if the line is too long, customers just leave?
+- Service times follow different distributions?
+- More than one line? More than one server?
+- Priority line with different logic? Maybe a commerical customer with 12 packages gets serviced as soon as a server is available?
+
+## Summary
+
+- We simulated an $M/M/1$ queuing system by sampling arrival and service times
+- We obtained system state measurements by executing logic on the samples
+- Manipulated the data into an event time series
+- Created and animated `geom_step` plots using `ggplot`, `gganimate`, and `gifski`
+- Compared analytical system metrics to those we obtained from the simulation.
