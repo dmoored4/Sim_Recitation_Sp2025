@@ -21,12 +21,6 @@ format:
     toc-depth: 3
     number-depth: 3
     df-print: kable
-  pdf: 
-    number-sections: true
-    toc: true
-    toc-depth: 3
-    number-depth: 3
-    df-print: kable
   revealjs:
     number-sections: true
     toc: true
@@ -407,6 +401,7 @@ anim
 ```
 
 ![Queueing Animation](returns_animation.gif)
+
 
 # Analytical Solution
 
