@@ -16,6 +16,8 @@ website:
             href: recitations/R1_turbine_repair.qmd
           - text: "Recitation #2"
             href: recitations/R2_baggage_handling_system.qmd
+          - text: "Rectiation #3"
+            href: recitations/R3_animations.qmd
     tools:
       - icon: github
         menu:
