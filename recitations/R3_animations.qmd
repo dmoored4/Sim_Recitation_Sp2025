@@ -28,7 +28,7 @@ format:
     number-depth: 3
     df-print: kable
   revealjs:
-      number-sections: true
+    number-sections: true
     toc: true
     toc-depth: 3
     number-depth: 3
