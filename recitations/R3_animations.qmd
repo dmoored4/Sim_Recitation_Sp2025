@@ -19,15 +19,20 @@ format:
     number-sections: true
     toc: true
     toc-depth: 3
+    toc-expand: 2
     number-depth: 3
+    output-file: R3_nb
     df-print: kable
-  revealjs:
+
+  pdf:
     number-sections: true
     toc: true
     toc-depth: 3
     number-depth: 3
-    code-fold: true
+    output-file: R3_pdf
     df-print: kable
+
+
 abstract: This document shows some basics about how to leverage Quarto to make your life easier and how to create some neat animations.
 ---
 
@@ -37,16 +42,16 @@ Notice this was excluded from the Table of Contents and is not numbered.
 
 # Recap {.unnumbered}
 
-- Observed how simple problems can require simulation
-- Set up a Quarto document for R, downloaded data, and generated some visualizations
-- Fit various distributions to data and evaluated the best fit
+-   Observed how simple problems can require simulation
+-   Set up a Quarto document for R, downloaded data, and generated some visualizations
+-   Fit various distributions to data and evaluated the best fit
 
 # Learning Objectives {.unnumbered}
 
 -   Control output and content of Quarto cells
 -   Create and run a basic queueing simulation
 -   Plot results
--   Create 
+-   Create an animation of the queue process
 
 # Quarto Controls
 
@@ -54,10 +59,20 @@ Notice this was excluded from the Table of Contents and is not numbered.
 
 ```yaml
 ---
-title: "Homework #1"
+title: "R3 Waiting in Line"
 subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
-author: Daniel Moore
-date: 2025-02-11
+author:
+  - name: Daniel Moore
+    email: daniel.l.moore@rutgers.edu
+    affiliation: 
+      - name: Rutgers University
+        city: Piscataway
+        state: NJ
+        url: https://sites.rutgers.edu/ropes-lab/
+   
+date: 2025-02-04
+image: "../assets/queue_plot.jpeg"
+date-format: iso
 
 format:
   pdf:
@@ -65,10 +80,12 @@ format:
     toc: true
     toc-depth: 3
     number-depth: 3
+    output-file: R3_pdf
     df-print: kable
+
+abstract: This document shows some basics about how to leverage Quarto to make your life easier and how to create some neat animations.
 ---
 ```
-
 
 ## Cell Options
 
@@ -82,12 +99,13 @@ format:
 ```
 
 ## Formulas and references
-- create a cross referencable item with `#fig-your-reference-name`. Use the appropriate *reserved* prefix such as: `fig`, `tbl`, `lst`, `tip`, `nte`, `wrn`, `imp`, `cau`, `thm`, `lem`, `cor`, `prp`, `cnj`, `def`, `exm`, `exr`, `sol`, `rem`, `eq`, `sec`.
-- link words in your reference with `-`. Do not using blank space, ` `, or underscores `_`.
-- Reference your item where you want with `@fig-your-reference-name`.
-- See the [Quarto References Guide](https://quarto.org/docs/authoring/cross-references.html#references) for how to get different formats of your reference such as: "Figure 1", "Fig 1", "1" etc.
 
-```qmd
+-   create a cross referencable item with `#fig-your-reference-name`. Use the appropriate *reserved* prefix such as: `fig`, `tbl`, `lst`, `tip`, `nte`, `wrn`, `imp`, `cau`, `thm`, `lem`, `cor`, `prp`, `cnj`, `def`, `exm`, `exr`, `sol`, `rem`, `eq`, `sec`.
+-   link words in your reference with `-`. Do not using blank space, , or underscores `_`.
+-   Reference your item where you want with `@fig-your-reference-name`.
+-   See the [Quarto References Guide](https://quarto.org/docs/authoring/cross-references.html#references) for how to get different formats of your reference such as: "Figure 1", "Fig 1", "1" etc.
+
+``` qmd
 The probability density function (pdf) of the exponential distribution is
 given below in @eq-exponential-distribution.
 
@@ -106,22 +124,22 @@ $$ {#eq-exponential-distribution}
 
 ## Problem Definition
 
-From 4:00 PM to 6:00 PM, customers arrive at Whole Foods to make Amazon returns following a Poisson process with a rate of $\lambda = \frac{1\ customer}{3\ min}$. A single clerk services the returns at a rate of $\mu = \frac{1\ customer}{2\ min}$.
+From 4:00 PM to 7:00 PM, customers arrive at Whole Foods to make Amazon returns following a Poisson process with a rate of $\lambda = \frac{1\ customer}{3\ min}$. A single clerk services the returns at a rate of $\mu = \frac{1\ customer}{2\ min}$.
 
 What can we say about the:
 
-- Expected wait time?
-- Expected total time in the system?
-- What is the probability of seeing more than 5 people in line?
-- Server Utilization Rate?
+-   Expected wait time?
+-   Expected total time in the system?
+-   What is the probability of seeing more than 5 people in line?
+-   Server Utilization Rate?
 
 ## Coding the simulation
 
-- For previous examples, we stepped through time and sampled the random variables, keeping track of the results
-- For this example, we will sample all the random variables and perform some logic to determine the results
-- This method is more computationally efficient because loops can slow down R and Python
-- On the one hand, sampling the random variables this way is more convincing because the memoryless property of the exponential distribution can be a hard concept to grasp
-- On the other hand, this method requires a little more reasoning about what is happening in the system after the random variables are sampled
+-   For previous examples, we stepped through time and sampled the random variables, keeping track of the results
+-   For this example, we will sample all the random variables and perform some logic to determine the results
+-   This method is more computationally efficient because loops can slow down R and Python
+-   On the one hand, sampling the random variables this way is more convincing because the memoryless property of the exponential distribution can be a hard concept to grasp and we are kind of pushing that issue out of the way
+-   On the other hand, this method requires a little more reasoning about what is happening in the system after the random variables are sampled
 
 ### Packages
 
@@ -130,6 +148,10 @@ What can we say about the:
 #| warning: false
 
 library(tidyverse)
+library(knitr)
+
+# setting a random seed for reproducibility
+set.seed(1766)
 ```
 
 ### Parameters
@@ -218,6 +240,18 @@ for (i in 1:nrow(data)) {
 head(data)
 ```
 
+Note that this table will look bad in the PDF. We'll explicitly use [`kable()`](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html) to make it look better. Look at @tbl-kabled-data to see compare the outputs. 
+
+```{r, tbl-kabled-data}
+#| tbl-cap: "Data Formatted with Kable"
+#| output: true
+
+kable(head(data), digits=2, col.names =
+  c("Interarrival Time", "Arrival Time", "Service Time", "Service Start Time", "Departure Time", "Wait Time", "Total Time", "Serviced by Arrival", "L", "L_q"))
+```
+
+We could also break this table up into a few different groups of columns so that it fits on the page nicer. This is good enough for us for now.
+
 ## Visualizing the Results
 
 ### Queue Length Histogram
@@ -292,7 +326,7 @@ The way these lines are connected give an indication that the queue length is in
 
 #### Event Log
 
-Basically, we need to unpack the simulation data so that it is event-centric rather than customer-centric. 
+Basically, we need to unpack the simulation data so that it is event-centric rather than customer-centric.
 
 ```{r, event-log}
 #| echo: true
@@ -371,9 +405,9 @@ events_long |> ggplot(aes(x = event_time, y = value, color=metric)) +
 
 ## Concepts
 
-- Data in long format: Structure data with one row per observation and a time variable for animations (use pivot_longer() for multiple metrics).
-- Time variable for transitions: Use a continuous variable (e.g., event_time) to animate data over time with transition_reveal() or transition_states().
-- Compatible geom layers: Use geom_step(), geom_line(), or geom_point() to animate time-series data, ensuring smooth transitions.
+-   Data in long format: Structure data with one row per observation and a time variable for animations (use pivot_longer() for multiple metrics).
+-   Time variable for transitions: Use a continuous variable (e.g., event_time) to animate data over time with transition_reveal() or transition_states().
+-   Compatible geom layers: Use geom_step(), geom_line(), or geom_point() to animate time-series data, ensuring smooth transitions.
 
 ## Code
 
@@ -382,10 +416,13 @@ library(gganimate)
 library(gifski)
 ```
 
+Note that I have this cell set up to not execute with `#| eval: false`. I used this exact code to create and save the plot as shown, but I don't want to re-render and save over it every time.
+
 ```{r, fig-event-time-history-gif}
 #| eval: false
 #| output: true
 #| fig-cap: "Animated Queuing System Plot"
+
 p <- events_long |> 
   ggplot(aes(x = event_time, y = value, color = metric)) +
   geom_step(size = 1.2) + 
@@ -394,14 +431,19 @@ p <- events_long |>
   transition_reveal(event_time)
 
 # Animate and save as GIF
-anim <- animate(p, renderer = gifski_renderer(), width = 800, height = 600, duration = 5)
+anim <- animate(p, renderer = gifski_renderer(),
+  width = 800, height = 600, duration = 5)
 anim_save("returns_animation.gif", animation = anim)
 
 anim
 ```
-
+::: {.content-visible unless-format="pdf"}
 ![Queueing Animation](returns_animation.gif)
+:::
 
+::: {.content-visible when-format="pdf"}
+Obviously, we can't put a gif into a pdf. Instead, it's better to insert a still image or ommit it all together. See how to control how content is displayed based on the format in the [Quarto docs](https://quarto.org/docs/authoring/conditional.html#content-visible).
+:::
 
 # Analytical Solution
 
@@ -409,58 +451,171 @@ These metrics are the typical things we want to know about queues. How long will
 
 They are derived from algebraic manipulations of the probability density functions. They are specific for an $M/M/1$ queue which is ["Kendall's Notation"](https://en.wikipedia.org/wiki/Kendall%27s_notation) for a queue with:
 
-- M: Exponential distributed Arrival Time (typically $\lambda$)
-- M: Exponentially distributed Service Time (typically $\mu)
-- 1: A single line, single server
-- Implied is a first-in/first-out (FIFO) "service discipline"
+-   M: Exponential distributed Arrival Time (typically $\lambda$)
+-   M: Exponentially distributed Service Time (typically \$\mu)
+-   1: A single line, single server
+-   Implied is a first-in/first-out (FIFO) "service discipline"
 
 What other service disciplines can you imagine? What settings?
 
+## Formulae
+
 $$
-Server\ Utilization, \rho = \frac{\lambda}{\mu} = \frac{1/3}{1/2} = \frac{2}{3} = 66.67\%
+Server\ Utilization, \rho = \frac{\lambda}{\mu} = \frac{1/3}{1/2}
 $$ {#eq-utilization-rate}
 
 $$
-Expected\ Number\ in\ the\ System,\ L = \frac{\lambda}{\mu - \lambda} = \frac{1/3}{1/2 - 1/3} = 2
+Expected\ Number\ in\ the\ System,\ L = \frac{\lambda}{\mu - \lambda}
 $$ {#eq-average-number-in-system}
 
 $$
-Expected\ Number\ in\ the\ Queue,\ L_q = \frac{\lambda^2}{\mu(\mu - \lambda)} = \frac{(1/3)^2}{(1/2)(1/2)} = \frac{2}{9} = 0.2222
+Expected\ Number\ in\ the\ Queue,\ L_q = \frac{\lambda^2}{\mu(\mu - \lambda)}
 $$ {#eq-average-number-in-queue}
 
 $$
-Expected\ time\ in\ the\ System,\ W = \frac{1}{\mu - \lambda} = \frac{1}{1/2 - 1/3} = 6
+Expected\ time\ in\ the\ System,\ W = \frac{1}{\mu - \lambda}
 $$ {#eq-average-time-in-system}
 
 $$
-Expected\ time\ in\ the\ Queue,\ W_q = \frac{\lambda}{\mu(\mu - \lambda)} = \frac{1/3}{(1/2)(1/2)} = 4
+Expected\ time\ in\ the\ Queue,\ W_q = \frac{\lambda}{\mu(\mu - \lambda)}
 $$ {#eq-average-time-in-queue}
 
 $$
-Probability\ of\ empty\ system, P_0 = 1 - \rho = 1 - \frac{2}{3} = \frac{1}{3} = 33.33\%
+Probability\ of\ empty\ system, P_0 = 1 - \rho
 $$ {#eq-probability-of-zero-customers}
 
 $$
-Probability\ of\ n\ customers\ in\ the\ System,\ P(n) = (1 - \rho)\rho^n = \frac{1}{3}\left(\frac{2}{3}\right)^n
+Probability\ of\ n\ customers\ in\ the\ System,\ P(n) = (1 - \rho)\rho^n
 $$ {#eq-probability-of-n-customers}
+
+## Calculations
+
+```{r, analytical-calculations}
+#| echo: true
+#| output: false
+
+# 
+P_n <- function(n, rho) {
+  (1 - rho) * rho^n
+}
+
+performance_measures <- data.frame(
+  Performance_Measure = c("L", "L_q", "W", "W_q", "rho"),
+  Analytical = c(
+    lambda / (mu - lambda),
+    (lambda^2) / (mu * (mu - lambda)),
+    1 / (mu - lambda),
+    lambda / (mu * (mu - lambda)),
+    lambda / mu
+  )
+)
+```
 
 # Simulation and Analytical Comparison
 
-To be Completed
+- How can we get these same performance measures from the simulated data?
+
+## Think Critically!
+
+::: {.callout-danger title="What is our data exactly?"}
+Think for a minute about the way our two data frames are structured. Is all of the information there? What do we need to consider to get it.
+:::
+
+## Performance Measure Notes
+
+- The performance measures, $L$ and $L_q$ are supposed to represent the expected number of custoemrs in the system and in the queue
+- The first data is customer centric. All we see is how many people are in line when the customer shows up. $W$ and $W_q$ are obtainable from this.
+- The second is event centric. We see the time that an event happens and the customers at that time.
+- This means essentially we are just sampling at these points. It *might* be a good representation of the number in the system, but it might not be. Notably, we could definitely have systematic error because this "sampling" isn't even random, it is always as events
+
+## What to do?
+
+- We need to take the time-weighted average of the number of people in the system and in line
+- This data is available in the `events` data frame, but it will take a little more manipulation:
+
+```{r, weighted-average-events}
+#| echo: true
+
+events <- events |> mutate(
+  time_in_state = coalesce(lead(event_time), t_f) - event_time
+)
+```
+
+Coalesce gives us a default value to use. Since we are differencing each row with the one after it, when we get to the last row there's nothing there. So we need to say the last row's lead even time is the end of the simulation, `t_f`.
+
+```{r, simulation-performance-measures}
+#| echo: true
+#| output: false
+performance_measures <- performance_measures |> mutate(
+  Simulation = c(
+    sum(events$L * events$time_in_state) / t_f,
+    sum(events$L_q * events$time_in_state) / t_f,
+    mean(data$total_time),
+    mean(data$wait_time),
+    sum(events$time_in_state[events$L > 0]) / t_f
+  )
+)
+```
+
+Now we can compare the analytical results in @tbl-simulation-comparison and the correctly calculated simulation performance measures.
+
+```{r, tbl-simulation-comparison}
+#| echo: true
+#| output: true
+#| tbl-cap: "Simulation and Analytical Comparison"
+
+kable(performance_measures, digits = 3)
+```
+
+```{r, tbl-calculating-p-n}
+#| tbl-cap: "Calculating P(n)"
+#| echo: true
+#| output: false
+
+n_in_system_ps <- tibble(n = 0:10) |>
+  mutate(
+    Analytical = P_n(0:10, lambda/mu),
+    Simulation = sapply(0:10, function(k) sum(events$time_in_state[events$L == k]) / t_f)
+  )
+
+kable(n_in_system_ps, digits=3)
+```
+
+```{r, fig-correct-p-n-histogram}
+#| fig-cap: "Corrected P(n) Histogram"
+#| echo: true
+#| output: true
+
+# first we need to get the data into long format
+
+n_in_system_ps |>
+  pivot_longer(
+    cols = c(Analytical, Simulation),
+    names_to = "method",
+    values_to = "p"
+  ) |>
+  ggplot(aes(x = n, y = p, fill = method, group = method)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "n", y = "Probability", title = "Probabilities by Method") +
+  theme_minimal()
+```
+
+I'll leave it to you to compare these results with an incorrect method which would be simply averaging from the sampled data or the events log without accounting for time.
 
 # Conclusion
 
 ## Potential Complications?
 
-- What if there is a limited amount of space and if the line is too long, customers just leave?
-- Service times follow different distributions?
-- More than one line? More than one server?
-- Priority line with different logic? Maybe a commerical customer with 12 packages gets serviced as soon as a server is available?
+-   What if there is a limited amount of space and if the line is too long, customers just leave?
+-   Service times follow different distributions?
+-   More than one line? More than one server?
+-   Priority line with different logic? Maybe a commerical customer with 12 packages gets serviced as soon as a server is available?
 
 ## Summary
 
-- We simulated an $M/M/1$ queuing system by sampling arrival and service times
-- We obtained system state measurements by executing logic on the samples
-- Manipulated the data into an event time series
-- Created and animated `geom_step` plots using `ggplot`, `gganimate`, and `gifski`
-- Compared analytical system metrics to those we obtained from the simulation.
+-   We simulated an $M/M/1$ queuing system by sampling arrival and service times
+-   We obtained system state measurements by executing logic on the samples
+-   Manipulated the data into an event time series
+-   Created and animated `geom_step` plots using `ggplot`, `gganimate`, and `gifski`
+-   Compared analytical system metrics to those we obtained from the simulation.
+-   Noted how we must account for time to get correct performance measures
