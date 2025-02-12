@@ -2,26 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/index.html</loc>
-    <lastmod>2025-01-22T21:39:21.038Z</lastmod>
+    <lastmod>2025-02-12T20:20:14.008Z</lastmod>
   </url>
   <url>
-    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R0_nb.html</loc>
-    <lastmod>2025-01-29T22:22:46.806Z</lastmod>
-  </url>
-  <url>
-    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R2_nb.html</loc>
-    <lastmod>2025-01-30T00:12:20.400Z</lastmod>
-  </url>
-  <url>
-    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R1_reveal.html</loc>
-    <lastmod>2025-01-22T21:38:52.849Z</lastmod>
+    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R3_nb.html</loc>
+    <lastmod>2025-02-05T20:20:33.819Z</lastmod>
   </url>
   <url>
     <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R1_nb.html</loc>
     <lastmod>2025-01-22T21:38:52.849Z</lastmod>
   </url>
   <url>
-    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R3_nb.html</loc>
-    <lastmod>2025-02-05T20:20:33.819Z</lastmod>
+    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R1_reveal.html</loc>
+    <lastmod>2025-01-22T21:38:52.849Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R2_nb.html</loc>
+    <lastmod>2025-01-30T00:12:20.400Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R5_reveal.html</loc>
+    <lastmod>2025-02-12T20:36:58.240Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R5_nb.html</loc>
+    <lastmod>2025-02-12T20:36:58.240Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R0_nb.html</loc>
+    <lastmod>2025-01-29T22:22:46.806Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R4_reveal.html</loc>
+    <lastmod>2025-02-12T20:26:39.631Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dmoored4.github.io/Sim_Recitation_Sp2025/recitations/R4_nb.html</loc>
+    <lastmod>2025-02-12T20:26:39.631Z</lastmod>
   </url>
 </urlset>
