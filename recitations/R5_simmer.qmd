@@ -1,5 +1,5 @@
 ---
-title: "R4 Azimuth Check"
+title: "R5 Intro to `simmer` 1"
 subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
 author:
   - name: Daniel Moore
@@ -9,8 +9,8 @@ author:
         city: Piscataway
         state: NJ
    
-date: 2025-02-12
-image: "../assets/azimuth_check.jpg"
+date: 2025-02-19
+image: "../assets/sweat_button.jpg"
 date-format: iso
 
 format:

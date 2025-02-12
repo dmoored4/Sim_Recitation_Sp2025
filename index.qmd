@@ -2,7 +2,9 @@
 title: "Simulations in IE Recitations"
 listing: 
   type: table
-  contents: recitations
+  contents:
+    - recitations/*.qmd  # Include all recitation files
+    - "!recitations/R5_simmer.qmd"  # Exclude this specific file
   sort: "title"
   #categories: true
   fields: [date, title, reading-time, image]
