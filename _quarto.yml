@@ -18,6 +18,8 @@ website:
             href: recitations/R2_baggage_handling_system.qmd
           - text: "Rectiation #3"
             href: recitations/R3_animations.qmd
+          - text: "Recitation #4"
+            href: recitations/R4_azimuth_check.qmd
     tools:
       - icon: github
         menu:

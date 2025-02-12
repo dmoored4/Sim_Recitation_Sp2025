@@ -1,0 +1,119 @@
+---
+title: "R4 Azimuth Check"
+subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
+author:
+  - name: Daniel Moore
+    email: daniel.l.moore@rutgers.edu
+    affiliation: 
+      - name: Rutgers University
+        city: Piscataway
+        state: NJ
+   
+date: 2025-02-12
+image: "../assets/azimuth_check.jpg"
+date-format: iso
+
+format:
+  html:
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    toc-expand: 2
+    number-depth: 3
+    output-file: R4_nb
+    df-print: kable
+
+  revealjs:
+    logo: "../assets/R_sunj.svg"
+    footer: "[Recitation Website](https://dmoored4.github.io/Sim_Recitation_Sp2025/)"
+    number-sections: true
+    toc: true
+    toc-depth: 2
+    number-depth: 2
+    slide-level: 3
+    output-file: R4_reveal
+    df-print: kable
+---
+
+# Questions {.unnumbered .unlisted}
+
+# Learning Objectives
+
+1. Review the project in detail
+2. Identify any knowledge gaps
+3. Demonstrate implmentation of a custom distribution
+
+# Project
+
+```{mermaid}
+gantt
+    title Project Timeline - Simulation Course
+    dateFormat  YYYY-MM-DD
+    section Milestones
+    Assigned : milestone, 2025-02-04, 1d
+    Project Proposal : milestone, 2025-02-18, 1d
+    Report Date : milestone, 2025-03-25, 1d
+    Presentation: milestone, 2025-03-25, 1d
+
+    section Tasks
+    
+    Analytical Modeling : 2025-02-04, 1d
+    Modeling in R :  2025-02-04, 1d
+    Report : 2025-02-04, 1d
+    Presentation : 2025-02-04, 1d
+    Final Submission : 2025-03-25, 1d
+```
+
+
+# Problem
+
+## Built-in distributions:
+
+| Distribution Name  | Notation       | Parameters*                     | pdf or pmf | Description |
+|--------------------|---------------|---------------------------------|------------|-------------|
+| Beta              | $\text{Beta}(\alpha, \beta)$ | Shape parameters $\alpha, \beta > 0$ | $f(x) = \frac{x^{\alpha - 1} (1 - x)^{\beta - 1}}{B(\alpha, \beta)}$, $0 < x < 1$ | Continuous distribution on (0,1), useful for modeling proportions. |
+| Binomial          | $\text{Bin}(n, p)$ | $n$ (number of trials), $p$ (success probability) | $P(X = k) = \binom{n}{k} p^k (1 - p)^{n - k}$, $k = 0, 1, ..., n$ | Discrete distribution counting number of successes in $n$ trials. |
+| Cauchy            | $\text{Cauchy}(x_0, \gamma)$ | Location $x_0$, scale $\gamma > 0$ | $f(x) = \frac{1}{\pi \gamma} \left[ \frac{1}{1 + \left(\frac{x - x_0}{\gamma}\right)^2} \right]$ | Heavy-tailed distribution with undefined mean and variance. |
+| Chi-Squared       | $\chi^2(k)$ | Degrees of freedom $k$ | $f(x) = \frac{x^{(k/2 - 1)} e^{-x/2}}{2^{k/2} \Gamma(k/2)}$, $x > 0$ | Special case of the gamma distribution, useful in hypothesis testing. |
+| Exponential       | $\text{Exp}(\lambda)$ | Rate $\lambda > 0$ | $f(x) = \lambda e^{-\lambda x}$, $x > 0$ | Memoryless distribution for modeling waiting times. |
+| F                | $F(d_1, d_2)$ | Degrees of freedom $d_1, d_2$ | $f(x) = \frac{\Gamma((d_1 + d_2)/2)}{\Gamma(d_1/2) \Gamma(d_2/2)} \left( \frac{d_1}{d_2} \right)^{d_1/2} \frac{x^{d_1/2 - 1}}{\left( 1 + \frac{d_1}{d_2} x \right)^{(d_1 + d_2)/2}}$ | Ratio of two chi-squared distributions, used in ANOVA and regression. |
+| Gamma            | $\text{Gamma}(\alpha, \beta)$ | Shape $\alpha > 0$, rate $\beta > 0$ | $f(x) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}$, $x > 0$ | Generalization of the exponential distribution. |
+| Geometric        | $\text{Geom}(p)$ | Success probability $p$ | $P(X = k) = (1 - p)^{k - 1} p$, $k = 1, 2, 3, \dots$ | Counts the number of Bernoulli trials until the first success. |
+| Hypergeometric   | $\text{Hypergeom}(N, K, n)$ | Population size $N$, successes in population $K$, sample size $n$ | $P(X = k) = \frac{\binom{K}{k} \binom{N-K}{n-k}}{\binom{N}{n}}$, $k = 0, 1, ..., n$ | Models success counts in draws without replacement. |
+| Log-Normal       | $\text{Lognormal}(\mu, \sigma)$ | Location $\mu$, scale $\sigma > 0$ | $f(x) = \frac{1}{x \sigma \sqrt{2\pi}} e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}$, $x > 0$ | Distribution of a variable whose logarithm is normally distributed. |
+| Multinomial      | $\text{Mult}(n, p_1, ..., p_k)$ | Trials $n$, probabilities $p_i$ (sum to 1) | $P(X_1 = x_1, ..., X_k = x_k) = \frac{n!}{x_1! x_2! \dots x_k!} p_1^{x_1} p_2^{x_2} \dots p_k^{x_k}$ | Generalization of binomial for multiple categories. |
+| Negative Binomial | $\text{NegBin}(r, p)$ | Failures $r$, success probability $p$ | $P(X = k) = \binom{k+r-1}{k} p^r (1 - p)^k$, $k = 0, 1, 2, \dots$ | Counts failures before $r$ successes in Bernoulli trials. |
+| Normal           | $\mathcal{N}(\mu, \sigma^2)$ | Mean $\mu$, standard deviation $\sigma > 0$ | $f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}$ | Bell-shaped distribution, fundamental in statistics. |
+| Poisson         | $\text{Pois}(\lambda)$ | Rate $\lambda > 0$ | $P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}$, $k = 0, 1, 2, \dots$ | Models counts of rare events in fixed intervals. |
+| Student's t      | $t(\nu)$ | Degrees of freedom $\nu$ | $f(x) = \frac{\Gamma((\nu + 1)/2)}{\sqrt{\nu \pi} \Gamma(\nu/2)} \left(1 + \frac{x^2}{\nu}\right)^{-(\nu + 1)/2}$ | Similar to normal but with heavier tails, useful for small samples. |
+| Uniform          | $U(a, b)$ | Lower $a$, upper $b$ | $f(x) = \frac{1}{b - a}$, $a \leq x \leq b$ | Constant probability density on $[a, b]$. |
+| Weibull          | $\text{Weibull}(\lambda, k)$ | Scale $\lambda > 0$, shape $k > 0$ | $f(x) = \frac{k}{\lambda} \left( \frac{x}{\lambda} \right)^{k-1} e^{-(x/\lambda)^k}$, $x > 0$ | Models life data and reliability analysis. |
+
+*Parameters may vary based on different parameterizations.
+
+
+*Parameter names and symbols can vary between different disciplines
+
+## Our distribution:
+
+### What makes a valid distribution?
+
+- summation or integration = 1
+- 
+
+# Code
+
+## Loading Packages
+
+```{r}
+library(fitdistrplus)
+```
+
+## Our Task
+
+![](../assets/sweat_button.jpg)
+## Extending Functionality
+
+- [`fitdistrplus` vignette](https://cran.r-project.org/web/packages/fitdistrplus/vignettes/fitdistrplus_vignette.html#Choice)
+
+##

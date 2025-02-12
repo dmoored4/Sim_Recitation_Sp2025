@@ -3,7 +3,7 @@ title: "Simulations in IE Recitations"
 listing: 
   type: table
   contents: recitations
-  sort: "date"
+  sort: "title"
   #categories: true
   fields: [date, title, reading-time, image]
 ---

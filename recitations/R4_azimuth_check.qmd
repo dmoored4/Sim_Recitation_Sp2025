@@ -1,0 +1,142 @@
+---
+title: "R4 Azimuth Check"
+subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
+author:
+  - name: Daniel Moore
+    email: daniel.l.moore@rutgers.edu
+    affiliation: 
+      - name: Rutgers University
+        city: Piscataway
+        state: NJ
+   
+date: 2025-02-12
+image: "../assets/azimuth_check.jpg"
+date-format: iso
+
+format:
+  html:
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    toc-expand: 2
+    number-depth: 3
+    output-file: R4_nb
+    df-print: kable
+
+  revealjs:
+    #overflow: smaller
+    logo: "../assets/R_sunj.svg"
+    footer: "[Recitation Website](https://dmoored4.github.io/Sim_Recitation_Sp2025/)"
+    toc: true
+    toc-depth: 2
+    slide-level: 3
+    number-sections: true
+    number-depth: 2
+    output-file: R4_reveal
+    
+---
+
+# Questions {.unnumbered .unlisted}
+
+-   Homework?
+-   Project?
+-   R?
+-   Quarto?
+
+# Learning Objectives
+
+1.  Confirm comprehension of Simulation and coding topics to this point
+    
+2.  Review Project in Detail
+
+
+# Check on Learning
+
+## Simulation Concepts
+
+### Distributions
+
+-   Where do distributions come from?
+-   What information can we get from them?
+-   If we have a distribution, how do we simulate data with it?
+-   If we have data, how do we figure out which distribution it came from?
+-   What is the relationship between a system process and a distribution?
+
+### Simulations
+
+-   Why do we do simulations?
+-   What is the most important step in a simulation?
+-   How do we do one?
+
+## Quarto
+
+-   Why are we using Quarto?
+-   What does Quarto give you?
+-   How do you use R and Quarto?
+
+## Implementation in R
+
+-   Reading and manipulating data
+-   Tidy data vs. Matrix data. Wide-form tidy vs. Long-form tidy
+-   Creating Plots
+-   Sampling distributions
+-   Functions, Loops, control flow, variables
+-   Fitting distributions
+-   Animations
+
+# Project
+
+-   Why am I doing this?
+-   Why is there a project proposal due?
+
+## Timeline
+
+```{mermaid}
+gantt
+    title Project Timeline - Simulation Course
+    dateFormat  YYYY-MM-DD
+    section Milestones
+    Assigned : milestone, 2025-02-04, 1d
+    Project Proposal : milestone, 2025-02-18, 1d
+    Spring Break : springbreak, 2025-03-15, 9d
+    Report Date : milestone, 2025-03-25, 1d
+    Presentation: milestone, 2025-03-25, 1d
+
+    section Tasks
+    System Modeling : sys_model, 2025-02-04, 2w
+    Analytical Modeling : anlytical_model, 2025-02-10, 3w
+    Modeling in R :  numerical_model, 2025-02-10, 3w
+    Report : 2025-02-28, 2w
+    Presentation : 2025-02-28, 2w
+    Final Submission : 2025-03-25, 1d
+    
+    section Recitations
+    Intro to `simmer` 1: 2025-02-19, 2d
+    Custom Distributions : 2025-02-26, 2d
+    Intro to `simmer` 2: 2025-03-05, 2d
+    Reporting Results* : 2025-03-12, 2d
+```
+
+::: callout-note
+* Will be recorded and posted to Canvas
+:::
+
+## Process Flow and Modeling
+
+```{mermaid}
+gantt
+    title Restaurant Order Tracking
+    dateFormat  X
+    axisFormat %M min
+    Start : milestone, 0, 0s
+    Food Prep (10-20 min) :prep, 0, 15m  
+    Food Delivery (20-30 min) :delivery, after prep, 30m  
+    Delivered : milestone, after delivery, 0s
+```
+
+## Insights
+
+- Thoughts
+- Questions
+- Concerns
+- Clarifications
