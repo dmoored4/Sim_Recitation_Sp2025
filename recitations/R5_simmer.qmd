@@ -20,7 +20,7 @@ format:
     toc-depth: 3
     toc-expand: 2
     number-depth: 3
-    output-file: R4_nb
+    output-file: R5_nb
     df-print: kable
 
   revealjs:
@@ -31,7 +31,7 @@ format:
     toc-depth: 2
     number-depth: 2
     slide-level: 3
-    output-file: R4_reveal
+    output-file: R5_reveal
     df-print: kable
 ---
 
@@ -43,26 +43,6 @@ format:
 2. Identify any knowledge gaps
 3. Demonstrate implmentation of a custom distribution
 
-# Project
-
-```{mermaid}
-gantt
-    title Project Timeline - Simulation Course
-    dateFormat  YYYY-MM-DD
-    section Milestones
-    Assigned : milestone, 2025-02-04, 1d
-    Project Proposal : milestone, 2025-02-18, 1d
-    Report Date : milestone, 2025-03-25, 1d
-    Presentation: milestone, 2025-03-25, 1d
-
-    section Tasks
-    
-    Analytical Modeling : 2025-02-04, 1d
-    Modeling in R :  2025-02-04, 1d
-    Report : 2025-02-04, 1d
-    Presentation : 2025-02-04, 1d
-    Final Submission : 2025-03-25, 1d
-```
 
 
 # Problem
