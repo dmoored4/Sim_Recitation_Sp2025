@@ -9,7 +9,7 @@
 <meta name="author" content="Daniel Moore">
 <meta name="dcterms.date" content="2025-02-19">
 
-<title>R5 Intro to simmer 1 – Simulation Models in Industrial Engineering</title>
+<title>R5 Intro to Simmer 1 – Simulation Models in Industrial Engineering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -223,6 +223,12 @@ window.Quarto = {
  <span class="menu-text">Recitation #4</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R5_simmer.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Recitation #5</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -235,30 +241,37 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">1</span> Learning Objectives</a></li>
-  <li><a href="#problem" id="toc-problem" class="nav-link" data-scroll-target="#problem"><span class="header-section-number">2</span> Problem</a>
+  <li><a href="#review" id="toc-review" class="nav-link active" data-scroll-target="#review"><span class="header-section-number">1</span> Review</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives"><span class="header-section-number">2</span> Learning Objectives</a></li>
+  <li><a href="#problem" id="toc-problem" class="nav-link" data-scroll-target="#problem"><span class="header-section-number">3</span> Problem</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation"><span class="header-section-number">4</span> Implementation</a>
   <ul class="collapse">
-  <li><a href="#built-in-distributions" id="toc-built-in-distributions" class="nav-link" data-scroll-target="#built-in-distributions"><span class="header-section-number">2.1</span> Built-in distributions:</a></li>
-  <li><a href="#our-distribution" id="toc-our-distribution" class="nav-link" data-scroll-target="#our-distribution"><span class="header-section-number">2.2</span> Our distribution:</a>
+  <li><a href="#loading-packages" id="toc-loading-packages" class="nav-link" data-scroll-target="#loading-packages"><span class="header-section-number">4.1</span> Loading Packages</a></li>
+  <li><a href="#defining-model" id="toc-defining-model" class="nav-link" data-scroll-target="#defining-model"><span class="header-section-number">4.2</span> Defining Model</a></li>
+  <li><a href="#simmer-components" id="toc-simmer-components" class="nav-link" data-scroll-target="#simmer-components"><span class="header-section-number">4.3</span> Simmer Components</a>
   <ul class="collapse">
-  <li><a href="#what-makes-a-valid-distribution" id="toc-what-makes-a-valid-distribution" class="nav-link" data-scroll-target="#what-makes-a-valid-distribution"><span class="header-section-number">2.2.1</span> What makes a valid distribution?</a></li>
+  <li><a href="#customer-trajectory" id="toc-customer-trajectory" class="nav-link" data-scroll-target="#customer-trajectory"><span class="header-section-number">4.3.1</span> Customer Trajectory</a></li>
+  <li><a href="#more-complex-trajectory" id="toc-more-complex-trajectory" class="nav-link" data-scroll-target="#more-complex-trajectory"><span class="header-section-number">4.3.2</span> More complex trajectory</a></li>
+  <li><a href="#instantiating-the-simulation-environment" id="toc-instantiating-the-simulation-environment" class="nav-link" data-scroll-target="#instantiating-the-simulation-environment"><span class="header-section-number">4.3.3</span> Instantiating the Simulation Environment</a></li>
+  </ul></li>
+  <li><a href="#running-the-simulation" id="toc-running-the-simulation" class="nav-link" data-scroll-target="#running-the-simulation"><span class="header-section-number">4.4</span> Running the Simulation</a></li>
+  <li><a href="#getting-results" id="toc-getting-results" class="nav-link" data-scroll-target="#getting-results"><span class="header-section-number">4.5</span> Getting Results</a>
+  <ul class="collapse">
+  <li><a href="#resource-visualization" id="toc-resource-visualization" class="nav-link" data-scroll-target="#resource-visualization"><span class="header-section-number">4.5.1</span> Resource Visualization</a></li>
+  <li><a href="#customer-visualization" id="toc-customer-visualization" class="nav-link" data-scroll-target="#customer-visualization"><span class="header-section-number">4.5.2</span> Customer Visualization</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code"><span class="header-section-number">3</span> Code</a>
-  <ul class="collapse">
-  <li><a href="#loading-packages" id="toc-loading-packages" class="nav-link" data-scroll-target="#loading-packages"><span class="header-section-number">3.1</span> Loading Packages</a></li>
-  <li><a href="#our-task" id="toc-our-task" class="nav-link" data-scroll-target="#our-task"><span class="header-section-number">3.2</span> Our Task</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">3.3</span> </a></li>
-  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">5</span> Conclusion</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps"><span class="header-section-number">6</span> Next Steps</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="R5_reveal.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">R5 Intro to <code>simmer</code> 1</h1>
+<h1 class="title">R5 Intro to Simmer 1</h1>
 <p class="subtitle lead">14:540:384: Simulation Models in IE (Spring 2025)</p>
 </div>
 
@@ -298,197 +311,350 @@ window.Quarto = {
 <section id="questions" class="level1 unnumbered unlisted">
 <h1 class="unnumbered unlisted">Questions</h1>
 </section>
-<section id="learning-objectives" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Learning Objectives</h1>
+<section id="review" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Review</h1>
 <ol type="1">
-<li>Review the project in detail</li>
-<li>Identify any knowledge gaps</li>
-<li>Demonstrate implmentation of a custom distribution</li>
+<li>Shown why we need simulations and a few practical examples</li>
+<li>Discussed where distributions come from, how to get them and how to use them</li>
+<li>Shown how to manipulate data and create visualizations</li>
+<li>Demonstrated two coding patterns for simulations</li>
 </ol>
 </section>
-<section id="problem" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Problem</h1>
-<section id="built-in-distributions" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="built-in-distributions"><span class="header-section-number">2.1</span> Built-in distributions:</h2>
-<table class="caption-top table">
+<section id="learning-objectives" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Learning Objectives</h1>
+<ol type="1">
+<li>Problem analysis</li>
+<li>Set up a simple simulation with <code>simmer</code></li>
+<li>Run the simulation and extract results</li>
+</ol>
+</section>
+<section id="problem" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Problem</h1>
+<p>Revisit the Wholefoods Return queue</p>
+<ul>
+<li>customers arrive at a rate <span class="math inline">\(\lambda = 3/min\)</span></li>
+<li>single server with exponential service time with <span class="math inline">\(\mu = 1/2min\)</span></li>
+<li>run this simulation for 4 hours</li>
+</ul>
+</section>
+<section id="implementation" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Implementation</h1>
+<ul>
+<li><a href="https://r-simmer.org">simmer</a>: a process-oriented and trajectory-based Discrete-Event Simulation (DES) package for R</li>
+<li>Allows us to define the essentials of our system</li>
+<li>It handles the simulation part as well as extracting metrics and nice visualizations</li>
+</ul>
+<section id="loading-packages" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="loading-packages"><span class="header-section-number">4.1</span> Loading Packages</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># usual suspects</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fitdistrplus)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># new kid on the block</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simmer)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simmer.plot)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simmer.bricks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="defining-model" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="defining-model"><span class="header-section-number">4.2</span> Defining Model</h2>
+<ul>
+<li>Single bus stop</li>
+<li>Students arrive according to Poisson process at a rate of 3/min</li>
+<li>Busses arrive on average 18 min +/- 2 min</li>
+<li>Travel time to next stop is 12 min +/- 3 min</li>
+<li>Busses have a capacity of 50 students</li>
+<li>Simulate this for 4 hours</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all given in minutes</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>t_f <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">*</span><span class="dv">60</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>RV_arr <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rexp</span>(n, <span class="at">rate =</span> lambda)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>RV_service <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rexp</span>(n, <span class="at">rate =</span> mu)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="simmer-components" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="simmer-components"><span class="header-section-number">4.3</span> Simmer Components</h2>
+<ul>
+<li><p><strong>Environment</strong>: The simulation environment, which contains the resources and processes</p></li>
+<li><p><strong>Trajectories</strong>: The paths that entities take through the simulation, which define the sequence of events that occur</p></li>
+<li><p><strong>Resources</strong>: The resources that are used in the simulation, such as servers, buses, and waiting areas</p></li>
+</ul>
+<p>Let’s break the problem down into components</p>
+<section id="customer-trajectory" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="customer-trajectory"><span class="header-section-number">4.3.1</span> Customer Trajectory</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cust_traj <span class="ot">&lt;-</span> <span class="fu">trajectory</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">seize</span>(<span class="st">"clerk"</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">timeout</span>(<span class="cf">function</span>() <span class="fu">RV_service</span>(<span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">release</span>(<span class="st">"clerk"</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Very basic trajectory. Customer shows up, gets in line (if necessary), makes a return, and leaves as shown in <span class="citation" data-cites="plot-customer-trajectory">@plot-customer-trajectory</span></li>
+</ul>
+<div class="cell" data-fig-label="plot-customer-trajectory">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cust_traj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>some bug I’ll investigate and demonstrate next time how to get the plot to appear correctly.</li>
+</ul>
+</section>
+<section id="more-complex-trajectory" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="more-complex-trajectory"><span class="header-section-number">4.3.2</span> More complex trajectory</h3>
+<p>More complex plotted trajectory from the <a href="https://r-simmer.org/extensions/plot/articles/plot.trajectory.html">docs</a></p>
+</section>
+<section id="instantiating-the-simulation-environment" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="instantiating-the-simulation-environment"><span class="header-section-number">4.3.3</span> Instantiating the Simulation Environment</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>return_line <span class="ot">&lt;-</span> <span class="fu">simmer</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_resource</span>(<span class="st">"clerk"</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_generator</span>(<span class="st">"customer"</span>, cust_traj, <span class="cf">function</span>() <span class="fu">RV_arr</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="running-the-simulation" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="running-the-simulation"><span class="header-section-number">4.4</span> Running the Simulation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>return_line <span class="sc">|&gt;</span> <span class="fu">run</span>(t_f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>simmer environment: anonymous | now: 240 | next: 246.014638215687
+{ Monitor: in memory }
+{ Resource: clerk | monitored: TRUE | server status: 0(1) | queue status: 0(Inf) }
+{ Source: customer | monitored: 1 | n_generated: 82 }</code></pre>
+</div>
+</div>
+</section>
+<section id="getting-results" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="getting-results"><span class="header-section-number">4.5</span> Getting Results</h2>
+<p><code>get_mon_resources</code>: gets information about the “server” usage <code>get_mon_arrivals</code>: gets information about the “customers”</p>
+<section id="resource-visualization" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="resource-visualization"><span class="header-section-number">4.5.1</span> Resource Visualization</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>resources <span class="ot">&lt;-</span> <span class="fu">get_mon_resources</span>(return_line)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(resources))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>averages over time:</li>
+</ul>
+<div class="cell" data-fig-label="resource-smooth">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resources, <span class="at">metric =</span> <span class="st">"usage"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="R5_simmer1_files/figure-html/plot-system-smooth-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>System usage over time</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>instantaneous usage:</li>
+</ul>
+<div class="cell" data-fig-label="resource-step">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resources, <span class="at">metric =</span> <span class="st">"usage"</span>, <span class="at">steps=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="R5_simmer1_files/figure-html/plot-system-step-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>System usage over time</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>utiliazation of the resources. Not super interesting here due to only one resource</li>
+</ul>
+<div class="cell" data-fig-label="resource-utilization">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resources, <span class="at">metric =</span> <span class="st">"utilization"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="R5_simmer1_files/figure-html/plot-utilization-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>System utilization over time</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>looking at just the queue</li>
+</ul>
+<div class="cell" data-fig-label="resource-queue-only">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resources, <span class="at">metric =</span> <span class="st">"usage"</span>, <span class="at">items=</span><span class="st">"queue"</span>, <span class="at">steps=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="R5_simmer1_files/figure-html/plot-queue-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Queue usage over time</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-fig-label="resource-server-only">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resources, <span class="at">metric =</span> <span class="st">"usage"</span>, <span class="at">items=</span><span class="st">"server"</span>, <span class="at">steps=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="R5_simmer1_files/figure-html/plot-server-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="customer-visualization" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="customer-visualization"><span class="header-section-number">4.5.2</span> Customer Visualization</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>arrivals <span class="ot">&lt;-</span> <span class="fu">get_mon_arrivals</span>(return_line)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(arrivals))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 21%">
+<col style="width: 15%">
 <col style="width: 16%">
-<col style="width: 35%">
-<col style="width: 12%">
+<col style="width: 15%">
+<col style="width: 21%">
 <col style="width: 13%">
+<col style="width: 18%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Distribution Name</th>
-<th>Notation</th>
-<th>Parameters*</th>
-<th>pdf or pmf</th>
-<th>Description</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">start_time</th>
+<th style="text-align: right;">end_time</th>
+<th style="text-align: right;">activity_time</th>
+<th style="text-align: left;">finished</th>
+<th style="text-align: right;">replication</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Beta</td>
-<td><span class="math inline">\(\text{Beta}(\alpha, \beta)\)</span></td>
-<td>Shape parameters <span class="math inline">\(\alpha, \beta &gt; 0\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{x^{\alpha - 1} (1 - x)^{\beta - 1}}{B(\alpha, \beta)}\)</span>, <span class="math inline">\(0 &lt; x &lt; 1\)</span></td>
-<td>Continuous distribution on (0,1), useful for modeling proportions.</td>
+<td style="text-align: left;">customer0</td>
+<td style="text-align: right;">1.257978</td>
+<td style="text-align: right;">3.834581</td>
+<td style="text-align: right;">2.5766029</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td>Binomial</td>
-<td><span class="math inline">\(\text{Bin}(n, p)\)</span></td>
-<td><span class="math inline">\(n\)</span> (number of trials), <span class="math inline">\(p\)</span> (success probability)</td>
-<td><span class="math inline">\(P(X = k) = \binom{n}{k} p^k (1 - p)^{n - k}\)</span>, <span class="math inline">\(k = 0, 1, ..., n\)</span></td>
-<td>Discrete distribution counting number of successes in <span class="math inline">\(n\)</span> trials.</td>
+<td style="text-align: left;">customer1</td>
+<td style="text-align: right;">7.361083</td>
+<td style="text-align: right;">10.916178</td>
+<td style="text-align: right;">3.5550947</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td>Cauchy</td>
-<td><span class="math inline">\(\text{Cauchy}(x_0, \gamma)\)</span></td>
-<td>Location <span class="math inline">\(x_0\)</span>, scale <span class="math inline">\(\gamma &gt; 0\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{1}{\pi \gamma} \left[ \frac{1}{1 + \left(\frac{x - x_0}{\gamma}\right)^2} \right]\)</span></td>
-<td>Heavy-tailed distribution with undefined mean and variance.</td>
+<td style="text-align: left;">customer2</td>
+<td style="text-align: right;">14.344798</td>
+<td style="text-align: right;">15.443273</td>
+<td style="text-align: right;">1.0984753</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td>Chi-Squared</td>
-<td><span class="math inline">\(\chi^2(k)\)</span></td>
-<td>Degrees of freedom <span class="math inline">\(k\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{x^{(k/2 - 1)} e^{-x/2}}{2^{k/2} \Gamma(k/2)}\)</span>, <span class="math inline">\(x &gt; 0\)</span></td>
-<td>Special case of the gamma distribution, useful in hypothesis testing.</td>
+<td style="text-align: left;">customer3</td>
+<td style="text-align: right;">14.401869</td>
+<td style="text-align: right;">15.684600</td>
+<td style="text-align: right;">0.2413268</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td>Exponential</td>
-<td><span class="math inline">\(\text{Exp}(\lambda)\)</span></td>
-<td>Rate <span class="math inline">\(\lambda &gt; 0\)</span></td>
-<td><span class="math inline">\(f(x) = \lambda e^{-\lambda x}\)</span>, <span class="math inline">\(x &gt; 0\)</span></td>
-<td>Memoryless distribution for modeling waiting times.</td>
+<td style="text-align: left;">customer4</td>
+<td style="text-align: right;">15.851105</td>
+<td style="text-align: right;">16.391935</td>
+<td style="text-align: right;">0.5408302</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td>F</td>
-<td><span class="math inline">\(F(d_1, d_2)\)</span></td>
-<td>Degrees of freedom <span class="math inline">\(d_1, d_2\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{\Gamma((d_1 + d_2)/2)}{\Gamma(d_1/2) \Gamma(d_2/2)} \left( \frac{d_1}{d_2} \right)^{d_1/2} \frac{x^{d_1/2 - 1}}{\left( 1 + \frac{d_1}{d_2} x \right)^{(d_1 + d_2)/2}}\)</span></td>
-<td>Ratio of two chi-squared distributions, used in ANOVA and regression.</td>
-</tr>
-<tr class="odd">
-<td>Gamma</td>
-<td><span class="math inline">\(\text{Gamma}(\alpha, \beta)\)</span></td>
-<td>Shape <span class="math inline">\(\alpha &gt; 0\)</span>, rate <span class="math inline">\(\beta &gt; 0\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}\)</span>, <span class="math inline">\(x &gt; 0\)</span></td>
-<td>Generalization of the exponential distribution.</td>
-</tr>
-<tr class="even">
-<td>Geometric</td>
-<td><span class="math inline">\(\text{Geom}(p)\)</span></td>
-<td>Success probability <span class="math inline">\(p\)</span></td>
-<td><span class="math inline">\(P(X = k) = (1 - p)^{k - 1} p\)</span>, <span class="math inline">\(k = 1, 2, 3, \dots\)</span></td>
-<td>Counts the number of Bernoulli trials until the first success.</td>
-</tr>
-<tr class="odd">
-<td>Hypergeometric</td>
-<td><span class="math inline">\(\text{Hypergeom}(N, K, n)\)</span></td>
-<td>Population size <span class="math inline">\(N\)</span>, successes in population <span class="math inline">\(K\)</span>, sample size <span class="math inline">\(n\)</span></td>
-<td><span class="math inline">\(P(X = k) = \frac{\binom{K}{k} \binom{N-K}{n-k}}{\binom{N}{n}}\)</span>, <span class="math inline">\(k = 0, 1, ..., n\)</span></td>
-<td>Models success counts in draws without replacement.</td>
-</tr>
-<tr class="even">
-<td>Log-Normal</td>
-<td><span class="math inline">\(\text{Lognormal}(\mu, \sigma)\)</span></td>
-<td>Location <span class="math inline">\(\mu\)</span>, scale <span class="math inline">\(\sigma &gt; 0\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{1}{x \sigma \sqrt{2\pi}} e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}\)</span>, <span class="math inline">\(x &gt; 0\)</span></td>
-<td>Distribution of a variable whose logarithm is normally distributed.</td>
-</tr>
-<tr class="odd">
-<td>Multinomial</td>
-<td><span class="math inline">\(\text{Mult}(n, p_1, ..., p_k)\)</span></td>
-<td>Trials <span class="math inline">\(n\)</span>, probabilities <span class="math inline">\(p_i\)</span> (sum to 1)</td>
-<td><span class="math inline">\(P(X_1 = x_1, ..., X_k = x_k) = \frac{n!}{x_1! x_2! \dots x_k!} p_1^{x_1} p_2^{x_2} \dots p_k^{x_k}\)</span></td>
-<td>Generalization of binomial for multiple categories.</td>
-</tr>
-<tr class="even">
-<td>Negative Binomial</td>
-<td><span class="math inline">\(\text{NegBin}(r, p)\)</span></td>
-<td>Failures <span class="math inline">\(r\)</span>, success probability <span class="math inline">\(p\)</span></td>
-<td><span class="math inline">\(P(X = k) = \binom{k+r-1}{k} p^r (1 - p)^k\)</span>, <span class="math inline">\(k = 0, 1, 2, \dots\)</span></td>
-<td>Counts failures before <span class="math inline">\(r\)</span> successes in Bernoulli trials.</td>
-</tr>
-<tr class="odd">
-<td>Normal</td>
-<td><span class="math inline">\(\mathcal{N}(\mu, \sigma^2)\)</span></td>
-<td>Mean <span class="math inline">\(\mu\)</span>, standard deviation <span class="math inline">\(\sigma &gt; 0\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}\)</span></td>
-<td>Bell-shaped distribution, fundamental in statistics.</td>
-</tr>
-<tr class="even">
-<td>Poisson</td>
-<td><span class="math inline">\(\text{Pois}(\lambda)\)</span></td>
-<td>Rate <span class="math inline">\(\lambda &gt; 0\)</span></td>
-<td><span class="math inline">\(P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}\)</span>, <span class="math inline">\(k = 0, 1, 2, \dots\)</span></td>
-<td>Models counts of rare events in fixed intervals.</td>
-</tr>
-<tr class="odd">
-<td>Student’s t</td>
-<td><span class="math inline">\(t(\nu)\)</span></td>
-<td>Degrees of freedom <span class="math inline">\(\nu\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{\Gamma((\nu + 1)/2)}{\sqrt{\nu \pi} \Gamma(\nu/2)} \left(1 + \frac{x^2}{\nu}\right)^{-(\nu + 1)/2}\)</span></td>
-<td>Similar to normal but with heavier tails, useful for small samples.</td>
-</tr>
-<tr class="even">
-<td>Uniform</td>
-<td><span class="math inline">\(U(a, b)\)</span></td>
-<td>Lower <span class="math inline">\(a\)</span>, upper <span class="math inline">\(b\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{1}{b - a}\)</span>, <span class="math inline">\(a \leq x \leq b\)</span></td>
-<td>Constant probability density on <span class="math inline">\([a, b]\)</span>.</td>
-</tr>
-<tr class="odd">
-<td>Weibull</td>
-<td><span class="math inline">\(\text{Weibull}(\lambda, k)\)</span></td>
-<td>Scale <span class="math inline">\(\lambda &gt; 0\)</span>, shape <span class="math inline">\(k &gt; 0\)</span></td>
-<td><span class="math inline">\(f(x) = \frac{k}{\lambda} \left( \frac{x}{\lambda} \right)^{k-1} e^{-(x/\lambda)^k}\)</span>, <span class="math inline">\(x &gt; 0\)</span></td>
-<td>Models life data and reliability analysis.</td>
+<td style="text-align: left;">customer5</td>
+<td style="text-align: right;">21.128701</td>
+<td style="text-align: right;">22.248226</td>
+<td style="text-align: right;">1.1195250</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
 </tr>
 </tbody>
 </table>
-<p>*Parameters may vary based on different parameterizations.</p>
-<p>*Parameter names and symbols can vary between different disciplines</p>
+</div>
+</div>
+<div class="cell" data-fig-label="activity-time">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(arrivals, <span class="at">metric =</span> <span class="st">"activity_time"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using method = 'loess' and formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="R5_simmer1_files/figure-html/plot-activity-time-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Activity time of customers</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-fig-label="wait-time">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(arrivals, <span class="at">metric =</span> <span class="st">"waiting_time"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using method = 'loess' and formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="R5_simmer1_files/figure-html/plot-wait-time-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Wait time of customers</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-fig-label="flow-time">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(arrivals, <span class="at">metric =</span> <span class="st">"flow_time"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using method = 'loess' and formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="R5_simmer1_files/figure-html/plot-flow-time-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Flow time of customers</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="our-distribution" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="our-distribution"><span class="header-section-number">2.2</span> Our distribution:</h2>
-<section id="what-makes-a-valid-distribution" class="level3" data-number="2.2.1">
-<h3 data-number="2.2.1" class="anchored" data-anchor-id="what-makes-a-valid-distribution"><span class="header-section-number">2.2.1</span> What makes a valid distribution?</h3>
+</section>
+</section>
+<section id="conclusion" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Conclusion</h1>
 <ul>
-<li>summation or integration = 1</li>
-<li></li>
+<li>Simmer is a powerful tool for building and simulating discrete event systems</li>
+<li>Once we can define the components and dynamics we can build a simulation</li>
+<li>We can visualize the model we’ve built to make sure it matches our expectations</li>
+<li>All the details are handled for us</li>
 </ul>
 </section>
-</section>
-</section>
-<section id="code" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Code</h1>
-<section id="loading-packages" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="loading-packages"><span class="header-section-number">3.1</span> Loading Packages</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fitdistrplus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: MASS</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: survival</code></pre>
-</div>
-</div>
-</section>
-<section id="our-task" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="our-task"><span class="header-section-number">3.2</span> Our Task</h2>
-<p><img src="../assets/sweat_button.jpg" class="img-fluid"> ## Extending Functionality</p>
+<section id="next-steps" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Next Steps</h1>
 <ul>
-<li><a href="https://cran.r-project.org/web/packages/fitdistrplus/vignettes/fitdistrplus_vignette.html#Choice"><code>fitdistrplus</code> vignette</a></li>
+<li>Working with our own distributions</li>
+<li>More complex systems such as:</li>
+<li>different paths</li>
+<li>different servers</li>
+<li>different customers</li>
 </ul>
-</section>
-<section id="section" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="section"><span class="header-section-number">3.3</span> </h2>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
