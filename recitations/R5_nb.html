@@ -360,14 +360,6 @@ window.Quarto = {
 </section>
 <section id="defining-model" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="defining-model"><span class="header-section-number">4.2</span> Defining Model</h2>
-<ul>
-<li>Single bus stop</li>
-<li>Students arrive according to Poisson process at a rate of 3/min</li>
-<li>Busses arrive on average 18 min +/- 2 min</li>
-<li>Travel time to next stop is 12 min +/- 3 min</li>
-<li>Busses have a capacity of 50 students</li>
-<li>Simulate this for 4 hours</li>
-</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all given in minutes</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span></span>
@@ -427,10 +419,10 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>return_line <span class="sc">|&gt;</span> <span class="fu">run</span>(t_f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>simmer environment: anonymous | now: 240 | next: 246.014638215687
+<pre><code>simmer environment: anonymous | now: 240 | next: 245.148894915674
 { Monitor: in memory }
 { Resource: clerk | monitored: TRUE | server status: 0(1) | queue status: 0(Inf) }
-{ Source: customer | monitored: 1 | n_generated: 82 }</code></pre>
+{ Source: customer | monitored: 1 | n_generated: 76 }</code></pre>
 </div>
 </div>
 </section>
@@ -540,49 +532,49 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">customer0</td>
-<td style="text-align: right;">1.257978</td>
-<td style="text-align: right;">3.834581</td>
-<td style="text-align: right;">2.5766029</td>
+<td style="text-align: right;">0.5238033</td>
+<td style="text-align: right;">1.064985</td>
+<td style="text-align: right;">0.5411812</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">customer1</td>
-<td style="text-align: right;">7.361083</td>
-<td style="text-align: right;">10.916178</td>
-<td style="text-align: right;">3.5550947</td>
+<td style="text-align: right;">0.9219808</td>
+<td style="text-align: right;">3.123207</td>
+<td style="text-align: right;">2.0582227</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">customer2</td>
-<td style="text-align: right;">14.344798</td>
-<td style="text-align: right;">15.443273</td>
-<td style="text-align: right;">1.0984753</td>
+<td style="text-align: right;">1.7562079</td>
+<td style="text-align: right;">3.543221</td>
+<td style="text-align: right;">0.4200142</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">customer3</td>
-<td style="text-align: right;">14.401869</td>
-<td style="text-align: right;">15.684600</td>
-<td style="text-align: right;">0.2413268</td>
+<td style="text-align: right;">7.8098146</td>
+<td style="text-align: right;">8.847429</td>
+<td style="text-align: right;">1.0376142</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">customer4</td>
-<td style="text-align: right;">15.851105</td>
-<td style="text-align: right;">16.391935</td>
-<td style="text-align: right;">0.5408302</td>
+<td style="text-align: right;">12.1858936</td>
+<td style="text-align: right;">14.162322</td>
+<td style="text-align: right;">1.9764282</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">customer5</td>
-<td style="text-align: right;">21.128701</td>
-<td style="text-align: right;">22.248226</td>
-<td style="text-align: right;">1.1195250</td>
+<td style="text-align: right;">16.1830390</td>
+<td style="text-align: right;">18.698376</td>
+<td style="text-align: right;">2.5153372</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
