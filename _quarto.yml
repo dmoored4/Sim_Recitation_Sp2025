@@ -20,6 +20,8 @@ website:
             href: recitations/R3_animations.qmd
           - text: "Recitation #4"
             href: recitations/R4_azimuth_check.qmd
+          - text: "Recitation #5"
+            href: recitations/R5_simmer.qmd
     tools:
       - icon: github
         menu:
