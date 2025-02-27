@@ -617,14 +617,20 @@ f(t; k, \lambda) = \frac{k}{\lambda}\left( \frac{t}{\lambda} \right)^{k-1}
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">theta =</span> theta_start,</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">kappa =</span> kappa_start,</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">delta =</span> delta_start)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>f_weibull <span class="ot">&lt;-</span> <span class="fu">fitdist</span>(</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  mp_ft<span class="sc">$</span>failure_times_days,</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"weibull"</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>plot.legend <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Generalized Gamma"</span>, <span class="st">"Weibull"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cov2cor(varcovar): diag(V) had non-positive or NA entries; the
+non-finite result may be dubious</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in sqrt(diag(varcovar)): NaNs produced</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>f_weibull <span class="ot">&lt;-</span> <span class="fu">fitdist</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  mp_ft<span class="sc">$</span>failure_times_days,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"weibull"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>plot.legend <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Generalized Gamma"</span>, <span class="st">"Weibull"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="plot-results" class="level2" data-number="4.4">
@@ -632,7 +638,7 @@ f(t; k, \lambda) = \frac{k}{\lambda}\left( \frac{t}{\lambda} \right)^{k-1}
 <section id="density-comparison" class="level3">
 <h3 class="anchored" data-anchor-id="density-comparison">Density Comparison</h3>
 <div class="cell" data-fig-label="plot-ggamma">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">denscomp</span>(<span class="fu">list</span>(f_ggamma, f_weibull), <span class="at">legendtext =</span> plot.legend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">denscomp</span>(<span class="fu">list</span>(f_ggamma, f_weibull), <span class="at">legendtext =</span> plot.legend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -646,7 +652,7 @@ f(t; k, \lambda) = \frac{k}{\lambda}\left( \frac{t}{\lambda} \right)^{k-1}
 <section id="quantile-quantile-comparison" class="level3">
 <h3 class="anchored" data-anchor-id="quantile-quantile-comparison">Quantile-Quantile Comparison</h3>
 <div class="cell" data-fig-label="plot-qq">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqcomp</span>(<span class="fu">list</span>(f_ggamma, f_weibull), <span class="at">legendtext =</span> plot.legend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqcomp</span>(<span class="fu">list</span>(f_ggamma, f_weibull), <span class="at">legendtext =</span> plot.legend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -660,7 +666,7 @@ f(t; k, \lambda) = \frac{k}{\lambda}\left( \frac{t}{\lambda} \right)^{k-1}
 <section id="cdf-comparison" class="level3">
 <h3 class="anchored" data-anchor-id="cdf-comparison">CDF Comparison</h3>
 <div class="cell" data-fig-label="plot-cdf">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cdfcomp</span>(<span class="fu">list</span>(f_ggamma, f_weibull), <span class="at">legendtext =</span> plot.legend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cdfcomp</span>(<span class="fu">list</span>(f_ggamma, f_weibull), <span class="at">legendtext =</span> plot.legend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -674,7 +680,7 @@ f(t; k, \lambda) = \frac{k}{\lambda}\left( \frac{t}{\lambda} \right)^{k-1}
 <section id="probability-probability-comparison" class="level3">
 <h3 class="anchored" data-anchor-id="probability-probability-comparison">Probability-Probability Comparison</h3>
 <div class="cell" data-fig-label="plot-pp">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ppcomp</span>(<span class="fu">list</span>(f_ggamma, f_weibull), <span class="at">legendtext =</span> plot.legend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ppcomp</span>(<span class="fu">list</span>(f_ggamma, f_weibull), <span class="at">legendtext =</span> plot.legend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -692,15 +698,15 @@ f(t; k, \lambda) = \frac{k}{\lambda}\left( \frac{t}{\lambda} \right)^{k-1}
 <p>Various criteria found in <a href="https://rutgers.instructure.com/courses/335550/files?preview=46309591">course notes</a>.</p>
 <ul>
 <li><p>MSE, SSE, Likelihood, AIC, BIC all provided by <code>fitdistrplus</code>.</p></li>
-<li><p>Pham’s Criteron (PC): Increase slightly the penalty each time adding parameters in the model when there is too small a sample. This is what we’ll use.</p></li>
+<li><p>Pham’s Criteron (PC): Increase slightly the penalty each time adding parameters in the model when there is too small a sample.</p></li>
 </ul>
 <p><span class="math display">\[
 PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \frac{n-1}{n-k} \right)
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="cf">function</span>(SSE, n, k) {</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  ((n<span class="sc">-</span>k) <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">log</span>(SSE<span class="sc">/</span>n) <span class="sc">*</span> k <span class="sc">*</span> ((n<span class="dv">-1</span>) <span class="sc">/</span> (n<span class="sc">-</span>k))</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="cf">function</span>(SSE, n, k) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  ((n<span class="sc">-</span>k) <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">log</span>(SSE<span class="sc">/</span>n) <span class="sc">*</span> k <span class="sc">*</span> ((n<span class="dv">-1</span>) <span class="sc">/</span> (n<span class="sc">-</span>k))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Number of samples, <span class="math inline">\(n\)</span></li>
@@ -710,63 +716,65 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 <section id="predicted-density-values" class="level3">
 <h3 class="anchored" data-anchor-id="predicted-density-values">Predicted Density Values</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># n is number of observations</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(mp_ft<span class="sc">$</span>failure_times_days)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># k is number of parameters</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>k_ggamma <span class="ot">&lt;-</span> <span class="fu">length</span>(f_ggamma<span class="sc">$</span>estimate)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>k_weibull <span class="ot">&lt;-</span> <span class="fu">length</span>(f_weibull<span class="sc">$</span>estimate)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>dens_ggamma_pred <span class="ot">&lt;-</span> <span class="fu">dggamma</span>(</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  mp_ft<span class="sc">$</span>failure_times_days,</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> f_ggamma<span class="sc">$</span>estimate[<span class="st">"theta"</span>],</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa =</span> f_ggamma<span class="sc">$</span>estimate[<span class="st">"kappa"</span>],</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">delta =</span> f_ggamma<span class="sc">$</span>estimate[<span class="st">"delta"</span>]</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>dens_weibull_pred <span class="ot">&lt;-</span> <span class="fu">dweibull</span>(</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  mp_ft<span class="sc">$</span>failure_times_days,</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">shape =</span> f_weibull<span class="sc">$</span>estimate[<span class="st">"shape"</span>],</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> f_weibull<span class="sc">$</span>estimate[<span class="st">"scale"</span>]</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># n is number of observations</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(mp_ft<span class="sc">$</span>failure_times_days)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># k is number of parameters</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>k_ggamma <span class="ot">&lt;-</span> <span class="fu">length</span>(f_ggamma<span class="sc">$</span>estimate)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>k_weibull <span class="ot">&lt;-</span> <span class="fu">length</span>(f_weibull<span class="sc">$</span>estimate)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>dens_ggamma_pred <span class="ot">&lt;-</span> <span class="fu">dggamma</span>(</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  mp_ft<span class="sc">$</span>failure_times_days,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> f_ggamma<span class="sc">$</span>estimate[<span class="st">"theta"</span>],</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa =</span> f_ggamma<span class="sc">$</span>estimate[<span class="st">"kappa"</span>],</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">delta =</span> f_ggamma<span class="sc">$</span>estimate[<span class="st">"delta"</span>]</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>dens_weibull_pred <span class="ot">&lt;-</span> <span class="fu">dweibull</span>(</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  mp_ft<span class="sc">$</span>failure_times_days,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">shape =</span> f_weibull<span class="sc">$</span>estimate[<span class="st">"shape"</span>],</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> f_weibull<span class="sc">$</span>estimate[<span class="st">"scale"</span>]</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="comparison-to-emprical-densities" class="level3">
 <h3 class="anchored" data-anchor-id="comparison-to-emprical-densities">Comparison to Emprical Densities</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute empirical density</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dens_emp <span class="ot">&lt;-</span> <span class="fu">density</span>(mp_ft<span class="sc">$</span>failure_times_days)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Interpolate empirical density to match predicted values</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>empirical_vals <span class="ot">&lt;-</span> <span class="fu">approx</span>(dens_emp<span class="sc">$</span>x, dens_emp<span class="sc">$</span>y, <span class="at">xout =</span> mp_ft<span class="sc">$</span>failure_times_days, <span class="at">rule =</span> <span class="dv">2</span>)<span class="sc">$</span>y</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute Sum of Squared Errors (SSE) for generalized gamma</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>sse_ggamma <span class="ot">&lt;-</span> <span class="fu">sum</span>((empirical_vals <span class="sc">-</span> dens_ggamma_pred)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute Sum of Squared Errors (SSE) for Weibull</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>sse_weibull <span class="ot">&lt;-</span> <span class="fu">sum</span>((empirical_vals <span class="sc">-</span> dens_weibull_pred)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate PC for the two distributions</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>PC_ggamma <span class="ot">&lt;-</span> <span class="fu">PC</span>(sse_ggamma, n, k_ggamma)</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>PC_weibull <span class="ot">&lt;-</span> <span class="fu">PC</span>(sse_weibull, n, k_weibull)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute empirical density</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>dens_emp <span class="ot">&lt;-</span> <span class="fu">density</span>(mp_ft<span class="sc">$</span>failure_times_days)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Interpolate empirical density to match predicted values</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>empirical_vals <span class="ot">&lt;-</span> <span class="fu">approx</span>(dens_emp<span class="sc">$</span>x, dens_emp<span class="sc">$</span>y, <span class="at">xout =</span> mp_ft<span class="sc">$</span>failure_times_days, <span class="at">rule =</span> <span class="dv">2</span>)<span class="sc">$</span>y</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute Sum of Squared Errors (SSE) for generalized gamma</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>sse_ggamma <span class="ot">&lt;-</span> <span class="fu">sum</span>((empirical_vals <span class="sc">-</span> dens_ggamma_pred)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>f_ggamma<span class="sc">$</span>SSE <span class="ot">&lt;-</span> sse_ggamma</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute Sum of Squared Errors (SSE) for Weibull</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>sse_weibull <span class="ot">&lt;-</span> <span class="fu">sum</span>((empirical_vals <span class="sc">-</span> dens_weibull_pred)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>f_weibull<span class="sc">$</span>SSE <span class="ot">&lt;-</span> sse_weibull</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate PC for the two distributions</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>f_ggamma<span class="sc">$</span>PC <span class="ot">&lt;-</span> <span class="fu">PC</span>(sse_ggamma, n, k_ggamma)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>f_weibull<span class="sc">$</span>PC <span class="ot">&lt;-</span> <span class="fu">PC</span>(sse_weibull, n, k_weibull)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-tbl-label="summary-table">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fitted_distributins <span class="ot">&lt;-</span> <span class="fu">list</span>(f_ggamma, f_weibull)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> <span class="fu">sapply</span>(fitted_distributins, <span class="cf">function</span>(fit) {</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Number of Parameters"</span> <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">length</span>(fit<span class="sc">$</span>estimate)),  <span class="co"># Number of parameters</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Log-Likelihood"</span> <span class="ot">=</span> fit<span class="sc">$</span>loglik,                <span class="co"># Log-likelihood</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"AIC"</span> <span class="ot">=</span> fit<span class="sc">$</span>aic,                              <span class="co"># Akaike Information Criterion</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BIC"</span> <span class="ot">=</span> fit<span class="sc">$</span>bic,                              <span class="co"># Bayesian Information Criterion</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SSE"</span> <span class="ot">=</span> <span class="fu">c</span>(sse_ggamma, sse_weibull),           <span class="co"># Sum of Squared Error</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PC"</span> <span class="ot">=</span> <span class="fu">c</span>(PC_ggamma, PC_weibull)               <span class="co"># Pham's Criteron</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(summary_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Gen Gamma"</span>, <span class="st">"Weibull"</span>) </span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(summary_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fitted_distributins <span class="ot">&lt;-</span> <span class="fu">list</span>(f_ggamma, f_weibull)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> <span class="fu">sapply</span>(fitted_distributins, <span class="cf">function</span>(fit) {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Number of Parameters"</span> <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">length</span>(fit<span class="sc">$</span>estimate)),  <span class="co"># Number of parameters</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Log-Likelihood"</span> <span class="ot">=</span> fit<span class="sc">$</span>loglik,                <span class="co"># Log-likelihood</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"AIC"</span> <span class="ot">=</span> fit<span class="sc">$</span>aic,                              <span class="co"># Akaike Information Criterion</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BIC"</span> <span class="ot">=</span> fit<span class="sc">$</span>bic,                              <span class="co"># Bayesian Information Criterion</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SSE"</span> <span class="ot">=</span> fit<span class="sc">$</span>SSE,           <span class="co"># Sum of Squared Error</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PC"</span> <span class="ot">=</span> fit<span class="sc">$</span>PC            <span class="co"># Pham's Criteron</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(summary_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Gen Gamma"</span>, <span class="st">"Weibull"</span>) </span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(summary_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Goodness of Fit Measures</caption>
@@ -785,48 +793,38 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 </tr>
 <tr class="even">
 <td style="text-align: left;">Log-Likelihood</td>
-<td style="text-align: right;">-137.4170474</td>
-<td style="text-align: right;">-139.2089430</td>
+<td style="text-align: right;">-130.0411499</td>
+<td style="text-align: right;">-129.8294174</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">AIC</td>
-<td style="text-align: right;">280.8340948</td>
-<td style="text-align: right;">282.4178861</td>
+<td style="text-align: right;">266.0822998</td>
+<td style="text-align: right;">263.6588348</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">BIC</td>
-<td style="text-align: right;">285.6668485</td>
-<td style="text-align: right;">285.6397219</td>
+<td style="text-align: right;">270.9150535</td>
+<td style="text-align: right;">266.8806706</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">SSE1</td>
-<td style="text-align: right;">0.0006254</td>
-<td style="text-align: right;">0.0006254</td>
+<td style="text-align: left;">SSE</td>
+<td style="text-align: right;">0.0011993</td>
+<td style="text-align: right;">0.0008403</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">SSE2</td>
-<td style="text-align: right;">0.0012547</td>
-<td style="text-align: right;">0.0012547</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">PC1</td>
-<td style="text-align: right;">-593.3529357</td>
-<td style="text-align: right;">-593.3529357</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">PC2</td>
-<td style="text-align: right;">-370.5051397</td>
-<td style="text-align: right;">-370.5051397</td>
+<td style="text-align: left;">PC</td>
+<td style="text-align: right;">-558.1960808</td>
+<td style="text-align: right;">-384.9360366</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>Based on these results, we will go with the fit obtained with the Generalized Gamma distribution:</p>
+<p>Based on these results, we will opt for the Weibull distribution as it has a prefereable AIC, BIC, and SSE while the Log-Likelihoods were basically the same. While Pham’s criteria was better for the Generalized Gamma, we know that the Weibull is just a special case of the Genearlized Gamma and we prefer the simpler model when other metrics give ambiguous options.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mp <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rweibull</span>(n, <span class="at">shape=</span>f_weibull<span class="sc">$</span>estimate[<span class="st">"shape"</span>], <span class="at">scale=</span>f_weibull<span class="sc">$</span>estimate[<span class="st">"scale"</span>])</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mp <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rweibull</span>(n, <span class="at">shape=</span>f_weibull<span class="sc">$</span>estimate[<span class="st">"shape"</span>], <span class="at">scale=</span>f_weibull<span class="sc">$</span>estimate[<span class="st">"scale"</span>])</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -853,28 +851,28 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 <section id="running-the-smulation" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-smulation">Running the Smulation</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># number of scenarios</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>rail_sim <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">scenario =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">CWR =</span> <span class="fu">cwr</span>(n),</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">RR =</span> <span class="fu">rrt</span>(n),</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">MP =</span> <span class="fu">mp</span>(n)</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>rail_sim <span class="ot">&lt;-</span> rail_sim <span class="sc">|&gt;</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># select only the last 3 columns (not "scenario")</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">System =</span> <span class="fu">apply</span>(rail_sim[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>], <span class="dv">1</span>, <span class="cf">function</span>(row) {</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>      <span class="co"># sort the values</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>      sorted_vals <span class="ot">&lt;-</span> <span class="fu">sort</span>(row, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>      <span class="co"># select the second largest</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>      sorted_vals[<span class="dv">2</span>]</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(rail_sim))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># number of scenarios</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>rail_sim <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">scenario =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">CWR =</span> <span class="fu">cwr</span>(n),</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">RR =</span> <span class="fu">rrt</span>(n),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">MP =</span> <span class="fu">mp</span>(n)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>rail_sim <span class="ot">&lt;-</span> rail_sim <span class="sc">|&gt;</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># select only the last 3 columns (not "scenario")</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">System =</span> <span class="fu">apply</span>(rail_sim[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>], <span class="dv">1</span>, <span class="cf">function</span>(row) {</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>      <span class="co"># sort the values</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>      sorted_vals <span class="ot">&lt;-</span> <span class="fu">sort</span>(row, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>      <span class="co"># select the second largest</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>      sorted_vals[<span class="dv">2</span>]</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(rail_sim))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -889,45 +887,45 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">70.48656</td>
-<td style="text-align: right;">60.92263</td>
-<td style="text-align: right;">59.60360</td>
-<td style="text-align: right;">60.92263</td>
+<td style="text-align: right;">113.2595</td>
+<td style="text-align: right;">104.70902</td>
+<td style="text-align: right;">68.16693</td>
+<td style="text-align: right;">104.7090</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">65.57012</td>
-<td style="text-align: right;">26.23557</td>
-<td style="text-align: right;">52.85921</td>
-<td style="text-align: right;">52.85921</td>
+<td style="text-align: right;">158.8178</td>
+<td style="text-align: right;">737.97230</td>
+<td style="text-align: right;">67.16817</td>
+<td style="text-align: right;">158.8178</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">104.17335</td>
-<td style="text-align: right;">245.35969</td>
-<td style="text-align: right;">70.53094</td>
-<td style="text-align: right;">104.17335</td>
+<td style="text-align: right;">119.5636</td>
+<td style="text-align: right;">102.28043</td>
+<td style="text-align: right;">78.13712</td>
+<td style="text-align: right;">102.2804</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">328.90866</td>
-<td style="text-align: right;">218.42822</td>
-<td style="text-align: right;">66.81366</td>
-<td style="text-align: right;">218.42822</td>
+<td style="text-align: right;">342.7157</td>
+<td style="text-align: right;">111.96814</td>
+<td style="text-align: right;">78.74174</td>
+<td style="text-align: right;">111.9681</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">168.43899</td>
-<td style="text-align: right;">70.14706</td>
-<td style="text-align: right;">66.28540</td>
-<td style="text-align: right;">70.14706</td>
+<td style="text-align: right;">278.4824</td>
+<td style="text-align: right;">45.19533</td>
+<td style="text-align: right;">62.51750</td>
+<td style="text-align: right;">62.5175</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">188.16816</td>
-<td style="text-align: right;">219.08552</td>
-<td style="text-align: right;">73.82546</td>
-<td style="text-align: right;">188.16816</td>
+<td style="text-align: right;">169.3073</td>
+<td style="text-align: right;">241.28078</td>
+<td style="text-align: right;">70.19339</td>
+<td style="text-align: right;">169.3073</td>
 </tr>
 </tbody>
 </table>
@@ -937,13 +935,13 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 <section id="pivot-data-for-plotting" class="level3">
 <h3 class="anchored" data-anchor-id="pivot-data-for-plotting">Pivot Data For Plotting</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>rail_sim_long <span class="ot">&lt;-</span> rail_sim <span class="sc">|&gt;</span> <span class="fu">pivot_longer</span>(</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">cols =</span> <span class="sc">-</span>scenario,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">names_to =</span> <span class="st">"Failure Type"</span>,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">values_to =</span> <span class="st">"Failure Time"</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(rail_sim_long))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>rail_sim_long <span class="ot">&lt;-</span> rail_sim <span class="sc">|&gt;</span> <span class="fu">pivot_longer</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">cols =</span> <span class="sc">-</span>scenario,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">names_to =</span> <span class="st">"Failure Type"</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">values_to =</span> <span class="st">"Failure Time"</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(rail_sim_long))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -957,40 +955,40 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">CWR</td>
-<td style="text-align: right;">70.48656</td>
+<td style="text-align: right;">113.25955</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">RR</td>
-<td style="text-align: right;">60.92263</td>
+<td style="text-align: right;">104.70902</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">MP</td>
-<td style="text-align: right;">59.60360</td>
+<td style="text-align: right;">68.16693</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">System</td>
-<td style="text-align: right;">60.92263</td>
+<td style="text-align: right;">104.70902</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">CWR</td>
-<td style="text-align: right;">65.57012</td>
+<td style="text-align: right;">158.81782</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">RR</td>
-<td style="text-align: right;">26.23557</td>
+<td style="text-align: right;">737.97230</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <div class="cell" data-outout="true" data-fig-label="plot-failure-times">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>rail_sim_long <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">`</span><span class="at">Failure Time</span><span class="st">`</span>, <span class="at">color=</span><span class="st">`</span><span class="at">Failure Type</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ecdf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>rail_sim_long <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">`</span><span class="at">Failure Time</span><span class="st">`</span>, <span class="at">color=</span><span class="st">`</span><span class="at">Failure Type</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ecdf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1005,26 +1003,26 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 <section id="required-metrics" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="required-metrics"><span class="header-section-number">5.3</span> Required Metrics</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simply averaging the failure time of the system</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>mean_sys_ft <span class="ot">&lt;-</span> <span class="fu">mean</span>(rail_sim<span class="sc">$</span>System)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># applying that to 10 years</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>number_fail_10yrs <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">*</span><span class="dv">365</span> <span class="sc">/</span> mean_sys_ft</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># creating an empricial cumulative distribution function of the system failures</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>sys_ecdf <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(rail_sim<span class="sc">$</span>System)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># the probability of a failure being MORE than 180 days is 1 - ecdf(180)</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>p_6month <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sys_ecdf</span>(<span class="dv">180</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>sys_ft_25thpercentile <span class="ot">&lt;-</span> <span class="fu">quantile</span>(sys_ecdf, .<span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simply averaging the failure time of the system</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>mean_sys_ft <span class="ot">&lt;-</span> <span class="fu">mean</span>(rail_sim<span class="sc">$</span>System)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># applying that to 10 years</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>number_fail_10yrs <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">*</span><span class="dv">365</span> <span class="sc">/</span> mean_sys_ft</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># creating an empricial cumulative distribution function of the system failures</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>sys_ecdf <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(rail_sim<span class="sc">$</span>System)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># the probability of a failure being MORE than 180 days is 1 - ecdf(180)</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>p_6month <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sys_ecdf</span>(<span class="dv">180</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>sys_ft_25thpercentile <span class="ot">&lt;-</span> <span class="fu">quantile</span>(sys_ecdf, .<span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>From the simulation:</p>
 <ul>
-<li>The average failure time is 99.21 days.</li>
+<li>The average failure time is 100.28 days.</li>
 <li>This will result in ~37 failures in 10 years.</li>
 <li>The probability of a failure occurring after more than 6 months is 9.4%.</li>
-<li>The 25th percentile system failure time is 65.4 days.</li>
+<li>The 25th percentile system failure time is 69.2 days.</li>
 </ul>
 </section>
 <section id="reliability-estimation" class="level2" data-number="5.4">
@@ -1037,19 +1035,19 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 R(t) = 1 - F(t)
 \]</span></p>
 <div class="cell" data-fig-label="plot-reliability" data-fig-caption="System Reliability Curve">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simply create a function which is 1 - the system ecdf computed at that time</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>R_sys <span class="ot">&lt;-</span> <span class="cf">function</span>(t) {</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sys_ecdf</span>(t)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># create a table </span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>sys_rel_table <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">days =</span> <span class="dv">0</span><span class="sc">:</span>(<span class="fl">1.5</span><span class="sc">*</span><span class="dv">365</span>),</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Reliability =</span> <span class="fu">R_sys</span>(days)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>sys_rel_table <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>days, <span class="at">y=</span>Reliability)) <span class="sc">+</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simply create a function which is 1 - the system ecdf computed at that time</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>R_sys <span class="ot">&lt;-</span> <span class="cf">function</span>(t) {</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sys_ecdf</span>(t)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># create a table </span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>sys_rel_table <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">days =</span> <span class="dv">0</span><span class="sc">:</span>(<span class="fl">1.5</span><span class="sc">*</span><span class="dv">365</span>),</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Reliability =</span> <span class="fu">R_sys</span>(days)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>sys_rel_table <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>days, <span class="at">y=</span>Reliability)) <span class="sc">+</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
