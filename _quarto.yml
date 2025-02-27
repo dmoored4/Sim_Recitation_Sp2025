@@ -21,7 +21,9 @@ website:
           - text: "Recitation #4"
             href: recitations/R4_azimuth_check.qmd
           - text: "Recitation #5"
-            href: recitations/R5_simmer.qmd
+            href: recitations/R5_simmer1.qmd          
+          - text: "Recitation #6"
+            href: recitations/R6_custom_dists.qmd
     tools:
       - icon: github
         menu:
