@@ -24,6 +24,8 @@ website:
             href: recitations/R5_simmer1.qmd          
           - text: "Recitation #6"
             href: recitations/R6_custom_dists.qmd
+          - text: "Recitation #7"
+            href: recitations/R7_simmer2.qmd
     tools:
       - icon: github
         menu:
