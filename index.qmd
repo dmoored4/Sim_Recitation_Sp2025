@@ -4,7 +4,7 @@ listing:
   type: table
   contents:
     - recitations/*.qmd  # Include all recitation files
-    - "!recitations/WIP/*"  # Exclude this specific file
+    - solutions/*.qmd
   sort: "title"
   #categories: true
   fields: [date, title, reading-time, image]

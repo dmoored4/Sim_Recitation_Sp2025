@@ -26,6 +26,13 @@ website:
             href: recitations/R6_custom_dists.qmd
           - text: "Recitation #7"
             href: recitations/R7_simmer2.qmd
+      - section: "Homework Solutions"
+        contents:
+          - text: "Homework 1"
+            href: solutions/HW1_solution.qmd
+          - text: "Homework 2 Template"
+            href: solutions/HW2_template.qmd
+          
     tools:
       - icon: github
         menu:

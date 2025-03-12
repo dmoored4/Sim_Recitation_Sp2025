@@ -1,0 +1,153 @@
+---
+title: "Homework 2"
+subtitle: "IE384 Simulation Models in IE"
+author: Your Name
+date: 2025-03-25
+date-format: long
+
+format:
+  pdf:
+    number-sections: true
+    output-file: hw2
+    number-depth: 3
+    warning: false
+---
+
+# Submission Instructions {.unnumbered}
+
+::: callout-note
+
+Your submission should consist of the following:
+
+- Rendered PDF of your ".qmd" document. Achieved by pressing the "render" button and generating a "pdf", not from printing a "pdf" of your code. Make all cells visibile with `#| echo: true` in the top of each chunk. Only output the key results that need to be shown. Toggle this by changing `#| output: false` to `#| output: true`.
+- "gif". You should generate and save a "gif" of the anmiation to your computer. Then you need to upload that "gif".
+- Solution to analytical portion. Either solve and include in the same document where you do Part 1 or attach as an additional document. If you attach handwritten solution, *scan* the document, do not attach a photo. Scans from your phone are fine as long as you use a scanner app.
+:::
+
+# Background {.unnumbered}
+
+A manager is interested in purchasing a new cooling system for a reactor if it can meet a system reliability goal of 95% reliable over 1.5 years. The system information is as follows:
+
+A cooling system for a reactor has three identical cooling loops. Each cooling loop has two identical pumps connected in series. The cooling system requires that at least 2 of the 3 cooling loops operate successfully.
+
+A two-component series system works if both components work. The series system fails if any one of the system components fails.
+
+The lifetimes (in years) of the pump follows an exponential distribution where a sample of historical failure of the pump data from the manufacturer is as follows:
+
+|      |      |      |      |      |      |      |      |      |      |      |      |
+|------|------|------|------|------|------|------|------|------|------|------|------|
+| 34.3 | 13.9 | 22.9 | 22.5 | 23.6 | 23.9 | 25.6 | 27.5 | 22.7 | 24.7 | 25.4 | 27.4 |
+| 22.5 | 12.8 | 15.8 | 33.4 | 24.9 | 21.9 | 25.8 | 23.4 | 15.8 | 21.5 | 28.3 | 25.4 |
+
+::: callout-note
+From the TA: I am providing you with a template of the broad strokes of how I would go about solving this problem for the simulation portion. You are not obligated to use it or follow it. However, your solution is expected to be neat, organized, and consistent.
+:::
+
+# Part I: Model (50 pts)
+
+Develop a simulation model in R, simulating 25 replications, and answer the following questions:
+
+1.  Compute the reliability of the cooling system for a mission of 5 years, 10 years, 12 years
+2.  Obtain the expected lifetime of the cooling system.
+3.  Demonstrate the animation of the system reliability values for a period of 10 years.
+4.  Show and print the reliability of the cooling system and the expected lifetime of the cooling system of each replication.
+
+## Fit Data
+
+First we load our packages.
+
+```{r, load-packages}
+#| echo: true
+#| output: false
+#| warning: false
+
+library(tidyverse)      # for plotting and data. manipulation
+library(fitdistrplus)   # for fitting dist to data
+library(knitr)          # for outputting nice tables
+```
+
+Next we need to fit the specified distribution to the provided data:
+
+```{r, fit-dist-to-data}
+#| echo: true
+#| output: false
+#| warning: false
+
+```
+
+Now we can define our distribution that we will sample from:
+
+```{r, pump-failure-dist}
+#| echo: true
+#| output: false
+#| warning: false
+```
+
+## Simulate Failures
+
+```{r, simulate-failures}
+```
+
+## Determine System Failure Time
+
+```{r, evaluate-sys-failure}
+#| echo: true
+#| output: false
+#| warning: false
+
+```
+
+## Obtain Empirical Reliability Funciton
+
+```{r, empirical-reliability-function}
+#| echo: true
+#| output: false
+#| warning: false
+```
+
+## Solutions
+
+### Reliability at 5, 10, 12 years
+
+```{r, emprical-reliability-at-time-T}
+#| echo: true
+#| output: false
+#| warning: false
+
+```
+
+### Expected Lifetime
+
+```{r, empirical-expected-lifetime}
+#| echo: true
+#| output: false
+#| warning: false
+```
+
+### Animation
+
+::: callout-warning
+For this part, generate the animation while in `RStudio` by running the appropriate code and save the file. Follow the example demonstrated in Recitation #3. Then include the `.gif` file in your Canvas submission. I have already set the `eval` parameter in the code chunk below to `false` so that it will not run when you render the `.qmd` file to a pdf. If you do not set `eval` to false, `R` and `Quarto` will get stuck because you're essentially trying to insert an animation into a static document, which will not work.
+:::
+
+```{r, generate-save-animation}
+#| eval: false
+
+```
+
+### Show Simulation Results
+
+```{r, show-results}
+#| echo: true
+#| output: false
+#| warning: false
+```
+
+# Part II: Analytical Model (50 pts)
+
+Obtain the analytical solutions for the following questions:
+
+1.  Compute the reliability of the cooling system for a mission of 5 years, 10 years, and 12 years.
+2.  Obtain the expected lifetime of the cooling system.
+3.  Explain and compare the results based on the Simulation model (Part 1) and Analytical model (Part 2).
+4.  Would you recommend the manager to purchase this brand of cooling system? Why?
