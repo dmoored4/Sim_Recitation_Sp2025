@@ -1,7 +1,7 @@
 ---
 title: "HW1 Solution"
 author: "Daniel Moore"
-date: "2024-03-12"
+date: "2025-03-12"
 date-format: long
 image: "bank_2hr_anim.gif"
 
