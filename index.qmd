@@ -4,8 +4,9 @@ listing:
   type: table
   contents:
     - recitations/*.qmd  # Include all recitation files
+    - "!recitations/R0_introductions.qmd"
     - solutions/*.qmd
-  sort: "title"
+  sort: "date desc"
   #categories: true
   fields: [date, title, reading-time, image]
 ---
