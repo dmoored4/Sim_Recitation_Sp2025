@@ -12,26 +12,26 @@ website:
         href: index.qmd
       - section: "Tutorials"
         contents:
-          - text: "Recitation #1"
+          - text: "#1 Simulations Overview (Wind Turbine Repair)"
             href: recitations/R1_turbine_repair.qmd
-          - text: "Recitation #2"
+          - text: "#2 Fitting Distributions (Baggage Handling System)"
             href: recitations/R2_baggage_handling_system.qmd
-          - text: "Rectiation #3"
+          - text: "#3 Queuing and Animations (Amazon Returns)"
             href: recitations/R3_animations.qmd
-          - text: "Recitation #4"
+          - text: "#4 Check on Learning"
             href: recitations/R4_azimuth_check.qmd
-          - text: "Recitation #5"
+          - text: "#5 Queuing using Simmer"
             href: recitations/R5_simmer1.qmd          
-          - text: "Recitation #6"
+          - text: "#6 Custom Distributions & Reliability (NJT)"
             href: recitations/R6_custom_dists.qmd
-          - text: "Recitation #7"
+          - text: "#7 More Complex Queues with Simmer (MVC)"
             href: recitations/R7_simmer2.qmd
       - section: "Homework Solutions"
         contents:
           - text: "Homework 1"
             href: solutions/HW1_solution.qmd
-          - text: "Homework 2 Template"
-            href: solutions/HW2_template.qmd
+          - text: "Homework 2"
+            href: solutions/HW2_solution.qmd
           
     tools:
       - icon: github

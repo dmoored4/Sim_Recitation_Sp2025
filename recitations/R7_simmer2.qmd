@@ -1,5 +1,5 @@
 ---
-title: "R7: Simmer 2"
+title: "#7 More Complex Queues with Simmer (MVC)"
 subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
 author:
   - name: Daniel Moore

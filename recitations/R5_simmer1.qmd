@@ -1,5 +1,5 @@
 ---
-title: "R5 Intro to Simmer 1"
+title: "#5 Queuing using Simmer"
 subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
 author:
   - name: Daniel Moore

@@ -1,5 +1,5 @@
 ---
-title: "R2: Airport Baggage Handling System"
+title: "#2 Fitting Distributions (Baggage Handling System)"
 subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
 author: Daniel Moore
 date: 2025-01-29

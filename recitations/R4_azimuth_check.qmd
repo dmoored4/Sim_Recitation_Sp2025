@@ -1,5 +1,5 @@
 ---
-title: "R4 Azimuth Check"
+title: "#4 Check on Learning"
 subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
 author:
   - name: Daniel Moore

@@ -1,5 +1,5 @@
 ---
-title: "R6 Out-of-Library Distributions"
+title: "#6 Custom Distributions & Reliability (NJT)"
 subtitle: "14:540:384: Simulation Models in IE (Spring 2025)"
 author:
   - name: Daniel Moore
