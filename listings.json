@@ -2,16 +2,15 @@
   {
     "listing": "/index.html",
     "items": [
+      "/solutions/hw2_nb.html",
       "/solutions/HW1_nb.html",
-      "/solutions/hw2.pdf",
-      "/recitations/R0_nb.html",
-      "/recitations/R1_nb.html",
-      "/recitations/R2_nb.html",
-      "/recitations/R3_nb.html",
-      "/recitations/R4_nb.html",
-      "/recitations/R5_nb.html",
+      "/recitations/R7_nb.html",
       "/recitations/R6_nb.html",
-      "/recitations/R7_nb.html"
+      "/recitations/R5_nb.html",
+      "/recitations/R4_nb.html",
+      "/recitations/R3_nb.html",
+      "/recitations/R2_nb.html",
+      "/recitations/R1_nb.html"
     ]
   }
 ]

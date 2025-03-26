@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.40">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Daniel Moore">
 <meta name="dcterms.date" content="2025-02-26">
 
-<title>R6 Out-of-Library Distributions – Simulation Models in Industrial Engineering</title>
+<title>#6 Custom Distributions &amp; Reliability (NJT) – Simulation Models in Industrial Engineering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../recitations/R1_nb.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../recitations/R6_nb.html">Recitation #6</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../recitations/R1_nb.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../recitations/R6_nb.html">#6 Custom Distributions &amp; Reliability (NJT)</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -200,43 +200,43 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../recitations/R1_nb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Recitation #1</span></a>
+ <span class="menu-text">#1 Simulations Overview (Wind Turbine Repair)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../recitations/R2_nb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Recitation #2</span></a>
+ <span class="menu-text">#2 Fitting Distributions (Baggage Handling System)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../recitations/R3_nb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Rectiation #3</span></a>
+ <span class="menu-text">#3 Queuing and Animations (Amazon Returns)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../recitations/R4_nb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Recitation #4</span></a>
+ <span class="menu-text">#4 Check on Learning</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../recitations/R5_nb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Recitation #5</span></a>
+ <span class="menu-text">#5 Queuing using Simmer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../recitations/R6_nb.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Recitation #6</span></a>
+ <span class="menu-text">#6 Custom Distributions &amp; Reliability (NJT)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../recitations/R7_nb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Recitation #7</span></a>
+ <span class="menu-text">#7 More Complex Queues with Simmer (MVC)</span></a>
   </div>
 </li>
       </ul>
@@ -258,8 +258,8 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../solutions/hw2.pdf" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Homework 2 Template</span></a>
+  <a href="../solutions/hw2_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 2</span></a>
   </div>
 </li>
       </ul>
@@ -307,9 +307,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../recitations/R1_nb.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../recitations/R6_nb.html">Recitation #6</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../recitations/R1_nb.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../recitations/R6_nb.html">#6 Custom Distributions &amp; Reliability (NJT)</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">R6 Out-of-Library Distributions</h1>
+<h1 class="title">#6 Custom Distributions &amp; Reliability (NJT)</h1>
 <p class="subtitle lead">14:540:384: Simulation Models in IE (Spring 2025)</p>
 </div>
 
@@ -916,45 +916,45 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">112.12964</td>
-<td style="text-align: right;">251.590751</td>
-<td style="text-align: right;">54.62171</td>
-<td style="text-align: right;">112.12964</td>
+<td style="text-align: right;">122.88950</td>
+<td style="text-align: right;">101.6764016</td>
+<td style="text-align: right;">68.55739</td>
+<td style="text-align: right;">101.67640</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">760.20739</td>
-<td style="text-align: right;">7.777992</td>
-<td style="text-align: right;">83.61759</td>
-<td style="text-align: right;">83.61759</td>
+<td style="text-align: right;">42.16954</td>
+<td style="text-align: right;">0.1083877</td>
+<td style="text-align: right;">51.75130</td>
+<td style="text-align: right;">42.16954</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">272.55364</td>
-<td style="text-align: right;">100.169446</td>
-<td style="text-align: right;">70.39279</td>
-<td style="text-align: right;">100.16945</td>
+<td style="text-align: right;">270.96340</td>
+<td style="text-align: right;">299.6334491</td>
+<td style="text-align: right;">51.80741</td>
+<td style="text-align: right;">270.96340</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">283.81902</td>
-<td style="text-align: right;">46.690713</td>
-<td style="text-align: right;">78.77594</td>
-<td style="text-align: right;">78.77594</td>
+<td style="text-align: right;">283.81955</td>
+<td style="text-align: right;">101.5585767</td>
+<td style="text-align: right;">87.85951</td>
+<td style="text-align: right;">101.55858</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">77.28978</td>
-<td style="text-align: right;">105.134110</td>
-<td style="text-align: right;">85.42272</td>
-<td style="text-align: right;">85.42272</td>
+<td style="text-align: right;">99.68541</td>
+<td style="text-align: right;">50.9417555</td>
+<td style="text-align: right;">79.64437</td>
+<td style="text-align: right;">79.64437</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">141.05664</td>
-<td style="text-align: right;">110.663600</td>
-<td style="text-align: right;">72.06001</td>
-<td style="text-align: right;">110.66360</td>
+<td style="text-align: right;">196.75944</td>
+<td style="text-align: right;">117.3304842</td>
+<td style="text-align: right;">74.36035</td>
+<td style="text-align: right;">117.33048</td>
 </tr>
 </tbody>
 </table>
@@ -984,32 +984,32 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">CWR</td>
-<td style="text-align: right;">112.129641</td>
+<td style="text-align: right;">122.8894960</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">RR</td>
-<td style="text-align: right;">251.590751</td>
+<td style="text-align: right;">101.6764016</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">MP</td>
-<td style="text-align: right;">54.621715</td>
+<td style="text-align: right;">68.5573935</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">System</td>
-<td style="text-align: right;">112.129641</td>
+<td style="text-align: right;">101.6764016</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">CWR</td>
-<td style="text-align: right;">760.207387</td>
+<td style="text-align: right;">42.1695357</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">RR</td>
-<td style="text-align: right;">7.777992</td>
+<td style="text-align: right;">0.1083877</td>
 </tr>
 </tbody>
 </table>
@@ -1048,10 +1048,10 @@ PC = \left( \frac{n-k}{2} \right) \log \left(\frac{SSE}{n} \right) + k \left( \f
 </div>
 <p>From the simulation:</p>
 <ul>
-<li>The average failure time is 101.52 days.</li>
-<li>This will result in ~36 failures in 10 years.</li>
-<li>The probability of a failure occurring after more than 6 months is 9.8%.</li>
-<li>The 25th percentile system failure time is 69.5 days.</li>
+<li>The average failure time is 100.87 days.</li>
+<li>This will result in ~37 failures in 10 years.</li>
+<li>The probability of a failure occurring after more than 6 months is 9.4%.</li>
+<li>The 25th percentile system failure time is 69.7 days.</li>
 </ul>
 </section>
 <section id="reliability-estimation" class="level2" data-number="5.4">
