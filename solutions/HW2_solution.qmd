@@ -33,6 +33,7 @@ The lifetimes (in years) of the pump follows an exponential distribution where a
 |------|------|------|------|------|------|------|------|------|------|------|------|
 | 34.3 | 13.9 | 22.9 | 22.5 | 23.6 | 23.9 | 25.6 | 27.5 | 22.7 | 24.7 | 25.4 | 27.4 |
 | 22.5 | 12.8 | 15.8 | 33.4 | 24.9 | 21.9 | 25.8 | 23.4 | 15.8 | 21.5 | 28.3 | 25.4 |
+
 : Pump Failure Time Data {#tbl-pump-ft-data}
 
 # Part I: Model (50 pts)
@@ -264,27 +265,29 @@ First, I'll write out the first few rows in @tbl-begin-bool-table and discuss th
 | n   | A1  | A2  | B1  | B2  | C1    | C2    |
 |-----|-----|-----|-----|-----|-------|-------|
 | 1   | $p$ | $p$ | $p$ | $p$ | $p$   | $p$   |
-| 2   | $p$ | $p$ | $p$ | $p$ | $p$   | $p-1$ |
-| 3   | $p$ | $p$ | $p$ | $p$ | $p-1$ | $p$   |
-| 4   | $p$ | $p$ | $p$ | $p$ | $p-1$ | $p-1$ |
+| 2   | $p$ | $p$ | $p$ | $p$ | $p$   | $1-p$ |
+| 3   | $p$ | $p$ | $p$ | $p$ | $1-p$ | $p$   |
+| 4   | $p$ | $p$ | $p$ | $p$ | $1-p$ | $1-p$ |
+
 : Initial Boolean Table {#tbl-begin-bool-table}
 
-The first rows represents the possibility that all pumps are functioning. Obviously the system is functioning when that is the case. The next three rows represent the ways that pumps from subsystem C can fail while the system still operates. C2 could fail (row 2), Just C1 could fail (row 3) or both could fail (row 4). Rows 2 to 4 repeat themselves shifting the failures to system B while C works and then to A while both B and C work as shown in @tbl-entire-bool-table.
+The first rows represents the possibility that all pumps are functioning. Obviously the system is functioning when that is the case. The next three rows represent the ways that pumps from subsystem C can fail while the system still operates. C2 could fail (row 2), just C1 could fail (row 3) or both could fail (row 4). Rows 2 to 4 repeat themselves shifting the failures to system B while C works and then to A while both B and C work as shown in @tbl-entire-bool-table.
 
 \newpage
 
 | n   | A1    | A2    | B1    | B2    | C1    | C2    |
 |-----|-------|-------|-------|-------|-------|-------|
 | 1   | $p$   | $p$   | $p$   | $p$   | $p$   | $p$   |
-| 2   | $p$   | $p$   | $p$   | $p$   | $p$   | $p-1$ |
-| 3   | $p$   | $p$   | $p$   | $p$   | $p-1$ | $p$   |
-| 4   | $p$   | $p$   | $p$   | $p$   | $p-1$ | $p-1$ |
-| 5   | $p$   | $p$   | $p$   | $p-1$ | $p$   | $p$   |
-| 6   | $p$   | $p$   | $p-1$ | $p$   | $p$   | $p$   |
-| 7   | $p$   | $p$   | $p-1$ | $p-1$ | $p$   | $p$   |
-| 8   | $p$   | $p-1$ | $p$   | $p$   | $p$   | $p$   |
-| 9   | $p-1$ | $p$   | $p$   | $p$   | $p$   | $p$   |
-| 10  | $p-1$ | $p-1$ | $p$   | $p$   | $p$   | $p$   |
+| 2   | $p$   | $p$   | $p$   | $p$   | $p$   | $1-p$ |
+| 3   | $p$   | $p$   | $p$   | $p$   | $1-p$ | $p$   |
+| 4   | $p$   | $p$   | $p$   | $p$   | $1-p$ | $1-p$ |
+| 5   | $p$   | $p$   | $p$   | $1-p$ | $p$   | $p$   |
+| 6   | $p$   | $p$   | $1-p$ | $p$   | $p$   | $p$   |
+| 7   | $p$   | $p$   | $1-p$ | $1-p$ | $p$   | $p$   |
+| 8   | $p$   | $1-p$ | $p$   | $p$   | $p$   | $p$   |
+| 9   | $1-p$ | $p$   | $p$   | $p$   | $p$   | $p$   |
+| 10  | $1-p$ | $1-p$ | $p$   | $p$   | $p$   | $p$   |
+
 : Complete Boolean Table {#tbl-entire-bool-table}
 
 ### Conditional Probability Review
@@ -306,11 +309,12 @@ $$ {#eq-discrete-conditional-prob}
 We can apply that conditional probability to each scenario from the boolean table. Again I'll do the first few rows and discuss.
 
 | n   | A1  | A2  | B1  | B2  | C1    | C2    | System is Functioning |
-|-----|-----|-----|-----|-----|-------|-------| --------------------- |
+|-----|-----|-----|-----|-----|-------|-------|-----------------------|
 | 1   | $p$ | $p$ | $p$ | $p$ | $p$   | $p$   | $p^6$                 |
-| 2   | $p$ | $p$ | $p$ | $p$ | $p$   | $p-1$ | $p^5 (1-p)$           |
-| 3   | $p$ | $p$ | $p$ | $p$ | $p-1$ | $p$   | $p^5 (1-p)$           |
-| 4   | $p$ | $p$ | $p$ | $p$ | $p-1$ | $p-1$ | $p^4 (1-p) (1-p)$     |
+| 2   | $p$ | $p$ | $p$ | $p$ | $p$   | $1-p$ | $p^5 (1-p)$           |
+| 3   | $p$ | $p$ | $p$ | $p$ | $1-p$ | $p$   | $p^5 (1-p)$           |
+| 4   | $p$ | $p$ | $p$ | $p$ | $1-p$ | $1-p$ | $p^4 (1-p) (1-p)$     |
+
 : Initial Boolean Table with System Probability {#tbl-begin-bool-table-sys-r}
 
 Some things to note to simplify our work. Rows 2 to 4 will repeat themselves two more times for the case when B has failure(s) but A & C are functioning and where A has failure(s) but B and C are still functioning. We can now express the total system reliability as a function of $p$ by summing the last column. I omit repeating scenarios 5-7 and 8-10 as I've already stated we can just multiply the sum of rows 2-4 by 3 as shown below.
@@ -345,14 +349,17 @@ Finally, we can subsitute @eq-pump-R for $p$ in @eq-sys-p. Before we do this, it
 
 $$
 p_{sys} = -2p^6 + 3p^4
-$$
+$$ {#eq-simplified-p-rel}
 
 ### Obtaining System Reliability Expression
 
 Substituting $R_{pump}(t)$ for $p$:
 
 $$
-R_{sys}(t) = -2 (\exp(- \lambda t))^6 + 3 (\exp(- \lambda t))^4 = -2 \exp(-6 \lambda t) + 3 \exp(-4 \lambda t)
+\begin{align}
+  R_{sys}(t) = -2 (\exp(- \lambda t))^6 + 3 (\exp(- \lambda t))^4 \\
+   = -2 \exp(-6 \lambda t) + 3 \exp(-4 \lambda t)
+\end{align}
 $$
 
 We still rely on estimated value for $\lambda$ from our `fexp`. We can now write a complete `R` function which expresses the analytical system reliability as a function of the estimated pump failure time.
