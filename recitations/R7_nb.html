@@ -537,13 +537,13 @@ Table&nbsp;1: MVC Process Estiamted Parameters
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mvc <span class="sc">|&gt;</span> <span class="fu">run</span>(simulation_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>simmer environment: MVC | now: 480 | next: 480.841628985042
+<pre><code>simmer environment: MVC | now: 480 | next: 480.427138992352
 { Monitor: in memory }
 { Resource: check-in-clerk | monitored: TRUE | server status: 0(1) | queue status: 0(Inf) }
-{ Resource: table | monitored: TRUE | server status: 2(12) | queue status: 0(Inf) }
+{ Resource: table | monitored: TRUE | server status: 0(12) | queue status: 0(Inf) }
 { Resource: form-clerk | monitored: TRUE | server status: 4(4) | queue status: 0(Inf) }
-{ Resource: photo-clerk | monitored: TRUE | server status: 0(3) | queue status: 0(Inf) }
-{ Source: customer | monitored: 1 | n_generated: 245 }</code></pre>
+{ Resource: photo-clerk | monitored: TRUE | server status: 3(3) | queue status: 0(Inf) }
+{ Source: customer | monitored: 1 | n_generated: 252 }</code></pre>
 </div>
 </div>
 </section>
@@ -831,16 +831,13 @@ that as shown in @fig-all-resource-queeus.</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>plt <span class="ot">&lt;-</span> <span class="fu">plot</span>(resources_rep, <span class="fu">c</span>(<span class="st">"check-in-clerk"</span>, <span class="st">"form-clerk"</span>),  <span class="at">metric =</span> <span class="st">"usage"</span>, <span class="at">items=</span><span class="st">"server"</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"replicated-resources.png"</span>, plt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Saving 7 x 5 in image</code></pre>
-</div>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave("replicated-resources.png", plt)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="utilization" class="level3">
 <h3 class="anchored" data-anchor-id="utilization">Utilization</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resources_rep, <span class="at">metric =</span> <span class="st">"utilization"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resources_rep, <span class="at">metric =</span> <span class="st">"utilization"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
