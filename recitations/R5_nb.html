@@ -239,6 +239,12 @@ window.Quarto = {
  <span class="menu-text">#7 More Complex Queues with Simmer (MVC)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R8_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#8 Getting Started with Gas Station Modeling</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -452,10 +458,10 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>return_line <span class="sc">|&gt;</span> <span class="fu">run</span>(t_f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>simmer environment: anonymous | now: 240 | next: 240.634858806404
+<pre><code>simmer environment: anonymous | now: 240 | next: 240.864686227029
 { Monitor: in memory }
-{ Resource: clerk | monitored: TRUE | server status: 1(1) | queue status: 1(Inf) }
-{ Source: customer | monitored: 1 | n_generated: 77 }</code></pre>
+{ Resource: clerk | monitored: TRUE | server status: 1(1) | queue status: 0(Inf) }
+{ Source: customer | monitored: 1 | n_generated: 60 }</code></pre>
 </div>
 </div>
 </section>
@@ -544,6 +550,14 @@ window.Quarto = {
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(arrivals))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 13%">
+<col style="width: 18%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">name</th>
@@ -557,49 +571,49 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">customer0</td>
-<td style="text-align: right;">5.419078</td>
-<td style="text-align: right;">12.94736</td>
-<td style="text-align: right;">7.5282818</td>
+<td style="text-align: right;">3.512161</td>
+<td style="text-align: right;">8.160716</td>
+<td style="text-align: right;">4.648555</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">customer1</td>
-<td style="text-align: right;">14.038640</td>
-<td style="text-align: right;">14.48702</td>
-<td style="text-align: right;">0.4483831</td>
+<td style="text-align: right;">8.882560</td>
+<td style="text-align: right;">12.471212</td>
+<td style="text-align: right;">3.588652</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">customer2</td>
-<td style="text-align: right;">15.238595</td>
-<td style="text-align: right;">15.45365</td>
-<td style="text-align: right;">0.2150523</td>
+<td style="text-align: right;">9.879110</td>
+<td style="text-align: right;">13.666045</td>
+<td style="text-align: right;">1.194833</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">customer3</td>
-<td style="text-align: right;">19.066943</td>
-<td style="text-align: right;">20.60069</td>
-<td style="text-align: right;">1.5337451</td>
+<td style="text-align: right;">10.740408</td>
+<td style="text-align: right;">18.563207</td>
+<td style="text-align: right;">4.897162</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">customer4</td>
-<td style="text-align: right;">21.252327</td>
-<td style="text-align: right;">21.86752</td>
-<td style="text-align: right;">0.6151937</td>
+<td style="text-align: right;">16.576915</td>
+<td style="text-align: right;">21.889862</td>
+<td style="text-align: right;">3.326655</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">customer5</td>
-<td style="text-align: right;">28.517834</td>
-<td style="text-align: right;">28.54296</td>
-<td style="text-align: right;">0.0251273</td>
+<td style="text-align: right;">25.358374</td>
+<td style="text-align: right;">27.588258</td>
+<td style="text-align: right;">2.229884</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">1</td>
 </tr>

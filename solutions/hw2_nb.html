@@ -239,6 +239,12 @@ window.Quarto = {
  <span class="menu-text">#7 More Complex Queues with Simmer (MVC)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R8_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#8 Getting Started with Gas Station Modeling</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -913,9 +919,9 @@ p_{sys} = -2p^6 + 3p^4
 <h3 data-number="2.1.4" class="anchored" data-anchor-id="obtaining-system-reliability-expression"><span class="header-section-number">2.1.4</span> Obtaining System Reliability Expression</h3>
 <p>Substituting <span class="math inline">\(R_{pump}(t)\)</span> for <span class="math inline">\(p\)</span>:</p>
 <p><span class="math display">\[
-R_{sys}(t) = -2 (\exp(- \lambda t))^6 + 3 (\exp(- \lambda t))^4
+R_{sys}(t) = -2 (\exp(- \lambda t))^6 + 3 (\exp(- \lambda t))^4 \\
 \]</span> <span class="math display">\[
-=-2 \exp(-6 \lambda t) + 3 \exp(-4 \lambda t)
+= -2 \exp(-6 \lambda t) + 3 \exp(-4 \lambda t)
 \]</span></p>
 <p>We still rely on estimated value for <span class="math inline">\(\lambda\)</span> from our <code>fexp</code>. We can now write a complete <code>R</code> function which expresses the analytical system reliability as a function of the estimated pump failure time.</p>
 <div class="cell">
@@ -1077,7 +1083,7 @@ Table&nbsp;7: Specified Mission Reliability Comparison
 <span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Reliability"</span></span>
 <span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("reliability_plot.png", rel_plot)</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"reliability_plot.png"</span>, rel_plot)</span>
 <span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>rel_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
