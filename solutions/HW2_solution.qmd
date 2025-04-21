@@ -356,10 +356,10 @@ $$ {#eq-simplified-p-rel}
 Substituting $R_{pump}(t)$ for $p$:
 
 $$
-\begin{align}
-  R_{sys}(t) = -2 (\exp(- \lambda t))^6 + 3 (\exp(- \lambda t))^4 \\
-   = -2 \exp(-6 \lambda t) + 3 \exp(-4 \lambda t)
-\end{align}
+R_{sys}(t) = -2 (\exp(- \lambda t))^6 + 3 (\exp(- \lambda t))^4 \\
+$$
+$$
+= -2 \exp(-6 \lambda t) + 3 \exp(-4 \lambda t)
 $$
 
 We still rely on estimated value for $\lambda$ from our `fexp`. We can now write a complete `R` function which expresses the analytical system reliability as a function of the estimated pump failure time.
