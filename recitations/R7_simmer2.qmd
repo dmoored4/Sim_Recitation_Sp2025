@@ -374,7 +374,7 @@ plot(resources_rep, metric = "usage")
 #| output: true
 plt <- plot(resources_rep, c("check-in-clerk", "form-clerk"),  metric = "usage", items="server")
 
-ggsave("replicated-resources.png", plt)
+#ggsave("replicated-resources.png", plt)
 ```
 
 ### Utilization
