@@ -26,6 +26,8 @@ website:
             href: recitations/R6_custom_dists.qmd
           - text: "#7 More Complex Queues with Simmer (MVC)"
             href: recitations/R7_simmer2.qmd
+          - text: "#8 Getting Started with Gas Station Modeling"
+            href: recitations/R8_gas_station_template.qmd
       - section: "Homework Solutions"
         contents:
           - text: "Homework 1"
