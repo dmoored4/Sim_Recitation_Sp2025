@@ -34,6 +34,8 @@ website:
             href: solutions/HW1_solution.qmd
           - text: "Homework 2"
             href: solutions/HW2_solution.qmd
+          - text: "Homework 3"
+            href: solutions/HW3_solution.qmd
           
     tools:
       - icon: github
