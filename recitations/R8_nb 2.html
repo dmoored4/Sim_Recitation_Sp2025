@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Daniel Moore">
+<meta name="dcterms.date" content="2025-04-21">
+
+<title>#8 Gas Station Template – Simulation Models in Industrial Engineering</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../recitations/R1_nb.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../recitations/R8_nb.html">#8 Getting Started with Gas Station Modeling</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Simulation Models in Industrial Engineering</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/dmoored4/Sim_Recitation_Sp2025">
+            Source Code
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tutorials</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R1_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#1 Simulations Overview (Wind Turbine Repair)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R2_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#2 Fitting Distributions (Baggage Handling System)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R3_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#3 Queuing and Animations (Amazon Returns)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R4_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#4 Check on Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R5_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#5 Queuing using Simmer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R6_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#6 Custom Distributions &amp; Reliability (NJT)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R7_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#7 More Complex Queues with Simmer (MVC)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R8_nb.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">#8 Getting Started with Gas Station Modeling</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Homework Solutions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../solutions/HW1_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../solutions/hw2_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="3">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">1</span> Learning Objectives</a></li>
+  <li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages"><span class="header-section-number">2</span> Load Packages</a></li>
+  <li><a href="#problem" id="toc-problem" class="nav-link" data-scroll-target="#problem"><span class="header-section-number">3</span> Problem</a>
+  <ul class="collapse">
+  <li><a href="#scheduling-resources" id="toc-scheduling-resources" class="nav-link" data-scroll-target="#scheduling-resources"><span class="header-section-number">3.1</span> Scheduling Resources</a></li>
+  <li><a href="#customer-distributions" id="toc-customer-distributions" class="nav-link" data-scroll-target="#customer-distributions"><span class="header-section-number">3.2</span> Customer Distributions</a></li>
+  <li><a href="#service-time-distributions" id="toc-service-time-distributions" class="nav-link" data-scroll-target="#service-time-distributions"><span class="header-section-number">3.3</span> Service Time Distributions</a></li>
+  <li><a href="#other-data" id="toc-other-data" class="nav-link" data-scroll-target="#other-data"><span class="header-section-number">3.4</span> Other Data</a></li>
+  </ul></li>
+  <li><a href="#simmer-model" id="toc-simmer-model" class="nav-link" data-scroll-target="#simmer-model"><span class="header-section-number">4</span> <code>simmer</code> Model</a>
+  <ul class="collapse">
+  <li><a href="#trajectories" id="toc-trajectories" class="nav-link" data-scroll-target="#trajectories"><span class="header-section-number">4.1</span> Trajectories</a></li>
+  <li><a href="#adding-resources" id="toc-adding-resources" class="nav-link" data-scroll-target="#adding-resources"><span class="header-section-number">4.2</span> Adding Resources</a></li>
+  <li><a href="#adding-generators" id="toc-adding-generators" class="nav-link" data-scroll-target="#adding-generators"><span class="header-section-number">4.3</span> Adding Generators</a></li>
+  <li><a href="#running-model-and-extracting-results" id="toc-running-model-and-extracting-results" class="nav-link" data-scroll-target="#running-model-and-extracting-results"><span class="header-section-number">4.4</span> Running Model and Extracting Results</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../recitations/R1_nb.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../recitations/R8_nb.html">#8 Getting Started with Gas Station Modeling</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">#8 Gas Station Template</h1>
+<p class="subtitle lead">14:540:384: Simulation Models in IE (Spring 2025)</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Daniel Moore <a href="mailto:daniel.l.moore@rutgers.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Rutgers University
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2025-04-21</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="learning-objectives" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Learning Objectives</h1>
+<ol type="1">
+<li>Schedule Resources</li>
+<li>Dynamically interact with simulation (retrieve information and change behavior)</li>
+<li>Lock resources (TBC)</li>
+<li>Define alternative trajectories</li>
+</ol>
+</section>
+<section id="load-packages" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Load Packages</h1>
+<p>Note that here I am loading <code>twopexp</code> which we haven’t used before.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(twopexp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now all the usual packages…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fitdistrplus)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simmer)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simmer.bricks)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simmer.plot)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1766</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="problem" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Problem</h1>
+<p>A medium sized gas station has two lanes of unidirectional traffic, each with three filling stations. Attendants on shift share responsibilities for all three. During its daily operations, the station will typically have around 250 vehicles (<span class="math inline">\(\sim \mathcal{P}(250/day)\)</span>), each taking on average 11 gallons of gas (<span class="math inline">\(\sim \mathcal{W}(5.3, 11)\)</span>). It has a reservoir of 15,000 gallons which is filled to capacity at the end of every fourth day. The gas pumps flow at 5 gal/minute. Initiating service follows a two-parameter exponential with the minimum time being 25 seconds and a decay constant of 0.75. Finalizing payment also follows a two-parameter exponential with a minimum time of 30 seconds and a decay constant of 0.9. Cars will leave with a probability of 0.75 if there are 10 or more cars in the system.</p>
+<p>Model this gas station for twenty-five replications of 4 consecutive weeks.</p>
+<p>For this part, we are not yet worrying about the pumps and lanes, just the attendants and the gas.</p>
+<section id="scheduling-resources" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="scheduling-resources"><span class="header-section-number">3.1</span> Scheduling Resources</h2>
+<p>Each day, there are 5 individuals scheduled - two in the morning, two in the afternoon, and one in between. Lunch is staggered as shown below.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">gantt
+  todayMarker off
+    title Daily Shift Schedule
+    dateFormat HH:mm
+    axisFormat %H:%M
+
+    section Attendants
+    1       :a1, 07:00, 4h
+    1       :a1, 12:00, 4h
+    2       :a2, 07:00, 4h
+    2       :a2, 12:00, 4h
+    3       :a3, 10:00, 2h
+    3       :a3, 13:00, 6h
+    4       :a4, 10:00, 2h
+    4       :a4, 13:00, 6h
+    5       :a5, 09:00, 4h
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>We use <code>schedule</code> from <code>simmer</code> to build a schedule object which will be used when we add these resources to the <code>simmer</code> environment.</p>
+<ul>
+<li>we create a vector of each time that the number of workers is changing</li>
+<li>create another vector which is the number that are available starting at that time. Note that the first element in <code>timetable</code> is 7 and the corresponding value in <code>values</code> is <code>2</code> because 2 workers start. Similarly, at <code>19</code>, the workers go back to 0</li>
+<li>this schedule is set to repeat every 24 hours</li>
+<li>I multiply the time values by 60 so that everything in the model stays in minutes (because that’s what I want to work in)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>crew_schedule <span class="ot">&lt;-</span> <span class="fu">schedule</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">timetable =</span> <span class="dv">60</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">16</span>, <span class="dv">19</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">values =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">0</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">period =</span> <span class="dv">24</span> <span class="sc">*</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>station_schedule <span class="ot">&lt;-</span> <span class="fu">schedule</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">timetable =</span> <span class="dv">60</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">19</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I'm giving the facility infinite servers so that I can track</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># how many cars are in the system total. This doesn't mean how many pumps</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># we have.</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">values =</span> <span class="fu">c</span>(<span class="cn">Inf</span>, <span class="dv">0</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">period =</span> <span class="dv">24</span> <span class="sc">*</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="customer-distributions" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="customer-distributions"><span class="header-section-number">3.2</span> Customer Distributions</h2>
+<p>We need to define a distribution for customer interarrival time and total gas demand. For simplicity we are given distributions to use directly so we don’t need to first fit distributions to data and select the best one.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cars_per_min <span class="ot">&lt;-</span> <span class="dv">250</span> <span class="sc">/</span> (<span class="dv">12</span> <span class="sc">*</span> <span class="dv">60</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>car_interarrival <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rexp</span>(n, <span class="at">rate =</span> cars_per_min)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>gal_gas <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span> <span class="sc">*</span> <span class="fu">rweibull</span>(n, <span class="fl">5.3</span>, <span class="dv">11</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that here I am multiplying the gallons demanded by 100. This is so that I can add integer valued resources to the model. There are other ways this could be handled but this is an elegant solution propsoed by Mike DeBellis.</p>
+</section>
+<section id="service-time-distributions" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="service-time-distributions"><span class="header-section-number">3.3</span> Service Time Distributions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>initiate_service <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rtpexp</span>(n, <span class="dv">25</span><span class="sc">/</span><span class="dv">60</span>, .<span class="dv">75</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>finalize_service <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rtpexp</span>(n, <span class="dv">30</span><span class="sc">/</span><span class="dv">60</span>, .<span class="dv">9</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>gal_per_min <span class="ot">&lt;-</span> <span class="dv">5</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="other-data" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="other-data"><span class="header-section-number">3.4</span> Other Data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># number of cars at which arrivals will consider leaving</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>too_many_cars <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># probability at which they will leave</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>p_leave_too_many <span class="ot">&lt;-</span> <span class="fl">0.75</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># multiplying by 100 gets us integer values of "gas" resources with each</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># resource representing 1/100th of a gallon</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>resevoir_capacity <span class="ot">&lt;-</span> <span class="dv">15000</span> <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># assume we are starting with a full reservoir</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>current_capacity <span class="ot">&lt;-</span> resevoir_capacity</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>sim_time <span class="ot">&lt;-</span> <span class="dv">4</span> <span class="sc">*</span> <span class="dv">7</span> <span class="sc">*</span> <span class="dv">24</span> <span class="sc">*</span> <span class="dv">60</span> <span class="co"># 4 weeks in minutes</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>replications <span class="ot">&lt;-</span> <span class="dv">25</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="simmer-model" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> <code>simmer</code> Model</h1>
+<p>First we create an empty <code>simmer</code> environment. This is a recommended best practice from the documentation and important for us now as we will be defining more interesting models with more complex components.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>env <span class="ot">&lt;-</span> <span class="fu">simmer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="trajectories" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="trajectories"><span class="header-section-number">4.1</span> Trajectories</h2>
+<section id="helper-functions" class="level3">
+<h3 class="anchored" data-anchor-id="helper-functions">Helper Functions</h3>
+<p>Note that there are many things we must define before we can use them. For instance right here, I define a function which will return either <code>0</code> or <code>1</code> and will be used in a subsequent trajectory <code>branch</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>should_I_leave <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># by default, the cars should continue, which happens if this function</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># returns 0</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  select_traj <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get then number of cars in the system</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># facility has Inf </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  total_cars <span class="ot">&lt;-</span> <span class="fu">get_server_count</span>(env, <span class="st">"facility"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulate whether this car will leave or not</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(total_cars <span class="sc">&gt;=</span> too_many_cars) {</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> p_leave_too_many) {</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      <span class="co"># if there are too many cars and this person decides to leave,</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="co"># we return a value of 1 so that the "branch" will select the first</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>      <span class="co"># (and only) sub-trajectory</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>      select_traj <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(select_traj)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="car-trajectory" class="level3">
+<h3 class="anchored" data-anchor-id="car-trajectory">Car Trajectory</h3>
+<p>Now the car trajectory has more going on than we’ve seen thus far. It shows up and takes one (of infinite) facility servers and then decides if it should stay or go. This is done with the <code>branch</code> function. <code>should_I_leave()</code> returns either <code>0</code> or <code>1</code>. If it returns <code>0</code>, it skips the sub-trajectory defined within this <code>branch</code>. If it returns <code>1</code>, it follows the first (and only) trajectory in the <code>branch</code>. If there were other possible options, <code>should_I_leave</code> would just need to return an integer value which would direct the car to the corresponding sub-trajectory in this <code>branch</code>. Next it uses one <code>attendant</code> for the random amount of time sampled from <code>initiate_service</code> and then seizes the gas that it wants. “gas” is defined as a resource with <code>queue_size=0</code>. This makes it so that if there isn’t enough gas, there is an unsuccessful seize and the car leaves with the service completion flag set to <code>FALSE</code>. If <code>queue_size</code> <span class="math inline">\(\neq\)</span> <code>0</code>, then cars could line up endlessly while the gas station itself is literally out of gas. This is different than lining up waiting to be served gas. I set the amount of gas I want with <code>set_attribute("demand", gal_gas)</code> which provides a locally scoped (i.e.&nbsp;only available to each car) key, value pair. That value is then retrieved with <code>get_attribute("demand")</code>. I need to do this so that in the first place I can specify how much to seize and in the second I can determine how long it should take. It times out on the amount of gas divided by the fuel pump rate (but again divided by 100 so that 1/100th gal of gas is now 1 unit of “gas”). Finally the car visits the attendant again for some random amount of time sampled this time from <code>finalize_service</code> and the facility is released. Note that “gas” is never released. This helps us keep track of how much gas is in the resevoir.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>car_traj <span class="ot">&lt;-</span> <span class="fu">trajectory</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">seize</span>(<span class="st">"facility"</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">branch</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>() <span class="fu">should_I_leave</span>(),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># option is a callable object</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if it takes value 0, the car might renege</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">continue =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">trajectory</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">log_</span>(<span class="st">"Too many cars!"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">renege_in</span>(<span class="dv">0</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visit</span>(<span class="st">"attendant"</span>, initiate_service) <span class="sc">|&gt;</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_attribute</span>(<span class="st">"demand"</span>, gal_gas) <span class="sc">|&gt;</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">seize</span>(<span class="st">"gas"</span>, <span class="cf">function</span>() <span class="fu">get_attribute</span>(env, <span class="st">"demand"</span>),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># there is no queue allowed for gas. (i.e. they run out of gas)</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># so we define a reject trajectory in case of an unsuccessful seize</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">continue =</span> <span class="cn">FALSE</span>, <span class="at">reject =</span> <span class="fu">trajectory</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>          <span class="fu">release</span>(<span class="st">"facility"</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>          <span class="fu">log_</span>(<span class="st">"no gas!"</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>          ) <span class="sc">|&gt;</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">timeout</span>(<span class="cf">function</span>() <span class="fu">get_attribute</span>(env, <span class="st">"demand"</span>) <span class="sc">/</span> <span class="dv">100</span> <span class="sc">/</span> gal_per_min) <span class="sc">|&gt;</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visit</span>(<span class="st">"attendant"</span>, finalize_service) <span class="sc">|&gt;</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">release</span>(<span class="st">"facility"</span>, <span class="dv">1</span>)    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fuel-truck-trajectory" class="level3">
+<h3 class="anchored" data-anchor-id="fuel-truck-trajectory">Fuel Truck Trajectory</h3>
+<p>Our next trajectory is a fuel truck with comes and performs a basic function. It increases the gas (indicated by <code>mod = "+"</code>) by however much room is in the reservoir. We have to figure this out by seeing how much gas has been sold and how much total gas has come into the system.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fueler_traj <span class="ot">&lt;-</span> <span class="fu">trajectory</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_capacity</span>(<span class="st">"gas"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># need a callable function</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>() resevoir_capacity <span class="sc">-</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="co"># difference between total gas in the system and amount sold</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">get_capacity</span>(env, <span class="st">"gas"</span>) <span class="sc">-</span> <span class="fu">get_server_count</span>(env, <span class="st">"gas"</span>)),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mod =</span> <span class="st">"+"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="adding-resources" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="adding-resources"><span class="header-section-number">4.2</span> Adding Resources</h2>
+<p>We have already instantiated the environment, so now we just add to it with the <code>|&gt;</code> operator. Instead of specifying a number for capacity, we submit the schedule. As mentioned above, “gas” queue size is set to 0 so that nobody can wait around for gas when there isn’t any.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>env <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the capacity changes throughout the day according to the crew schedule</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_resource</span>(<span class="st">"attendant"</span>, <span class="at">capacity =</span> crew_schedule) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># this is a place holder to show where/how we will add real estate resources</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_resource</span>(<span class="st">"facility"</span>, <span class="at">capacity =</span> station_schedule) <span class="sc">|&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># setting queue size to 0 so that when it runs out of gas, customers leave</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_resource</span>(<span class="st">"gas"</span>, current_capacity, <span class="at">queue_size =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>simmer environment: anonymous | now: 0 | next: 420
+{ Monitor: in memory }
+{ Resource: attendant | monitored: TRUE | server status: 0(0) | queue status: 0(Inf) }
+{ Resource: facility | monitored: TRUE | server status: 0(0) | queue status: 0(Inf) }
+{ Resource: gas | monitored: TRUE | server status: 0(1500000) | queue status: 0(0) }</code></pre>
+</div>
+</div>
+</section>
+<section id="adding-generators" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="adding-generators"><span class="header-section-number">4.3</span> Adding Generators</h2>
+<p>Now we have two things that should appear in our system. The cars which arrive from when it opens until 15-minutes before it closes and a fuel truck which will perform the functions in its trajectory.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>env <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_generator</span>(<span class="st">"car"</span>, car_traj,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                <span class="co"># assume we don't let anybody in after 6:45 PM</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">from_to</span>(<span class="at">start_time =</span> <span class="dv">7</span><span class="sc">*</span><span class="dv">60</span>, <span class="at">stop_time =</span> <span class="fl">18.75</span><span class="sc">*</span><span class="dv">60</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># they arrive at the constant rate</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">dist =</span> car_interarrival,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># they do it every day</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">every =</span> <span class="dv">24</span><span class="sc">*</span><span class="dv">60</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># this will fill up the reservoir every 4 days</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_generator</span>(<span class="st">"fueler"</span>, fueler_traj, <span class="cf">function</span>() <span class="dv">4</span><span class="sc">*</span><span class="dv">24</span><span class="sc">*</span><span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>simmer environment: anonymous | now: 0 | next: 0
+{ Monitor: in memory }
+{ Resource: attendant | monitored: TRUE | server status: 0(0) | queue status: 0(Inf) }
+{ Resource: facility | monitored: TRUE | server status: 0(0) | queue status: 0(Inf) }
+{ Resource: gas | monitored: TRUE | server status: 0(1500000) | queue status: 0(0) }
+{ Source: car | monitored: 1 | n_generated: 0 }
+{ Source: fueler | monitored: 1 | n_generated: 0 }</code></pre>
+</div>
+</div>
+</section>
+<section id="running-model-and-extracting-results" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="running-model-and-extracting-results"><span class="header-section-number">4.4</span> Running Model and Extracting Results</h2>
+<p>The snippet below will run the model for <code>sim_time</code> length. The point of this model is to consider how the “gas” amount changes over the days. It is not a complete reset every day. That is why it is run for 4-weeks (in minutes). Eventually we will want to replicate this 4-week simulation twenty-five times.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reset</span>(env) <span class="sc">|&gt;</span> <span class="fu">run</span>(sim_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1034.87: car226: Too many cars!</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>simmer environment: anonymous | now: 40320 | next: 40320
+{ Monitor: in memory }
+{ Resource: attendant | monitored: TRUE | server status: 0(0) | queue status: 0(Inf) }
+{ Resource: facility | monitored: TRUE | server status: 0(0) | queue status: 0(Inf) }
+{ Resource: gas | monitored: TRUE | server status: 6879212(7383573) | queue status: 0(0) }
+{ Source: car | monitored: 1 | n_generated: 6779 }
+{ Source: fueler | monitored: 1 | n_generated: 7 }</code></pre>
+</div>
+</div>
+<p>We extract the results as usual. Below I just perform a couple of basic post-processing tasks as you would with any table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>arrivals <span class="ot">&lt;-</span> <span class="fu">get_mon_arrivals</span>(env)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>resources <span class="ot">&lt;-</span> <span class="fu">get_mon_resources</span>(env)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>arrivals<span class="sc">$</span>system_time <span class="ot">&lt;-</span> arrivals<span class="sc">$</span>end_time <span class="sc">-</span> arrivals<span class="sc">$</span>start_time</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>resources<span class="sc">$</span>gas_resevoir <span class="ot">&lt;-</span> <span class="cn">NaN</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>resources[resources <span class="sc">==</span> <span class="st">"gas"</span>, <span class="st">'gas_resevoir'</span>] <span class="ot">&lt;-</span> resources[resources <span class="sc">==</span> <span class="st">"gas"</span>, <span class="st">'capacity'</span>] <span class="sc">-</span> resources[resources <span class="sc">==</span> <span class="st">"gas"</span>, <span class="st">'server'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(arrivals))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-arrivals" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-arrivals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: First few arrivals rows
+</figcaption>
+<div aria-describedby="tbl-arrivals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 15%">
+<col style="width: 12%">
+<col style="width: 19%">
+<col style="width: 12%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">start_time</th>
+<th style="text-align: right;">end_time</th>
+<th style="text-align: right;">activity_time</th>
+<th style="text-align: left;">finished</th>
+<th style="text-align: right;">replication</th>
+<th style="text-align: right;">system_time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">car0</td>
+<td style="text-align: right;">420.0000</td>
+<td style="text-align: right;">424.0057</td>
+<td style="text-align: right;">4.005686</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.005686</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">car2</td>
+<td style="text-align: right;">420.8825</td>
+<td style="text-align: right;">425.2802</td>
+<td style="text-align: right;">4.397746</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.397746</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">car1</td>
+<td style="text-align: right;">420.6360</td>
+<td style="text-align: right;">426.2980</td>
+<td style="text-align: right;">5.662055</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.662055</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">car3</td>
+<td style="text-align: right;">425.0393</td>
+<td style="text-align: right;">430.5381</td>
+<td style="text-align: right;">5.257861</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.498807</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">car4</td>
+<td style="text-align: right;">429.0033</td>
+<td style="text-align: right;">433.3824</td>
+<td style="text-align: right;">4.379141</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.379141</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">car5</td>
+<td style="text-align: right;">429.7669</td>
+<td style="text-align: right;">433.6865</td>
+<td style="text-align: right;">3.635647</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.919592</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(resources))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-resources" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-resources-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: First few resource rows
+</figcaption>
+<div aria-describedby="tbl-resources-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 6%">
+<col style="width: 13%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">resource</th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">server</th>
+<th style="text-align: right;">queue</th>
+<th style="text-align: right;">capacity</th>
+<th style="text-align: right;">queue_size</th>
+<th style="text-align: right;">system</th>
+<th style="text-align: right;">limit</th>
+<th style="text-align: right;">replication</th>
+<th style="text-align: right;">gas_resevoir</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">attendant</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NaN</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">facility</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NaN</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">attendant</td>
+<td style="text-align: right;">420</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NaN</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">facility</td>
+<td style="text-align: right;">420</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NaN</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">facility</td>
+<td style="text-align: right;">420</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NaN</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">attendant</td>
+<td style="text-align: right;">420</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NaN</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>resources[resources <span class="sc">==</span> <span class="st">"gas"</span>, ] <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span>gas_resevoir)) <span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-gas-resevoir" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gas-resevoir-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="R8_gas_station_template_files/figure-html/fig-gas-resevoir-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gas-resevoir-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Resvoir Amount over Time
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resources, <span class="at">names =</span> <span class="st">"gas"</span>, <span class="at">steps =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-gas-sold" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gas-sold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="R8_gas_station_template_files/figure-html/fig-gas-sold-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gas-sold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Gas in the system and sold over time
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Finally you can easily see how the workers reflect the schedule.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resources, <span class="at">names =</span> <span class="st">"attendant"</span>, <span class="at">steps =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-workers" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-workers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="R8_gas_station_template_files/figure-html/fig-workers-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-workers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Gas Attendants
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>And the other methods of plotting and information are available to you as before.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/dmoored4\.github\.io\/Sim_Recitation_Sp2025\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Daniel Moore">
-<meta name="dcterms.date" content="2025-04-02">
+<meta name="dcterms.date" content="2025-04-21">
 
-<title>HW2 Solution – Simulation Models in Industrial Engineering</title>
+<title>HW3 Solution – Simulation Models in Industrial Engineering</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -116,9 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      Simulation Models in Industrial Engineering
-      </li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../solutions/HW1_nb.html">Homework Solutions</a></li><li class="breadcrumb-item"><a href="../solutions/hw3_nb.html">Homework 3</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -212,6 +210,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">#7 More Complex Queues with Simmer (MVC)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recitations/R8_nb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">#8 Getting Started with Gas Station Modeling</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -235,6 +239,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Homework 2</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../solutions/hw3_nb.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Homework 3</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -243,14 +253,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw3_soln.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#problem" id="toc-problem" class="nav-link active" data-scroll-target="#problem"><span class="header-section-number">1</span> Problem</a></li>
+  <li><a href="#information" id="toc-information" class="nav-link" data-scroll-target="#information"><span class="header-section-number">2</span> Information</a>
+  <ul class="collapse">
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions"><span class="header-section-number">2.1</span> Questions</a></li>
+  </ul></li>
+  <li><a href="#model" id="toc-model" class="nav-link" data-scroll-target="#model"><span class="header-section-number">3</span> Model</a>
+  <ul class="collapse">
+  <li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages"><span class="header-section-number">3.1</span> Load Packages</a></li>
+  <li><a href="#problem-data" id="toc-problem-data" class="nav-link" data-scroll-target="#problem-data"><span class="header-section-number">3.2</span> Problem Data</a></li>
+  <li><a href="#create-model" id="toc-create-model" class="nav-link" data-scroll-target="#create-model"><span class="header-section-number">3.3</span> Create Model</a></li>
+  </ul></li>
+  <li><a href="#answers" id="toc-answers" class="nav-link" data-scroll-target="#answers"><span class="header-section-number">4</span> Answers</a>
+  <ul class="collapse">
+  <li><a href="#question-1" id="toc-question-1" class="nav-link" data-scroll-target="#question-1"><span class="header-section-number">4.1</span> Question 1</a></li>
+  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2"><span class="header-section-number">4.2</span> Question 2</a></li>
+  <li><a href="#question-3" id="toc-question-3" class="nav-link" data-scroll-target="#question-3"><span class="header-section-number">4.3</span> Question 3</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw3_soln.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../solutions/HW1_nb.html">Homework Solutions</a></li><li class="breadcrumb-item"><a href="../solutions/hw3_nb.html">Homework 3</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">HW2 Solution</h1>
+<h1 class="title">HW3 Solution</h1>
 <p class="subtitle lead">IE384 Simulation Models in IE</p>
 </div>
 
@@ -268,7 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 2, 2025</p>
+      <p class="date">April 21, 2025</p>
     </div>
   </div>
   
@@ -280,13 +312,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Information:</p>
+<section id="problem" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Problem</h1>
+</section>
+<section id="information" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Information</h1>
 <ul>
 <li>5 stalls</li>
 <li>Taxis arrive at 8/hr</li>
 <li>Customers arrive at 10/hr</li>
 <li>Customers leave if there’s no taxis</li>
 </ul>
+<section id="questions" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="questions"><span class="header-section-number">2.1</span> Questions</h2>
+<ol type="1">
+<li>What is the probability of finding one or more taxis waiting at the stand?</li>
+<li>Determine the average number of taxis at the stand.</li>
+<li>What is the average number of taxis waiting at the stand?</li>
+</ol>
+</section>
+</section>
+<section id="model" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Model</h1>
+<p>It is important to separate what is called a customer and what is actually a customer when building these kinds of models. Things we can ask to help understand are?</p>
+<ul>
+<li>What is the limited resource?</li>
+<li>What is being consumed or occupied?</li>
+<li>What/who is doing the consuming?</li>
+</ul>
+<p>In this case, taxis are what we want to model. We are interested in how full the taxi stand is at any given time. The customers are what make the taxis go away. The taxis line up in a single queue where the first spot is where loading and unloading occur and there are four waiting spots behind it.</p>
+<p>That first spot represents the “server” spot. This is where the taxi arrives and stays for some random time until a customer appears. It is tricky and a little strange to think about because there’s literally not a customer there, but the time until a customer appears is how long the taxis wait. Maybe you can think about it like you are at a hotel and you go down to the front desk for a simple question but there’s nobody there. You keep waiting until the clerk returns and as soon as they do you ask your question and you’re on your way.</p>
+<p>The same thing applies here where the taxi waits and waits for the customer. We don’t need to model and track the customers, we just need a way to represent how long it will be until one shows up.</p>
+<section id="load-packages" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="load-packages"><span class="header-section-number">3.1</span> Load Packages</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
@@ -294,29 +352,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simmer.bricks)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simmer.plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="problem-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="problem-data"><span class="header-section-number">3.2</span> Problem Data</h2>
+<p>This information is taken straight from the problem statement.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n_stalls <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>taxis_arrival <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rexp</span>(n, <span class="at">rate =</span> <span class="dv">8</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>cust_arrival <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rexp</span>(n, <span class="at">rate =</span> <span class="dv">10</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>loading_positions <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># function to sample the interarrival time of taxis</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>taxis_arrival <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rexp</span>(n, <span class="at">rate =</span> <span class="dv">8</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>cust_arrival <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">1</span>) {</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rexp</span>(n, <span class="at">rate =</span> <span class="dv">10</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="create-model" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="create-model"><span class="header-section-number">3.3</span> Create Model</h2>
+<p>For when we get more advanced situations, it is best practice to create an empty simulation environment and then add the details</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">simmer</span>(<span class="st">"taxi stand"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                <span class="co"># this is where people load</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_resource</span>(<span class="st">"stall"</span>, <span class="at">capacity =</span> <span class="dv">1</span>, <span class="at">queue_size =</span> n_stalls <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>taxi_traj <span class="ot">&lt;-</span> <span class="fu">trajectory</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">seize</span>(<span class="st">"stall"</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">timeout</span>(cust_arrival) <span class="sc">|&gt;</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">release</span>(<span class="st">"stall"</span>, <span class="dv">1</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>sim <span class="sc">|&gt;</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_generator</span>(<span class="st">"taxi"</span>, taxi_traj, taxis_arrival)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># best practice is to first i</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">simmer</span>(<span class="st">"taxi stand"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>First I’m adding the constrained resource, the number of stalls. Note that I have the number of servers set with <code>capacity = loading_positions</code> and then I am restricting the queue size to be the total number of stalls minus the loading stalls. For this, it simply means 5 stalls - 1 loading stall = 4 stalls behind the loading.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sim <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># this is where people load</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_resource</span>(<span class="st">"stall"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">capacity =</span> loading_positions,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">queue_size =</span> n_stalls <span class="sc">-</span> loading_positions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>simmer environment: taxi stand | now: 0 | next: 
+{ Monitor: in memory }
+{ Resource: stall | monitored: TRUE | server status: 0(1) | queue status: 0(4) }</code></pre>
+</div>
+</div>
+<p>The trajectory is very simple. As mentioned before, note that the “seize, timeout, release” can be accomplished the exact same as <code>visit</code> from <code>simmer.bricks</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>taxi_traj <span class="ot">&lt;-</span> <span class="fu">trajectory</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># takes one unit of the stall</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">seize</span>(<span class="st">"stall"</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># samples the cust_arrival distribution</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">timeout</span>(cust_arrival) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">release</span>(<span class="st">"stall"</span>, <span class="dv">1</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># note this is the same as:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># visit("stall, cust_arrival)</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>sim <span class="sc">|&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_generator</span>(<span class="st">"taxi"</span>, taxi_traj, taxis_arrival) <span class="co"># samples the time between taxi arrivals</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>simmer environment: taxi stand | now: 0 | next: 0
 { Monitor: in memory }
@@ -324,23 +410,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 { Source: taxi | monitored: 1 | n_generated: 0 }</code></pre>
 </div>
 </div>
+<p>I prefer to always <code>reset</code> the model before running it as shown here:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sim_time <span class="ot">&lt;-</span> <span class="dv">72</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reset</span>(sim) <span class="sc">|&gt;</span> <span class="fu">run</span>(sim_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sim_time <span class="ot">&lt;-</span> <span class="dv">72</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reset</span>(sim) <span class="sc">|&gt;</span> <span class="fu">run</span>(sim_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>simmer environment: taxi stand | now: 72 | next: 72.0742922660061
+<pre><code>simmer environment: taxi stand | now: 72 | next: 72.0651127564385
 { Monitor: in memory }
-{ Resource: stall | monitored: TRUE | server status: 1(1) | queue status: 4(4) }
-{ Source: taxi | monitored: 1 | n_generated: 622 }</code></pre>
+{ Resource: stall | monitored: TRUE | server status: 0(1) | queue status: 0(4) }
+{ Source: taxi | monitored: 1 | n_generated: 605 }</code></pre>
 </div>
+</div>
+<p>And we can get the tables of results as shown here:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>taxistalls <span class="ot">&lt;-</span> <span class="fu">get_mon_resources</span>(sim)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>taxis <span class="ot">&lt;-</span> <span class="fu">get_mon_arrivals</span>(sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>taxistalls <span class="ot">&lt;-</span> <span class="fu">get_mon_resources</span>(sim)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>taxis <span class="ot">&lt;-</span> <span class="fu">get_mon_arrivals</span>(sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(taxistalls, <span class="at">steps =</span> <span class="cn">TRUE</span>, <span class="at">items =</span> <span class="st">"system"</span>) <span class="co">#, steps = TRUE) #, items = "queue")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(taxistalls, <span class="at">steps =</span> <span class="cn">TRUE</span>, <span class="at">items =</span> <span class="st">"system"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-taxi-stall-step" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
 <figure class="quarto-float quarto-float-fig figure">
@@ -354,8 +442,84 @@ Figure&nbsp;1
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="answers" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Answers</h1>
+<section id="question-1" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="question-1"><span class="header-section-number">4.1</span> Question 1</h2>
+<p>What is the probability of finding one or more taxis waiting at the stand?</p>
+<p>If you open <code>taxistalls</code> you see that we have a pretty constant amount of data. That is there is no big gaps. So we could be lazy and just take the average number of times that <code>taxistalls$system</code> is greater than or equal to one. We use <code>system</code> because that is the number in the server spot and all taxis behind it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>q1lazy <span class="ot">&lt;-</span> <span class="fu">mean</span>(taxistalls<span class="sc">$</span>system <span class="sc">&gt;=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The lazy result indicates there are one or more taxis 86.36 % of the time.</p>
+<p>This is tempting but dangerous because it doesn’t account for how long the system was in that state. Think if there were only two data points in our simulation, one at 5 seconds and one at 6 seconds. At 5 seconds, there is one taxi in the system and at 6 seconds there is none for a simulation of 72 hours. If you do a simple average, you will determine there are 0.5 taxis in the system. Clearly the average should be essentially zero.</p>
+<p>Two steps to properly account for this:</p>
+<ol type="1">
+<li>Create a new row in <code>taxistalls</code> representing time 0 with no taxis</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a zero row starting with a copy of the table</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>zero_table <span class="ot">&lt;-</span> taxistalls[<span class="dv">1</span>, ]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># set each value to 0</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>zero_table[<span class="dv">1</span>, <span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(zero_table)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># bind the tibbles together</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>taxistalls <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  zero_table,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  taxistalls</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># this isn't necessary because I put the zero row first,</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># but it's easy to make a mistake and better to just sort it again anyway.</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(time) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Create a new column which gives the time between each row and the row after it</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>taxistalls <span class="ot">&lt;-</span> taxistalls <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># lead takes the value of the next row</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># coalesce provides a default value for where there is no "next row"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># that is when we are looking at the last observation before the end of the</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulation</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">duration =</span> <span class="fu">coalesce</span>(<span class="fu">lead</span>(time), sim_time) <span class="sc">-</span> time</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can easily get a time waited average. We could do this by getting all the duration of times where the value is one or more, or we could just do it for the case where it is zero and subtract</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we need to have an "observation" at time zero where nothing is in the system</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>time_zero_taxis <span class="ot">&lt;-</span> <span class="fu">sum</span>(taxistalls<span class="sc">$</span>duration[taxistalls<span class="sc">$</span>system <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>proportion_zero <span class="ot">&lt;-</span> time_zero_taxis <span class="sc">/</span> sim_time</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>proportion_1_or_more <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> proportion_zero</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we have the truly correct answer and as it turns out, it is significantly different than the simple average performed above.</p>
+<p>The true probability of one or more taxis is 76.71 %</p>
+</section>
+<section id="question-2" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="question-2"><span class="header-section-number">4.2</span> Question 2</h2>
+<p>Determine the average number of taxis at the stand.</p>
+<p>We need to do the same time-weighted average as above.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>avg_taxis <span class="ot">&lt;-</span> <span class="fu">sum</span>(taxistalls<span class="sc">$</span>system <span class="sc">*</span> taxistalls<span class="sc">$</span>duration) <span class="sc">/</span> sim_time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There are 1.99 taxis in the system on average.</p>
+</section>
+<section id="question-3" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="question-3"><span class="header-section-number">4.3</span> Question 3</h2>
+<p>What is the average number of taxis waiting at the stand?</p>
+<p>This question is (intentionally) a bit ambiguous. If you interpret it the same as the above, then that is fine as long as you’ve explained it. The other alternative is wondering how many taxis are in waiting positions 1-4 (i.e.&nbsp;not in the loading zone). In that case, we still do a time waited average.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now for this interpretation we use the queue</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>waitng_taxis <span class="ot">&lt;-</span> <span class="fu">sum</span>(taxistalls<span class="sc">$</span>queue <span class="sc">*</span> taxistalls<span class="sc">$</span>duration) <span class="sc">/</span> sim_time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There are 1.22 taxis waiting behind the loading position.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -448,7 +612,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/dmoored4\.github\.io\/Sim_Recitation_Sp2025\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
