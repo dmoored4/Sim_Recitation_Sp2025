@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.6.43">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -416,10 +416,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reset</span>(sim) <span class="sc">|&gt;</span> <span class="fu">run</span>(sim_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>simmer environment: taxi stand | now: 72 | next: 72.0651127564385
+<pre><code>simmer environment: taxi stand | now: 72 | next: 72.0602546953056
 { Monitor: in memory }
 { Resource: stall | monitored: TRUE | server status: 0(1) | queue status: 0(4) }
-{ Source: taxi | monitored: 1 | n_generated: 605 }</code></pre>
+{ Source: taxi | monitored: 1 | n_generated: 549 }</code></pre>
 </div>
 </div>
 <p>And we can get the tables of results as shown here:</p>
@@ -453,7 +453,7 @@ Figure&nbsp;1
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>q1lazy <span class="ot">&lt;-</span> <span class="fu">mean</span>(taxistalls<span class="sc">$</span>system <span class="sc">&gt;=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The lazy result indicates there are one or more taxis 86.36 % of the time.</p>
+<p>The lazy result indicates there are one or more taxis 86.27 % of the time.</p>
 <p>This is tempting but dangerous because it doesn’t account for how long the system was in that state. Think if there were only two data points in our simulation, one at 5 seconds and one at 6 seconds. At 5 seconds, there is one taxi in the system and at 6 seconds there is none for a simulation of 72 hours. If you do a simple average, you will determine there are 0.5 taxis in the system. Clearly the average should be essentially zero.</p>
 <p>Two steps to properly account for this:</p>
 <ol type="1">
@@ -496,7 +496,7 @@ Figure&nbsp;1
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>proportion_1_or_more <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> proportion_zero</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we have the truly correct answer and as it turns out, it is significantly different than the simple average performed above.</p>
-<p>The true probability of one or more taxis is 76.71 %</p>
+<p>The true probability of one or more taxis is 72.76 %</p>
 </section>
 <section id="question-2" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="question-2"><span class="header-section-number">4.2</span> Question 2</h2>
@@ -505,7 +505,7 @@ Figure&nbsp;1
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>avg_taxis <span class="ot">&lt;-</span> <span class="fu">sum</span>(taxistalls<span class="sc">$</span>system <span class="sc">*</span> taxistalls<span class="sc">$</span>duration) <span class="sc">/</span> sim_time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>There are 1.99 taxis in the system on average.</p>
+<p>There are 1.95 taxis in the system on average.</p>
 </section>
 <section id="question-3" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="question-3"><span class="header-section-number">4.3</span> Question 3</h2>
@@ -515,7 +515,7 @@ Figure&nbsp;1
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now for this interpretation we use the queue</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>waitng_taxis <span class="ot">&lt;-</span> <span class="fu">sum</span>(taxistalls<span class="sc">$</span>queue <span class="sc">*</span> taxistalls<span class="sc">$</span>duration) <span class="sc">/</span> sim_time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>There are 1.22 taxis waiting behind the loading position.</p>
+<p>There are 1.23 taxis waiting behind the loading position.</p>
 
 
 </section>
